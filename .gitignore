@@ -9,6 +9,7 @@ vendor/
 dist/
 build/
 out/
+wix-files/
 
 # IDE and editor files
 .idea/
