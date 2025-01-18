@@ -413,6 +413,7 @@ button,
 [type="reset"],
 [type="submit"] {
     -webkit-appearance : button;
+    appearance         : button;
 }
 
 button::-moz-focus-inner,
@@ -464,6 +465,7 @@ textarea {
 
 [type="search"] {
     -webkit-appearance : textfield;
+    appearance         : textfield;
     outline-offset     : -2px;
 }
 
@@ -1587,7 +1589,7 @@ hr.fancy::before {
     background        : center center;
     background-size   : contain;
     background-image  : url(../images/icons/icon-quote.svg);
-    transform         : translate(-50%, 0, 0);
+    transform         : translate(-50%, -50%);
     position          : absolute;
     top               : var(--vspace-1);
     left              : 50%;
@@ -3215,30 +3217,80 @@ img.u-pull-left {
     z-index          : 1;
     list-style       : none;
     display          : flex;
+    flex-direction   : column;
+    align-items      : center;
     font-size        : 1rem;
     font-weight      : 400;
     text-transform   : uppercase;
     letter-spacing   : .3em;
     margin           : 0;
-    padding          : 0 0 0 9.6rem;
-    transform        : rotate(-90deg) translateX(-50%);
-    transform-origin : left bottom;
-    position         : absolute;
+    padding          : var(--vspace-0_5);
+    position         : absolute; /* Changed from fixed to absolute */
     top              : 50%;
-    left             : calc(100% - 6rem);
+    right            : 3rem;
+    transform        : translateY(-50%);
+    background-color : transparent;
 }
 
 .intro-social li {
-    padding : 0 1.2rem;
+    margin: 0.8rem 0;
 }
 
-.intro-social a {
-    color : var(--color-text-light);
+.intro-social img {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    transition: transform 0.3s ease;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+    opacity: 0.7;
 }
 
-.intro-social a:focus,
-.intro-social a:hover {
-    color : white;
+.intro-social a:hover img {
+    transform: scale(1.2);
+    opacity: 1;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(288deg) brightness(102%) contrast(102%);
+    color: var(--color-1);  /* Match the color of the down arrow */
+}
+
+/* add this new CSS rule */
+.intro-social li a:hover img {
+    filter: invert(76%) sepia(48%) saturate(396%) hue-rotate(353deg) brightness(103%) contrast(94%);
+}
+
+/* Adjustments for smaller screens */
+@media screen and (max-width: 800px) {
+    .intro-social {
+        flex-direction  : row;  /* Switch to horizontal layout */
+        position        : relative;
+        top             : auto;
+        right           : auto;
+        transform       : none;
+        padding         : var(--vspace-0_5);
+        width           : 100%;
+        left            : var(--gutter);
+    }
+
+    .intro-social li {
+        margin: 0 0.8rem 0 0;  /* Switch to horizontal margins on mobile */
+    }
+}
+
+/* Adjustments for medium screens */
+@media screen and (min-width: 801px) and (max-width: 1200px) {
+    .intro-social {
+        flex-direction  : row;  /* Switch to horizontal layout */
+        position        : relative;
+        top             : auto;
+        right           : auto;  /* Remove right property */
+        transform       : none;
+        padding         : var(--vspace-0_5);
+        width           : 100%;
+        left            : 3rem;  /* Adjust left property */
+    }
+
+    .intro-social li {
+        margin: 0 0.8rem 0 0;  /* Switch to horizontal margins */
+    }
 }
 
 /* --------------------------------------------------------------------
@@ -3332,18 +3384,20 @@ img.u-pull-left {
         margin-bottom : var(--vspace-1_5);
     }
 
+    /* Remove the rotation and absolute positioning on smaller screens */
     .intro-social {
-        width         : 100%;
-        flex-wrap     : wrap;
-        padding-left  : 0;
-        padding-right : 8rem;
-        transform     : none;
-        position      : relative;
-        left          : var(--gutter);
+        flex-direction  : row;  /* Switch to horizontal layout */
+        position       : relative;
+        top            : auto;
+        right          : auto;
+        transform      : none;
+        padding        : var(--vspace-0_5);
+        width          : 100%;
+        left           : var(--gutter);
     }
 
     .intro-social li {
-        padding : 0 .6rem;
+        margin: 0 0.8rem 0 0;  /* Switch to horizontal margins on mobile */
     }
 }
 
@@ -3404,7 +3458,8 @@ img.u-pull-left {
 .about-info {
     --gutter    : 0;
     width       : 100%;
-    align-items : center;
+    align-items : flex-start;  /* Changed from center to flex-start */
+    padding     : var(--vspace-2) 0;
 }
 
 .about-info__pic {
@@ -3426,6 +3481,55 @@ img.u-pull-left {
     margin-top    : var(--vspace-1);
     margin-bottom : 0;
 }
+
+.about-info .column {
+    padding : var(--vspace-1);
+}
+
+.about-info .column.lg-4 {
+    display        : flex;
+    justify-content: center;
+    align-items    : flex-start;
+    padding-top    : calc(var(--vspace-1) + 1rem); /* Align with text */
+}
+
+.about-info .column.lg-8 {
+    padding-left : var(--vspace-2);
+}
+
+.about-profile-img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 9 / 16;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+}
+
+/* Adjustments for mobile view */
+@media screen and (max-width: 800px) {
+    .about-info {
+        padding: var(--vspace-1) 0;
+    }
+
+    .about-info .column {
+        width: 100%;
+        padding: var(--vspace-1);
+    }
+
+    .about-info .column.lg-4 {
+        padding-bottom: 0;
+    }
+
+    .about-info .column.lg-8 {
+        padding-left: var(--vspace-1);
+    }
+
+    .about-profile-img {
+        margin-bottom: var(--vspace-1_5);
+    }
+}
+
 
 /* --------------------------------------------------------------------
  * ## about expertise
@@ -3575,7 +3679,6 @@ img.u-pull-left {
         --timeline-left-padding : var(--vspace-1);
     }
 }
-
 
 
 /* ===================================================================
