@@ -3523,6 +3523,18 @@ img.u-pull-left {
     margin-top     : -.2rem;
 }
 
+.timeline__timeframe_education {
+    font-size      : var(--text-xs);
+    line-height    : var(--vspace-0_75);
+    text-transform : uppercase;
+    letter-spacing : .2em;
+    color          : var(--color-text-light);
+    margin-top     : -.2rem;
+    margin-bottom  : 0.2rem;
+    padding-bottom : 0;
+}
+
+
 /* ------------------------------------------------------------------- 
  * responsive:
  * about
