@@ -227,21 +227,22 @@ function populateContent(data) {
   // Experience section
   if (data.experience) {
     console.log('Populating experience section...');
-    const timeline = document.getElementById('experience-timeline');
-    if (timeline) {
-      timeline.innerHTML = data.experience.map(job => `
-        <li>
-          <span class="dot"></span>
-          <div class="content">
-            <h3>${job.title} • ${job.company}</h3>
-            <time>${job.period}</time>
+    const timelineContainer = document.querySelector('.timeline-container');
+    if (timelineContainer) {
+      timelineContainer.innerHTML = data.experience.map(job => `
+        <div class="experience-item">
+          <div class="experience-content">
+            <h4>${job.title} • ${job.company}</h4>
+            <div class="experience-date">
+              <span>${job.period}</span>
+            </div>
             <p>${job.description}</p>
           </div>
-        </li>
+        </div>
       `).join('');
       console.log('Experience section populated');
     } else {
-      console.error('Element #experience-timeline not found');
+      console.error('Element .timeline-container not found');
     }
   }
 
@@ -374,7 +375,7 @@ function setupIntersectionObserver() {
         ...section.querySelectorAll('h2'),
         ...section.querySelectorAll('h3'), // Include all h3 elements for animation
         ...section.querySelectorAll('.about-grid'),
-        ...section.querySelectorAll('.timeline li'),
+        ...section.querySelectorAll('.experience-item'),
         ...section.querySelectorAll('.project-card'),
         ...section.querySelectorAll('.interactive-demo-container'),
         ...section.querySelectorAll('.education-row'),

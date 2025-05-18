@@ -194,7 +194,7 @@ h3.fade-in-element {
 }
 
 .about-grid.fade-in-element,
-.timeline li.fade-in-element,
+.experience-item.fade-in-element,
 .project-card.fade-in-element,
 .education-row.fade-in-element,
 .skills-column.fade-in-element,
@@ -205,19 +205,19 @@ h3.fade-in-element {
 }
 
 /* Children of timeline items should stagger */
-.timeline li:nth-child(2).fade-in-element {
+.experience-item:nth-child(2).fade-in-element {
   transition-delay: 0.25s;
 }
 
-.timeline li:nth-child(3).fade-in-element {
+.experience-item:nth-child(3).fade-in-element {
   transition-delay: 0.3s;
 }
 
-.timeline li:nth-child(4).fade-in-element {
+.experience-item:nth-child(4).fade-in-element {
   transition-delay: 0.35s;
 }
 
-.timeline li:nth-child(5).fade-in-element {
+.experience-item:nth-child(5).fade-in-element {
   transition-delay: 0.4s;
 }
 
@@ -591,64 +591,79 @@ header .container {
   margin-bottom: 0;
 }
 
-/* Experience Timeline */
-.timeline {
+/* Timeline Container - New design with all content on the right */
+.timeline-container {
   position: relative;
-  margin: var(--space-l) 0;
+  margin: 40px auto;
+  max-width: 800px;
+  --timeline-line-offset: 50px;
+  --timeline-content-padding-start: 70px;
 }
 
-.timeline::before {
+/* Vertical connecting line */
+.timeline-container::before {
   content: '';
   position: absolute;
-  top: 16px;
-  /* Calculate position to reach bottom of content box, not beyond */
-  height: calc(100% - 32px); /* Full height minus top and bottom padding */
-  left: 29px; /* Center the line on the dot (8px + 16px/2) */
-  width: 3px;
+  top: 0;
+  bottom: 0;
+  left: var(--timeline-line-offset);
+  width: 1px;
   background-color: var(--clr-softblue);
-  border-radius: 4px; /* Round both ends */
+  transform: translateX(-50%);
 }
 
-.timeline li {
+/* Experience Item */
+.experience-item {
   position: relative;
-  padding-left: 32px; /* Adjusted to make boxes touch the line */
-  margin-bottom: var(--space-l);
+  margin-bottom: 40px;
+  padding-bottom: 0;
 }
 
-/* Adjust the last timeline item's margin to avoid excess line */
-.timeline li:last-child {
+.experience-item:last-child {
   margin-bottom: 0;
 }
 
-.timeline .dot {
-  position: absolute;
-  left: 23px; /* Centered on the line */
-  top: 6px;
-  width: 16px;
-  height: 16px;
-  background-color: var(--clr-azure);
-  border-radius: 50%;
-  z-index: 1;
-}
-
-.timeline .content {
-  padding: var(--space-s);
-  background-color: var(--clr-lightpurple);
-  border-radius: var(--border-radius);
+.experience-content {
+  padding-left: var(--timeline-content-padding-start);
   position: relative;
 }
 
-.timeline h3 {
-  margin-bottom: var(--space-s);
+.experience-content h4 {
+  margin-bottom: 8px;
+  color: var(--clr-deepviolet);
+  font-weight: var(--font-weight-medium);
+  font-size: 1.2rem;
   text-align: left;
+  position: relative;
 }
 
-.timeline time {
-  display: block;
-  color: var(--clr-midnight);
-  font-size: 0.875rem;
-  margin-bottom: var(--space-xs);
+/* All styles related to the timeline dot have been removed. */
+
+.experience-date {
+  margin-bottom: 12px;
 }
+
+.experience-date span {
+  display: inline-block;
+  font-weight: var(--font-weight-light);
+  color: var(--clr-deepviolet);
+  font-size: 0.9rem;
+}
+
+.experience-content p {
+  color: var(--clr-deepviolet);
+  line-height: 1.6;
+}
+
+@media (max-width: 767px) {
+  .timeline-container {
+    --timeline-line-offset: 35px;
+    --timeline-content-padding-start: 55px;
+  }
+  /* Vertical line will automatically use the updated custom properties */
+}
+
+/* Old timeline selectors removed as they are no longer applicable. */
 
 /* Projects Section */
 .projects-grid {
@@ -1123,40 +1138,7 @@ footer .container {
     padding-left: 0;
   }
 
-  .timeline::before {
-    left: 50%;
-    transform: translateX(-50%);
-    top: 16px;
-    height: calc(100% - 32px);
-    border-radius: 4px;
-  }
-  
-  .timeline li {
-    padding-left: 0;
-    padding-right: 0;
-    margin-bottom: var(--space-xl);
-  }
-  
-  .timeline li:last-child {
-    margin-bottom: 0;
-  }
-  
-  .timeline li:nth-child(odd) .content {
-    margin-left: 0;
-    margin-right: calc(50% + 1.5px); /* Half the width of the timeline line */
-    padding-right: var(--space-l);
-  }
-
-  .timeline li:nth-child(even) .content {
-    margin-left: calc(50% + 1.5px); /* Half the width of the timeline line */
-    margin-right: 0;
-    padding-left: var(--space-l);
-  }
-
-  .timeline .dot {
-    left: 50%;
-    transform: translateX(-50%);
-  }
+  /* Timeline styles are now handled by the new timeline-container design */
 
   .skills-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -1259,7 +1241,7 @@ footer .container {
 }
 
 /* Adjust specific headings to maintain proper spacing in content blocks */
-.timeline h3, .project-card h4, .skills-column h3 {
+.project-card h4, .skills-column h3 {
   margin-bottom: var(--space-s);
 }
 
@@ -1370,4 +1352,41 @@ footer .container {
   .interactive-demo iframe {
     min-height: 400px;
   }
+}
+
+/* === Timeline Markers for Professional Experience === */
+
+/* This assumes your .timeline-container has position: relative and padding-left (e.g., 30px)
+   and its ::before pseudo-element (or similar) creates the vertical timeline bar
+   (e.g., at left: 15px within that padding).
+   If your setup is different, the 'left' value for the circle will need adjustment. */
+
+.experience-item {
+  position: relative; /* Ensures ::before is positioned relative to this item */
+}
+
+.experience-item::before {
+  content: '';
+  position: absolute;
+  width: 16px;  /* Total diameter of the marker (including border). The background-colored area is 10px. */
+  height: 16px; /* Total diameter of the marker (including border). The background-colored area is 10px. */
+  background-color: var(--clr-softblue); /* Color of the circle marker. Adjust to fit your theme. */
+  border: 3px solid var(--clr-white);  /* Clean white border. Assumes section background is white. */
+  border-radius: 50%;    /* Makes it a circle */
+  box-sizing: border-box; /* Includes border in the element's total width and height */
+
+  /* Vertical alignment:
+     'top: 0.7em' attempts to align the circle near the vertical center of the first line of text (e.g., your <h4> title).
+     You may need to fine-tune this value (e.g., to 0.6em, 10px, etc.) for perfect alignment with your font and line heights. */
+  top: 0.2em; /* Adjusted slightly for a potentially larger marker */
+
+  /* Horizontal positioning:
+     This centers the 16px diameter circle marker on the timeline.
+     The timeline's position is defined by var(--timeline-line-offset) in .timeline-container.
+     The circle's radius is 8px (16px total diameter / 2).
+     So, left = var(--timeline-line-offset) - 8px.
+     This works responsively as --timeline-line-offset changes for smaller screens.
+  */
+  left: calc(var(--timeline-line-offset) - 8px);
+  z-index: 1;  /* Places the circle marker above the timeline line. */
 }
