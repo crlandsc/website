@@ -1,734 +1,426 @@
 <!DOCTYPE html>
-<html class="""no-js ss-preload" lang="""en"></html>
+<html lang="en">
 <head>
-
-    <!--- basic page needs
-    ================================================== -->
-    <meta charset="""utf-8">
-    <title>Christopher Landschoot</title>
-    <meta name="""description" content="""">
-    <meta name="""author" content="""">
-
-    <!-- mobile specific metas
-    ================================================== -->
-    <meta name="""viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSS
-    ================================================== -->
-    <link rel="stylesheet" href="css/vendor.css">
-    <link rel="stylesheet" href="css/styles.css">
-
-    <!-- favicons
-    ================================================== -->
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Christopher Landschoot - Machine Learning Engineer specializing in audio technology and deep learning">
+  <meta property="og:title" content="Christopher Landschoot - Personal Website">
+  <meta property="og:description" content="Machine Learning Engineer specializing in audio technology and deep learning">
+  <meta property="og:image" content="assets/profile.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <title>Christopher Landschoot</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="assets/icons/favicon.ico">
+  <!-- Brandon Grotesque font -->
+  <style>
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Regular.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Medium.otf') format('opentype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Bold.otf') format('opentype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Light.otf') format('opentype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Black.otf') format('opentype');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Regular-Italic.otf') format('opentype');
+      font-weight: normal;
+      font-style: italic;
+      font-display: swap;
+    }
+  </style>
+  <!-- Inline verification script -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM loaded in inline script, will try to fetch content.json...');
+      
+      // Test direct fetch inside HTML
+      fetch('./content.json')
+        .then(response => {
+          console.log('Inline script - Fetch response status:', response.status);
+          if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Inline script - Content loaded successfully!', Object.keys(data));
+        })
+        .catch(error => {
+          console.error('Inline script - Error loading content:', error);
+        });
+    });
+  </script>
 </head>
-
-<body id="top">
-
-
-    <!-- # preloader
-    ================================================== -->
-    <div id="preloader">
-        <div id="loader">
-        </div>
+<body>
+  <header>
+    <div class="container">
+      <a href="#home" class="logo">CHRISTOPHER LANDSCHOOT</a>
+      <nav aria-label="Primary">
+        <ul class="desktop-nav">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#interests">Interests</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="https://after-august.com/" target="_blank" rel="noopener noreferrer">Music</a></li>
+          <li><a href="https://github.com/crlandsc" target="_blank" rel="noopener noreferrer">Portfolio</a></li>
+          <li><a href="assets/Christopher Landschoot's Resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a></li>
+        </ul>
+        <details class="mobile-nav">
+          <summary aria-label="Menu toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </summary>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#interests">Interests</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="https://after-august.com/" target="_blank" rel="noopener noreferrer">Music</a></li>
+            <li><a href="https://github.com/crlandsc" target="_blank" rel="noopener noreferrer">Portfolio</a></li>
+            <li><a href="assets/Christopher Landschoot's Resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a></li>
+          </ul>
+        </details>
+      </nav>
     </div>
+  </header>
 
+  <main>
+    <section id="home" class="hero">
+      <div class="hero-bg">
+        <img src="assets/hero.jpg" alt="Background image" loading="eager">
+      </div>
+      <div class="hero-content">
+        <h1>Hi, I'm Chris.</h1>
+        <p class="hero-tagline">I love everything to do with sound.</p>
+        <p>Welcome to my site.</p>
+      </div>
+    </section>
 
-    <!-- # page wrap
-    ================================================== -->
-    <div class="s-pagewrap">
-
-        <div class="circles">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+    <section id="about" class="section">
+      <div class="container">
+        <h2>About</h2>
+        <h3>Personal Profile</h3>
+        <div class="about-grid">
+          <div class="about-image">
+            <img src="assets/profile.png" alt="Christopher Landschoot">
+          </div>
+          <div class="about-content">
+            <p>I love everything involving music, technology, and sound. I work as a machine learning engineer researching and developing new audio technologies with a focus on deep learning and spatial audio. I have also consulted on the acoustical design of the built environment, with projects ranging from performance venues to recording studios. My work and research include developing and implementing algorithms to perform audio source separation, music sample generation, sound source detection, and binaural audio externalization. I have also developed other software to measure acoustics metrics, model wave behavior, process spatial audio, and create audio effects plugins.</p>
+            <p>When I am not focused on the design of sound and technology through my work or research, I am writing, recording, or performing music. I play guitar (electric, acoustic, bass), percussion, piano, and even dabble with the banjo. My artist name is After August (check me out on Spotify), and I play musical styles from jazz to rock to folk and everything in between. I love all types of music.</p>
+            <p>I live in Chicago with my wife, Steph, and our little dog, Queso. Steph works as an IR Nurse at Northwestern Memorial Hospital assisting with groundbreaking operations daily and Queso takes naps on my lap daily as I work at my desk. I play in the local kickball league and love to escape to the Adirondack Mountains in NY each summer for some hiking, kayaking, and time with the family.</p>
+          </div>
         </div>
+      </div>
+    </section>
 
-
-        <!-- ## site header 
-        ================================================== -->
-        <header class="s-header">
-
-            <div class="header-mobile">
-                <span class="mobile-home-link"><a href="index.html">Chris.</a></span>
-                <a class="mobile-menu-toggle" href="#0"><span>Menu</span></a>
+    <section id="experience" class="section">
+      <div class="container">
+        <h2>Professional Experience</h2>
+        <h3>Background & Expertise</h3>
+        <ul class="timeline" id="experience-timeline">
+          <!-- Timeline items will be populated from content.json -->
+          <li>
+            <span class="dot"></span>
+            <div class="content">
+              <h3>Machine Learning Engineer • Whitebalance</h3>
+              <time>August 2023 - Present</time>
+              <p>Developing deep learning algorithms for audio source separation, recognition, and enhancement. Building core product technology by implementing state-of-the-art audio source separation frameworks, developing model improvements, and curating audio datasets.</p>
             </div>
-
-            <div class="row wide main-nav-wrap">
-                <nav class="column lg-12 main-nav">
-                    <ul>
-                        <li><a href="index.html" class="home-link">Chris.</a></li>
-                        <li class="current"><a href="#intro" class="smoothscroll">Intro</a></li>
-                        <li><a href="#about" class="smoothscroll">About</a></li>
-                        <li><a href="#experience" class="smoothscroll">Experience</a></li>
-                        <li><a href="#projects" class="smoothscroll">Projects</a></li>
-                        <li><a href="#contact" class="smoothscroll">Contact</a></li>
-                    </ul>
-                </nav>
+          </li>
+          <li>
+            <span class="dot"></span>
+            <div class="content">
+              <h3>Audio Research Collaborator • Virtuel Works</h3>
+              <time>August 2022 - Present</time>
+              <p>Collaboratively develop and implement a post-processing real-time binaural externalization algorithm for object-based spatial audio focused on improving immersive audio experiences without introducing timbral artifacts.</p>
             </div>
-
-        </header> <!-- end s-header -->
-
-
-        <!-- ## main content
-        ==================================================- -->
-        <main class="s-content">
-
-
-            <!-- ### intro
-            ================================================== -->
-            <section id="intro" class="s-intro target-section">
-
-                <div class="row intro-content wide">
-
-                    <div class="column">
-                        <div class="text-pretitle with-line">
-                            Welcome
-                        </div>
-
-                        <h1 class="text-huge-title">
-                            Hi, I'm Chris, <br>
-                            I love everything <br>
-                            to do with Sound.
-                        </h1>
-                    </div>
-
-                    <ul class="intro-social">
-                        <li><a href="https://open.spotify.com/artist/2i6noWJnJQPXPsudoiJuMS?si=AQKGPknmQwK8Bsmcm7B9WQ"><img src="images/icons/icons8-spotify-material-filled/icons8-spotify-480.svg" alt="Spotify"></a></li>
-                        <li><a href="https://www.linkedin.com/in/christopher-landschoot/"><img src="images/icons/icons8-linkedin-material-filled/icons8-linkedin-480.svg" alt="LinkedIn"></a></li>
-                        <li><a href="https://github.com/crlandsc"><img src="images/icons/icons8-github-material-outlined/icons8-github-384.svg" alt="GitHub"></a></li>
-                        <li><a href="https://www.youtube.com/AfterAugust"><img src="images/icons/icons8-youtube-material-filled/icons8-youtube-480.svg" alt="YouTube"></a></li>
-                        <li><a href="https://www.facebook.com/TheAfterAugust/"><img src="images/icons/icons8-facebook-material-filled-2/icons8-facebook-480.svg" alt="Facebook"></a></li>
-                        <li><a href="https://www.instagram.com/the_after_august/"><img src="images/icons/icons8-instagram-material-filled/icons8-instagram-480.svg" alt="Instagram"></a></li>
-                        <li><a href="https://scholar.google.com/citations?hl=en&view_op=list_works&gmla=AJsN-F6PaFcTdi4cTxZ3Kpvf2xwKM4ramDbqVKFm_buMLElpYMNzxViHQuKgOPeLMMP3KkcK6besvk4Tu9wURTx-4smBAfXZtw&user=4K5CzM4AAAAJ"><img src="images/icons/icons8-google-scholar-material-filled/icons8-google-scholar-480.svg" alt="Google Scholar"></a></li>
-                        <li><a href="https://www.researchgate.net/profile/Christopher-Landschoot/research"><img src="images/icons/icons8-researchgate-windows-10/researchgate-square.svg" alt="ResearchGate"></a></li>
-                    </ul>
-
-                </div> <!-- end intro content -->
-
-                <a href="#about" class="intro-scrolldown smoothscroll">
-                    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 21.883l-6.235-7.527-.765.644 7.521 9 7.479-9-.764-.645-6.236 7.529v-21.884h-1v21.883z"/></svg>
-                </a>
-
-            </section> <!-- end s-intro -->
-
-
-            <!-- ### about
-            ================================================== -->
-            <section id="about" class="s-about target-section">
-                <div class="row about-info wide">
-                    <!-- Image in separate animation block -->
-                    <div class="column lg-4" data-animate-block>
-                        <img class="about-info__pic" 
-                            src="images/photos/Profile Guitar Close - Touch Up.png" 
-                            alt="Chris playing guitar" 
-                            style="aspect-ratio: 9 / 16;"
-                            data-animate-el
-                            loading="lazy"
-                            width="100%"
-                            height="auto">
-                    </div>
-                    <div class="column lg-8" data-animate-block>
-                        <h2 class="text-pretitle with-line" data-animate-el>
-                            About
-                        </h2>
-                        <p data-animate-el>
-                            I love everything involving music, technology, and sound. I work as a machine learning engineer researching and developing new audio technologies with a focus on deep learning and spatial audio. I have also consulted on the acoustical design of the built environment, with projects ranging from performance venues to recording studios.
-                        </p>
-                        <p data-animate-el>
-                            When I am not focused on the design of sound and technology through my work or research, I am writing, recording, or performing music. I play guitar (electric, acoustic, bass), percussion, piano, and even dabble with the banjo. My artist name is <em>After August</em> (check me out on Spotify!), and I play musical styles from jazz to rock to folk and everything in between.
-                        </p>
-                        <p data-animate-el>
-                            I live in Chicago with my wife, Steph, and our little dog, Queso. Steph works as an IR Nurse at Northwestern Memorial Hospital assisting with groundbreaking operations daily and Queso takes naps on my lap daily as I work at my desk.
-                        </p>
-                    </div>
-                </div> <!-- about-info -->
-
-            </section> <!-- end s-about -->
-
-
-            <!-- ### experience
-            ================================================== -->
-            <section id="experience" class="s-experience target-section">
-
-                <div class="row expertise" data-animate-block>
-                    <div class="column lg-12">
-
-                        <h2 class="text-pretitle" data-animate-el>Experience</h2>
-
-                        <p class="h1" data-animate-el>
-                            Machine Learning, Audio, & Acoustics
-                        </p>
-
-                    </div>
-                </div> <!-- end expertise -->
-
-
-                <div class="row about-timelines" data-animate-block>
-
-                    <div class="column lg-6 tab-12">
-
-                        <h2 class="text-pretitle" data-animate-el>
-                            Background & Expertise
-                        </h2>
-
-                        <div class="timeline" data-animate-el>
-
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title">Whitebalance</h4>
-                                    <h5 class="timeline__meta">Machine Learning Engineer</h5>
-                                    <p class="timeline__timeframe">August 2023 - Present</p>
-                                </div>
-                                <div class="timeline__desc">
-                                    <p>Developing deep learning algorithms for audio source separation, recognition, and enhancement. Building core product technology by implementing state-of-the-art audio source separation frameworks.</p>
-                                </div>
-                            </div>
-    
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title">Virtuel Works</h4>
-                                    <h5 class="timeline__meta">Technical Advisor</h5>
-                                    <p class="timeline__timeframe">August 2022 - Present</p>
-                                </div>
-                                <div class="timeline__desc">
-                                    <p>Collaboratively develop and implement a post-processing real-time binaural externalization algorithm for object-based spatial audio focused on improving immersive audio experiences without introducing timbral artifacts.</p>
-                                </div>
-                            </div>
-
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title">Threshold Acoustics</h4>
-                                    <h5 class="timeline__meta">Acoustics Consultant</h5>
-                                    <p class="timeline__timeframe">March 2020 - February 2023</p>
-                                </div>
-                                <div class="timeline__desc">
-                                    <p>Performed acoustic design in room acoustics, sound isolation, and noise control disciplines. Collaborated on research developing in-house software to model wave behavior.</p>
-                                </div>
-                            </div>
-
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title">Kirkegaard Associates</h4>
-                                    <h5 class="timeline__meta">Acoustics Specialist</h5>
-                                    <p class="timeline__timeframe">August 2018 - March 2020</p>
-                                </div>
-                                <div class="timeline__desc">
-                                    <p>Performed acoustic design in room acoustics, sound isolation, and noise control disciplines. Developed auralization software using Max MSP that can encode, convolve, and decode higher-order ambisonic signals. Created a graphical user interface for client presentation and internal use.</p>
-                                </div>
-                            </div>
-
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title">Rensselaer Polytechnic Institute</h4>
-                                    <h5 class="timeline__meta">Research Assistant</h5>
-                                    <p class="timeline__timeframe">August 2017 - August 2018</p>
-                                </div>
-                                <div class="timeline__desc">
-                                    <p>Created a novel machine-learning algorithm using Matlab that estimates the directions of arrival and relative levels of an arbitrary number of sound sources using a spherical microphone array. Produced two scientific papers published in peer-reviewed scholastic journals as well as a pending patent.</p>
-                                </div>
-                            </div>
-
-
-
-
-
-
-                        </div> <!-- end timeline -->
-
-                    </div> <!-- end column -->
-
-            </section> <!-- end s-experience -->
-
-
-
-            <!-- ### Eeducation
-            ================================================== -->
-            <section id="education" class="s-education target-section">
-
-                <div class="row education" data-animate-block>
-                    <div class="column lg-12">
-
-                        <h2 class="text-pretitle" data-animate-el>Experience</h2>
-
-                        <p class="h1" data-animate-el>
-                            Machine Learning, Audio, & Acoustics
-                        </p>
-
-                    </div>
-                </div> <!-- end education -->
-
-
-                <div class="row about-timelines" data-animate-block>
-
-                    <div class="column lg-6 tab-12">
-
-                        <h2 class="text-pretitle" data-animate-el>
-                            My Studies
-                        </h2>
-
-                        <div class="timeline" data-animate-el>
-
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title">General Assembly</h4>
-                                    <h5 class="timeline__meta">Data Science Immersive</h5>
-                                    <p class="timeline__timeframe">January 2023 - April 2023</p>
-                                </div>
-                            </div>
-
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title">Rensselaer Polytechnic Institute</h4>
-                                    <h5 class="timeline__meta">Master of Science, Acoustics</h5>
-                                    <p class="timeline__timeframe_education">August 2017 - August 2018</p>
-                                    <p class="timeline__timeframe">GPA: 4.00/4.00</p>
-                                </div>
-                            </div>
-    
-                            <div class="timeline__block">
-                                <div class="timeline__bullet"></div>
-                                <div class="timeline__header">
-                                    <h4 class="timeline__title">SUNY University at Buffalo</h4>
-                                    <h5 class="timeline__meta">Bachelor of Science, Mechanical Engineering</h5>
-                                    <h5 class="timeline__meta">Minor in Music Performance, Guitar</h5>
-                                    <p class="timeline__timeframe_education">August 2012 - May 2016</p>
-                                    <p class="timeline__timeframe">GPA: 3.50/4.00</p>
-                                </div>
-                            </div>
-    
-                        </div> <!-- end timeline -->
-
-                    </div> <!-- end column -->
-
-            </section> <!-- end s-education -->
-
-
-
-            <!-- ### works
-            ================================================== -->
-            <section id="projects" class="s-works target-section">
-
-
-                <div class="row works-portfolio">
-
-                    <div class="column lg-12" data-animate-block>
-
-                        <h2 class="text-pretitle" data-animate-el>
-                            Recent Projects
-                        </h2>
-                        <p class="h1" data-animate-el>
-                <div class="row works-portfolio">
-
-                    <div class="column lg-12" data-animate-block>
-
-                        <h2 class="text-pretitle" data-animate-el>
-                            Recent Works
-                        </h2>
-                        <p class="h1" data-animate-el>
-                            Here are some of my favorite projects I have done lately. Feel free to check them out.
-                        </p>
-    
-                        <ul class="folio-list row block-lg-one-half block-stack-on-1000">
-
-                            <li class="folio-list__item column" data-animate-el>
-                                <a class="folio-list__item-link" href="#modal-01">
-                                    <div class="folio-list__item-pic">
-                                        <img src="images/portfolio/fuji.jpg"
-                                             srcset="images/portfolio/fuji.jpg 1x, images/portfolio/fuji@2x.jpg 2x"  alt="">
-                                    </div>
-                                    
-                                    <div class="folio-list__item-text">
-                                        <div class="folio-list__item-cat">
-                                            Website
-                                        </div>
-                                        <div class="folio-list__item-title">
-                                            Retro Camera.
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="folio-list__proj-link" href="#" title="project link">
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                </a>
-                            </li> <!--end folio-list__item -->
-
-                            <li class="folio-list__item column" data-animate-el>
-                                <a class="folio-list__item-link" href="#modal-02">
-                                    <div class="folio-list__item-pic">
-                                        <img src="images/portfolio/lamp.jpg" 
-                                             srcset="images/portfolio/lamp.jpg 1x, images/portfolio/lamp@2x.jpg 2x" alt="">
-                                    </div>
-                                    
-                                    <div class="folio-list__item-text">
-                                        <div class="folio-list__item-cat">
-                                            Product Design
-                                        </div>
-                                        <div class="folio-list__item-title">
-                                            The White Lamp.
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="folio-list__proj-link" href="#" title="project link">
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                </a>
-                            </li> <!--end folio-list__item -->
-
-                            <li class="folio-list__item column" data-animate-el>
-                                <a class="folio-list__item-link" href="#modal-03">
-                                    <div class="folio-list__item-pic">
-                                        <img src="images/portfolio/rucksack.jpg" 
-                                             srcset="images/portfolio/rucksack.jpg 1x, images/portfolio/rucksack@2x.jpg 2x" alt="">
-                                    </div>
-                                    
-                                    <div class="folio-list__item-text">
-                                        <div class="folio-list__item-cat">
-                                            Branding
-                                        </div>
-                                        <div class="folio-list__item-title">
-                                            Rucksuck.
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="folio-list__proj-link" href="#" title="project link">
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                </a>
-                            </li> <!--end folio-list__item -->
-
-                            <li class="folio-list__item column" data-animate-el>
-                                <a class="folio-list__item-link" href="#modal-04">
-                                    <div class="folio-list__item-pic">
-                                        <img src="images/portfolio/skaterboy.jpg"
-                                             srcset="images/portfolio/skaterboy.jpg 1x, images/portfolio/skaterboy@2x.jpg 2x" alt="">
-                                    </div>
-                                    
-                                    <div class="folio-list__item-text">
-                                        <div class="folio-list__item-cat">
-                                            Website
-                                        </div>
-                                        <div class="folio-list__item-title">
-                                            Since Day One.
-                                        </div>
-                                    </a>
-                                <a class="folio-list__proj-link" href="#" title="project link">
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                </a>
-                            </li> <!--end folio-list__item -->
-
-                            <li class="folio-list__item column" data-animate-el>
-                                <a class="folio-list__item-link" href="#modal-05">
-                                    <div class="folio-list__item-pic">
-                                        <img src="images/portfolio/sanddunes.jpg" 
-                                             srcset="images/portfolio/sanddunes.jpg 1x, images/portfolio/sanddunes@2x.jpg 2x" alt="">
-                                    </div>
-                                    
-                                    <div class="folio-list__item-text">
-                                        <div class="folio-list__item-cat">
-                                            Illustration
-                                        </div>
-                                        <div class="folio-list__item-title">
-                                            Sand Dunes.
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="folio-list__proj-link" href="#" title="project link">
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                </a>
-                            </li> <!--end folio-list__item -->
-
-                            <li class="folio-list__item column" data-animate-el>
-                                <a class="folio-list__item-link" href="#modal-06">
-                                    <div class="folio-list__item-pic">
-                                        <img src="images/portfolio/minimalismo.jpg" 
-                                             srcset="images/portfolio/minimalismo.jpg 1x, images/portfolio/minimalismo@2x.jpg 2x" alt="">
-                                    </div>
-                                    
-                                    <div class="folio-list__item-text">
-                                        <div class="folio-list__item-cat">
-                                            Branding
-                                        </div>
-                                        <div class="folio-list__item-title">
-                                            Minimalismo.
-                                        </div>
-                                    </div>
-                                </a>
-                                <a class="folio-list__proj-link" href="#" title="project link">
-                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-                                </a>
-                            </li> <!--end folio-list__item -->
-
-                        </ul> <!-- end folio-list -->
-
-                    </div> <!-- end column -->
-
-
-                    <!-- Modal Templates Popup
-                    -------------------------------------------- -->
-                    <div id="modal-01" hidden>
-                        <div class="modal-popup">
-                            <img src="images/portfolio/gallery/g-fuji.jpg" alt="">
-                
-                            <div class="modal-popup__desc">
-                                <h5>Retro Camera</h5>
-                                <p>Odio soluta enim quos sit asperiores rerum rerum repudiandae cum. Vel voluptatem alias qui assumenda iure et expedita voluptatem. Ratione officiis quae.</p>
-                                <ul class="modal-popup__cat">
-                                    <li>Branding</li>
-                                    <li>Product Design</li>
-                                </ul>
-                            </div>
-                
-                            <a href="https://www.behance.net/" class="modal-popup__details">Project link</a>
-                        </div>
-                    </div> <!-- end modal -->
-
-                    <div id="modal-02" hidden>
-                        <div class="modal-popup">
-                            <img src="images/portfolio/gallery/g-lamp.jpg" alt="">
-                
-                            <div class="modal-popup__desc">
-                                <h5>The White Lamp</h5>
-                                <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit.</p>
-                                <ul class="modal-popup__cat">
-                                    <li>Branding</li>
-                                </ul>
-                            </div>
-                
-                            <a href="https://www.behance.net/" class="modal-popup__details">Project link</a>
-                        </div>
-                    </div> <!-- end modal -->
-
-                    <div id="modal-03" hidden>
-                        <div class="modal-popup">
-                            <img src="images/portfolio/gallery/g-rucksack.jpg" alt="">
-                
-                            <div class="modal-popup__desc">
-                                <h5>Rucksuck</h5>
-                                <p>Exercitationem reprehenderit quod explicabo consequatur aliquid ut magni ut. Deleniti quo corrupti illum velit eveniet ratione necessitatibus ipsam mollitia.</p>
-                                <ul class="modal-popup__cat">
-                                    <li>Product Design</li>
-                                </ul>
-                            </div>
-                
-                            <a href="https://www.behance.net/" class="modal-popup__details">Project link</a>
-                        </div>
-                    </div> <!-- end modal -->
-
-                    <div id="modal-04" hidden>
-                        <div class="modal-popup">
-                            <img src="images/portfolio/gallery/g-skaterboy.jpg" alt="">
-                
-                            <div class="modal-popup__desc">
-                                <h5>Since Day One</h5>
-                                <p>Dolores velit qui quos nobis. Aliquam delectus voluptas quos possimus non voluptatem voluptas voluptas. Est doloribus eligendi porro doloribus voluptatum.</p>
-                                <ul class="modal-popup__cat">
-                                    <li>Website</li>
-                                </ul>
-                            </div>
-                
-                            <a href="https://www.behance.net/" class="modal-popup__details">Project link</a>
-                        </div>
-                    </div> <!-- end modal -->
-
-                    <div id="modal-05" hidden>
-                        <div class="modal-popup">
-
-                            <img src="images/portfolio/gallery/g-sanddunes.jpg" alt="">
-                
-                            <div class="modal-popup__desc">
-                                <h5>Sand Dunes</h5>
-                                <p>Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit.</p>
-                                <ul class="modal-popup__cat">
-                                    <li>Illustration</li>
-                                </ul>
-                            </div>
-                
-                            <a href="https://www.behance.net/" class="modal-popup__details">Project link</a>
-                        </div>
-                    </div> <!-- end modal -->
-
-                    <div id="modal-06" hidden>
-                        <div class="modal-popup">
-                            <img src="images/portfolio/gallery/g-minimalismo.jpg" alt="">
-                
-                            <div class="modal-popup__desc">
-                                <h5>Minimalismo</h5>
-                                <p>Quisquam vel libero consequuntur autem voluptas. Qui aut vero. Omnis fugit mollitia cupiditate voluptas. Aenean sollicitudin, lorem quis bibendum auctor.</p>
-                                <ul class="modal-popup__cat">
-                                    <li>Branding</li>
-                                    <li>Product Design</li>
-                                </ul>
-                            </div>
-                
-                            <a href="https://www.behance.net/" class="modal-popup__details">Project link</a>
-                        </div>
-                    </div> <!-- end modal -->
-
-                </div> <!-- end works-portfolio -->
-
-
-                <div class="row testimonials">
-                    <div class="column lg-12" data-animate-block>
-        
-                        <div class="swiper-container testimonial-slider" data-animate-el>
-        
-                            <div class="swiper-wrapper">
-
-                                <div class="testimonial-slider__slide swiper-slide">
-                                    <div class="testimonial-slider__author">
-                                        <img src="images/avatars/user-02.jpg" alt="Author image" class="testimonial-slider__avatar">
-                                        <cite class="testimonial-slider__cite">
-                                            <strong>Tim Cook</strong>
-                                            <span>CEO, Apple</span>
-                                        </cite>
-                                    </div>
-                                    <p>
-                                    Molestiae incidunt consequatur quis ipsa autem nam sit enim magni. Voluptas tempore rem. 
-                                    Explicabo a quaerat sint autem dolore ducimus ut consequatur neque.  Nisi dolores quaerat fuga rem nihil nostrum.
-                                    Laudantium quia consequatur molestias delectus culpa.
-                                    </p>
-                                </div> <!-- end testimonial-slider__slide -->
-                
-                                <div class="testimonial-slider__slide swiper-slide">
-                                    <div class="testimonial-slider__author">
-                                        <img src="images/avatars/user-03.jpg" alt="Author image" class="testimonial-slider__avatar">
-                                        <cite class="testimonial-slider__cite">
-                                            <strong>Sundar Pichai</strong>
-                                            <span>CEO, Google</span>
-                                        </cite>
-                                    </div>
-                                    <p>
-                                    Excepturi nam cupiditate culpa doloremque deleniti repellat. Veniam quos repellat voluptas animi adipisci.
-                                    Nisi eaque consequatur. Voluptatem dignissimos ut ducimus accusantium perspiciatis.
-                                    Quasi voluptas eius distinctio. Atque eos maxime.
-                                    </p>
-                                </div> <!-- end testimonial-slider__slide -->
-                
-                                <div class="testimonial-slider__slide swiper-slide">
-                                    <div class="testimonial-slider__author">
-                                        <img src="images/avatars/user-01.jpg" alt="Author image" class="testimonial-slider__avatar">
-                                        <cite class="testimonial-slider__cite">
-                                            <strong>Satya Nadella</strong>
-                                            <span>CEO, Microsoft</span>
-                                        </cite>
-                                    </div>
-                                    <p>
-                                    Repellat dignissimos libero. Qui sed at corrupti expedita voluptas odit. Nihil ea quia nesciunt. Ducimus aut sed ipsam.  
-                                    Autem eaque officia cum exercitationem sunt voluptatum accusamus. Quasi voluptas eius distinctio.
-                                    Voluptatem dignissimos ut.
-                                    </p>
-                                </div> <!-- end testimonial-slider__slide -->
-        
-                                <div class="testimonial-slider__slide swiper-slide">
-                                    <div class="testimonial-slider__author">
-                                        <img src="images/avatars/user-06.jpg" alt="Author image" class="testimonial-slider__avatar">
-                                        <cite class="testimonial-slider__cite">
-                                            <strong>Jeff Bezos</strong>
-                                            <span>CEO, Amazon</span>
-                                        </cite>
-                                    </div>
-                                    <p>
-                                    Nunc interdum lacus sit amet orci. Vestibulum dapibus nunc ac augue. Fusce vel dui. In ac felis 
-                                    quis tortor malesuada pretium. Curabitur vestibulum aliquam leo. Qui sed at corrupti expedita voluptas odit. 
-                                    Nihil ea quia nesciunt. Ducimus aut sed ipsam.
-                                    </p>
-                                </div> <!-- end testimonial-slider__slide -->
-            
-                            </div> <!-- end swiper-wrapper -->
-        
-                            <div class="swiper-pagination"></div>
-        
-                        </div> <!-- end swiper-container -->
-        
-                    </div> <!-- end column -->
-                </div> <!-- end row testimonials -->
-
-            </section> <!-- end s-works -->
-
-
-            <!-- ### contact
-            ================================================== -->
-            <section id="contact" class="s-contact target-section">
-
-                <div class="row contact-top">
-                    <div class="column lg-12">
-                        <h2 class="text-pretitle">
-                            Get In Touch
-                        </h2>
-
-                        <p class="h1">
-                            I love to hear from you.
-                            Whether you have a question or just 
-                            want to chat about design, tech & art — shoot me a message.
-                        </p>
-                    </div>
-                </div> <!-- end contact-top -->
-
-                <div class="row contact-bottom">
-                    <div class="column lg-3 md-5 tab-6 stack-on-550 contact-block">
-                        <h3 class="text-pretitle">Reach me at</h3>
-                        <p class="contact-links">
-                            <a href="mailto:sayhello@luther.com" class="mailtoui">sayhello@luther.com</a> <br>
-                            <a href="tel:+1975432345">+197 543 2345</a>
-                        </p>
-                    </div>
-                    <div class="column lg-4 md-5 tab-6 stack-on-550 contact-block">
-                        <h3 class="text-pretitle">Social</h3>
-                        <ul class="contact-social">
-                            <li><a href="#0">Behance</a></li>
-                            <li><a href="#0">Dribble</a></li>
-                            <li><a href="#0">Twitter</a></li>
-                            <li><a href="#0">Instagram</a></li>
-                            <li><a href="#0">Github</a></li>
-                        </ul>
-                    </div>
-                    <div class="column lg-4 md-12 contact-block">
-                        <a href="mailto:sayhello@luther.com" class="mailtoui btn btn--medium u-fullwidth contact-btn">Say Hello.</a>
-                    </div>
-                </div> <!-- end contact-bottom -->
-
-            </section> <!-- end contact -->
-
-        </main> <!-- end s-content -->
-
-
-        <!-- ## footer
-        ================================================== -->
-        <footer class="s-footer">
-
-            <div class="row">
-                <div class="column ss-copyright">
-                    <span>© Copyright Chris 2025</span> 
-                    <span>Design by <a href="https://www.styleshout.com/">StyleShout</a></span>
-                </div>
-
-                <div class="ss-go-top">
-                    <a class="smoothscroll" title="Back to Top" href="#top">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill-rule="evenodd" clip-rule="evenodd"><path d="M11 2.206l-6.235 7.528-.765-.645 7.521-9 7.479 9-.764.646-6.236-7.53v21.884h-1v-21.883z"/></svg>
-                    </a>
-                </div>
+          </li>
+          <li>
+            <span class="dot"></span>
+            <div class="content">
+              <h3>Acoustics Consultant • Threshold Acoustics</h3>
+              <time>March 2020 - February 2023</time>
+              <p>Performed acoustic design in room acoustics, sound isolation, and noise control disciplines. Collaborated on a research team developing in-house software to model wave behavior via the finite-difference time-domain method as well as tools for impulse response and general acoustics analysis.</p>
             </div>
+          </li>
+          <li>
+            <span class="dot"></span>
+            <div class="content">
+              <h3>Acoustics Specialist • Kirkegaard Associates</h3>
+              <time>August 2018 - March 2020</time>
+              <p>Performed acoustic design in room acoustics, sound isolation, and noise control disciplines. Developed auralization software using Max MSP that can encode, convolve, and decode higher-order ambisonic signals. Created a graphical user interface for client presentation and internal use.</p>
+            </div>
+          </li>
+          <li>
+            <span class="dot"></span>
+            <div class="content">
+              <h3>Research Assistant • Rensselaer Polytechnic Institute</h3>
+              <time>August 2017 - August 2018</time>
+              <p>Created a novel machine-learning algorithm using Matlab that estimates the directions of arrival and relative levels of an arbitrary number of sound sources using a spherical microphone array. Produced two scientific papers published in peer-reviewed scholastic journals as well as a pending patent.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
 
-        </footer> <!-- end s-footer -->
+    <section id="projects" class="section">
+      <div class="container">
+        <h2>Projects</h2>
+        <h3>Recent Audio & Machine Learning Projects</h3>
+        <div class="projects-grid" id="projects-grid">
+          <!-- Project cards will be populated from content.json -->
+          <article class="project-card" data-repo="crlandsc/tiny-audio-diffusion">
+            <h4><a href="https://github.com/crlandsc/tiny-audio-diffusion" target="_blank" rel="noopener noreferrer">Tiny Audio Diffusion</a></h4>
+            <p>Built a lightweight system that applies waveform diffusion (1D U-Net) to generate short audio samples (such as drum sounds) to be trained and run on a low-level consumer GPU (&lt;2GB VRAM). The purpose of this project is to provide access to waveform diffusion code for those interested in exploration but who have limited hardware resources.</p>
+            <ul class="meta">
+              <li class="stars">★ --</li>
+              <li class="forks">⑂ --</li>
+            </ul>
+          </article>
+          <article class="project-card" data-repo="crlandsc/Music-Demixing-with-Band-Split-RNN">
+            <h4><a href="https://github.com/crlandsc/Music-Demixing-with-Band-Split-RNN" target="_blank" rel="noopener noreferrer">Music "Demixing" (Sound Source Separation)</a></h4>
+            <p>Built a music source separation system in Python using a band-split recurrent neural network (RNN) framework based on a research paper to compete in AIcrowd's Sound Demixing Challenge 2023. Four models (voice, bass, drums, other) were trained on a Google Cloud Platform GPUs with W&B tracking and resulted in an improvement over the baseline model on the "Label Noise" track by 42%.</p>
+            <ul class="meta">
+              <li class="stars">★ --</li>
+              <li class="forks">⑂ --</li>
+            </ul>
+          </article>
+          <article class="project-card">
+            <h4><a href="https://soundcloud.com/after-august/viridian?si=92b38b8bd23b49b99ba649b03d51349f" target="_blank" rel="noopener noreferrer">Harmonai AI Song Production Challenge</a></h4>
+            <p>Wrote and produced a song using AI-generated audio by leveraging the audio diffusion tool Dance Diffusion. Utilized waveform-based (1D convolution) diffusion with unconditional generation and audio style transfer functions to produce high-quality 48kHz samples.</p>
+          </article>
+          <article class="project-card" data-repo="crlandsc/Music-Genre-Classification-Using-Convolutional-Neural-Networks">
+            <h4><a href="https://github.com/crlandsc/Music-Genre-Classification-Using-Convolutional-Neural-Networks" target="_blank" rel="noopener noreferrer">Music Genre Classification</a></h4>
+            <p>A music genre classification system was created using a convolutional neural network (CNN) in Python and achieved an accuracy rate of 83.8% from a baseline accuracy of 10%. The CNN model was trained on Mel-spectrograms of 3-second audio samples. Additional data augmentation and regularization methods were implemented to optimize performance and mitigate overfitting.</p>
+            <ul class="meta">
+              <li class="stars">★ --</li>
+              <li class="forks">⑂ --</li>
+            </ul>
+          </article>
+        </div>
+        
+        <div class="interactive-demo-container">
+          <h3><a href="https://huggingface.co/spaces/crlandsc/tiny-audio-diffusion" target="_blank" rel="noopener noreferrer">Generate Samples With Tiny Audio Diffusion</a></h3>
+          <div class="interactive-demo">
+            <script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/4.36.0/gradio.js"></script>
+            <gradio-app src="https://crlandsc-tiny-audio-diffusion.hf.space"></gradio-app>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    </div> <!-- end -s-pagewrap -->
+    <section id="education" class="section">
+      <div class="container">
+        <h2>Education & Research</h2>
+        <h3>My Studies</h3>
+        <div class="education-grid" id="education-grid">
+          <div class="education-row">
+            <div class="education-left">
+              <div>January 2023 - April 2023</div>
+            </div>
+            <div class="education-right">
+              <div>Data Science Immersive,</div>
+              <div>General Assembly</div>
+            </div>
+          </div>
+          <div class="education-row">
+            <div class="education-left">
+              <div>August 2017 - August 2018</div>
+              <div>GPA: 4.00/4.00</div>
+            </div>
+            <div class="education-right">
+              <div>Master of Science, Acoustics,</div>
+              <div>Rensselaer Polytechnic Institute</div>
+            </div>
+          </div>
+          <div class="education-row">
+            <div class="education-left">
+              <div>August 2012 - May 2016</div>
+              <div>GPA: 3.50/4.00</div>
+            </div>
+            <div class="education-right">
+              <div>Bachelor of Science, Mechanical Engineering,</div>
+              <div>Minor, Music Performance, Guitar</div>
+              <div>SUNY University at Buffalo</div>
+            </div>
+          </div>
+        </div>
+        <div class="research">
+          <h3>Academic Publications</h3>
+          <div id="research-content">
+            <p><a href="https://scholar.google.com/citations?hl=en&view_op=list_works&gmla=AJsN-F6PaFcTdi4cTxZ3Kpvf2xwKM4ramDbqVKFm_buMLElpYMNzxViHQuKgOPeLMMP3KkcK6besvk4Tu9wURTx-4smBAfXZtw&user=4K5CzM4AAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a> | <a href="https://www.researchgate.net/profile/Christopher-Landschoot/research" target="_blank" rel="noopener noreferrer">ResearchGate</a></p>
+            <p><a href="https://www.chrislandschoot.com/binaural-externalization" target="_blank" rel="noopener noreferrer">Binaural Audio Externalization Processing</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <section id="skills" class="section">
+      <div class="container">
+        <h2>Skills</h2>
+        <div class="skills-grid">
+          <div class="skills-column">
+            <h3>Programming</h3>
+            <div id="programming-skills" class="skill-tags">
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">C/C++</span>
+              <span class="skill-tag">SQL</span>
+              <span class="skill-tag">Git</span>
+              <span class="skill-tag">MATLAB</span>
+              <span class="skill-tag">Max/MSP/RNBO</span>
+              <span class="skill-tag">JUCE</span>
+              <span class="skill-tag">Spat (IRCAM)</span>
+              <span class="skill-tag">PyTorch</span>
+              <span class="skill-tag">TensorFlow</span>
+              <span class="skill-tag">Scikit-learn</span>
+              <span class="skill-tag">LaTeX</span>
+            </div>
+          </div>
+          <div class="skills-column">
+            <h3>Music & Audio</h3>
+            <div id="audio-skills" class="skill-tags">
+              <span class="skill-tag">Composing</span>
+              <span class="skill-tag">Performing</span>
+              <span class="skill-tag">Recording</span>
+              <span class="skill-tag">Producing</span>
+              <span class="skill-tag">Mixing</span>
+              <span class="skill-tag">Mastering</span>
+              <span class="skill-tag">Pro Tools</span>
+              <span class="skill-tag">Audacity</span>
+              <span class="skill-tag">Reaper</span>
+              <span class="skill-tag">EASE/EASERA</span>
+              <span class="skill-tag">Odeon</span>
+              <span class="skill-tag">CATT Acoustic</span>
+              <span class="skill-tag">Electric, Acoustic, & Bass Guitar</span>
+              <span class="skill-tag">Piano</span>
+              <span class="skill-tag">Percussion</span>
+              <span class="skill-tag">Vocals</span>
+              <span class="skill-tag">Banjo</span>
+            </div>
+          </div>
+          <div class="skills-column">
+            <h3>Technical</h3>
+            <div id="technical-skills" class="skill-tags">
+              <span class="skill-tag">Machine Learning & Deep Learning</span>
+              <span class="skill-tag">Digital Signal Processing (DSP)</span>
+              <span class="skill-tag">Real-Time Spatial Audio Processing</span>
+              <span class="skill-tag">Audio Algorithm Development</span>
+              <span class="skill-tag">Audio Data Engineering</span>
+              <span class="skill-tag">Acoustics Simulation, Modeling, and Measurement</span>
+              <span class="skill-tag">Project Management</span>
+              <span class="skill-tag">Technical Writing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <!-- Java Script
-    ================================================== -->
-    <script src="js/plugins.js"></script>
-    <script src="js/main.js"></script>
+    <section id="interests" class="section">
+      <div class="container">
+        <h2>Interests</h2>
+        <div class="carousel-container">
+          <button class="carousel-btn prev" aria-label="Previous slide">❮</button>
+          <div class="carousel" role="list">
+            <div class="carousel-item" role="listitem">
+              <img src="assets/interests/music.jpg" alt="Music performance and production" loading="lazy">
+              <span>Music</span>
+            </div>
+            <div class="carousel-item" role="listitem">
+              <img src="assets/interests/hiking.jpg" alt="Hiking and outdoor activities" loading="lazy">
+              <span>Hiking</span>
+            </div>
+            <div class="carousel-item" role="listitem">
+              <img src="assets/interests/adirondacks.jpg" alt="Adirondack Mountains" loading="lazy">
+              <span>Adirondacks</span>
+            </div>
+            <div class="carousel-item" role="listitem">
+              <img src="assets/interests/kayaking.jpg" alt="Kayaking" loading="lazy">
+              <span>Kayaking</span>
+            </div>
+            <div class="carousel-item" role="listitem">
+              <img src="assets/interests/travel.jpg" alt="Travel" loading="lazy">
+              <span>Travel</span>
+            </div>
+            <div class="carousel-item" role="listitem">
+              <img src="assets/interests/queso.jpg" alt="My dog Queso" loading="lazy">
+              <span>Queso</span>
+            </div>
+          </div>
+          <button class="carousel-btn next" aria-label="Next slide">❯</button>
+        </div>
+      </div>
+    </section>
 
+    <section id="contact" class="section">
+      <div class="container">
+        <h2>Contact</h2>
+        <h3>Let's Connect!</h3>
+        <form id="contact-form">
+          <label>Name <input type="text" name="name" required></label>
+          <label>Email <input type="email" name="email" required></label>
+          <label>Subject <input type="text" name="subject"></label>
+          <label>Message <textarea name="message" rows="5" required></textarea></label>
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </section>
+
+    <button class="to-top" aria-label="Back to top">↑</button>
+  </main>
+
+  <footer>
+    <div class="container">
+      <ul class="social" id="social-links">
+        <!-- Social links will be populated from content.json -->
+        <li><a href="https://www.linkedin.com/in/christopher-landschoot/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        <li><a href="https://github.com/crlandsc" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href="https://www.youtube.com/AfterAugust" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+        <li><a href="https://www.facebook.com/TheAfterAugust/" target="_blank" rel="noopener noreferrer">Facebook</a></li>
+        <li><a href="https://www.instagram.com/the_after_august/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+        <li><a href="https://scholar.google.com/citations?hl=en&view_op=list_works&gmla=AJsN-F6PaFcTdi4cTxZ3Kpvf2xwKM4ramDbqVKFm_buMLElpYMNzxViHQuKgOPeLMMP3KkcK6besvk4Tu9wURTx-4smBAfXZtw&user=4K5CzM4AAAAJ" target="_blank" rel="noopener noreferrer">Google Scholar</a></li>
+        <li><a href="https://www.researchgate.net/profile/Christopher-Landschoot/research" target="_blank" rel="noopener noreferrer">ResearchGate</a></li>
+      </ul>
+      <small>© 2025 Christopher Landschoot</small>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
 </body>
 </html>
