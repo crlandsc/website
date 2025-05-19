@@ -58,6 +58,66 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Add window resize handler to check for newly visible elements
   window.addEventListener('resize', debounce(checkForVisibleElements, 150));
+
+  // Theme Toggle Functionality
+  const themeToggleButton = document.getElementById('theme-toggle');
+  const lightIcon = document.querySelector('.theme-icon-light');
+  const darkIcon = document.querySelector('.theme-icon-dark');
+  const htmlElement = document.documentElement; // Gets the <html> element
+
+  const applyTheme = (theme) => {
+    if (theme === 'dark') {
+      htmlElement.setAttribute('data-theme', 'dark');
+      if (themeToggleButton) themeToggleButton.setAttribute('aria-label', 'Switch to light mode');
+      if (lightIcon) lightIcon.style.display = 'none';
+      if (darkIcon) darkIcon.style.display = 'block';
+    } else {
+      htmlElement.setAttribute('data-theme', 'light');
+      if (themeToggleButton) themeToggleButton.setAttribute('aria-label', 'Switch to dark mode');
+      if (lightIcon) lightIcon.style.display = 'block';
+      if (darkIcon) darkIcon.style.display = 'none';
+    }
+  };
+
+  const storedTheme = localStorage.getItem('theme');
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+  let currentTheme;
+
+  if (storedTheme) {
+    currentTheme = storedTheme;
+  } else {
+    currentTheme = systemPrefersDark.matches ? 'dark' : 'light';
+  }
+  applyTheme(currentTheme);
+
+  if (themeToggleButton) {
+    themeToggleButton.addEventListener('click', () => {
+      const newTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', newTheme);
+      applyTheme(newTheme);
+    });
+  }
+
+  systemPrefersDark.addEventListener('change', (e) => {
+    // Only apply system preference if no manual preference is stored
+    if (!localStorage.getItem('theme')) {
+      applyTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+
+  // Ensure fade-in elements are correctly handled on load/theme change
+  // This might need adjustment depending on how your existing fade-in logic works
+  const fadeInElements = document.querySelectorAll('.fade-in-element');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  fadeInElements.forEach(el => observer.observe(el));
 });
 
 /**
