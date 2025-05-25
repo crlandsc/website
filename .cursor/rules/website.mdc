@@ -1,0 +1,6 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+This is Christopher Landschoot's personal website, designed as a professional portfolio showcasing his background as a machine learning engineer specializing in audio technology. The site features clean, minimalist design with sections for professional experience, projects, education, skills, and interests. It incorporates responsive design with light/dark mode toggle and subtle animations. The primary goal is information presentation rather than conversion - highlighting Christopher's work in audio source separation, spatial audio, and machine learning while maintaining visual appeal. The site uses vanilla HTML/CSS/JS without frameworks, organized in a modular structure with separate files for styles and functionality.
