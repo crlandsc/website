@@ -316,11 +316,14 @@ header .container {
 .desktop-nav {
   display: none;
   white-space: nowrap;
+  align-items: center;
 }
 
 .desktop-nav li {
   display: inline-block;
   margin-left: 2px;
+  display: flex;
+  align-items: center;
 }
 
 .desktop-nav a {
@@ -329,6 +332,7 @@ header .container {
   padding: var(--space-xs) 4px;
   font-size: 0.9rem;
   transition: color 0.2s ease;
+  line-height: 1;
 }
 
 .desktop-nav a:hover {
@@ -649,17 +653,15 @@ header .container {
   border-radius: var(--border-radius);
   padding: var(--space-m);
   box-shadow: var(--shadow-standard);
-  transform: translateY(0) translateZ(0);
-  will-change: transform, box-shadow;
-  transition: none !important; /* Keep as is for now if this specific behavior is desired */
   border: 1px solid var(--clr-border-primary);
+  cursor: pointer;
+  /* No transition - all changes happen instantly */
 }
 
 .project-card:hover {
-  transform: translateY(-5px) translateZ(0);
   box-shadow: 0 10px 20px var(--clr-shadow-color); /* Enhanced shadow on hover */
-  background-color: var(--clr-background-primary); /* Keep card background same on hover, or use --clr-background-secondary */
-  transition: none !important;
+  background-color: var(--clr-background-primary); /* Keep card background same on hover */
+  border-color: var(--clr-accent-primary);
 }
 
 .project-card h4 {
@@ -838,24 +840,61 @@ header .container {
   gap: var(--space-l);
 }
 
+.skills-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
 .skills-column h3 {
   margin-bottom: var(--space-s);
-  text-align: left;
+  text-align: center;
+}
+
+.skill-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: var(--space-s);
+}
+
+.skill-icon svg {
+  color: var(--clr-accent-primary);
+  width: 48px;
+  height: 48px;
+  transition: color var(--transition-standard);
 }
 
 .skill-tags {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-xs);
+  width: 100%;
+  justify-content: flex-start;
 }
 
 .skill-tag {
-  background: var(--clr-accent-primary);
-  color: var(--clr-background-primary); /* Text on skill tag */
-  border-radius: 9999px;
-  padding: 0.25em 0.75em;
-  font-size: 0.875rem;
-  white-space: nowrap;
+  color: var(--clr-text-primary);
+  font-size: 0.95rem;
+  position: relative;
+  padding-left: 0.6em;
+  margin-right: 0.5em;
+  margin-bottom: 0.4em;
+}
+
+.skill-tag::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--clr-text-primary);
+}
+
+/* Media query for tablet and desktop */
+@media (min-width: 768px) {
+  .skills-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 /* Interests Carousel */
@@ -1035,13 +1074,41 @@ footer .container {
 }
 
 .social a {
-  color: var(--clr-text-primary); /* Updated: Social links on dark footer */
+  color: var(--clr-text-primary);
   padding: var(--space-xs);
   transition: color var(--transition-standard);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .social a:hover {
-  color: var(--clr-accent-primary); /* Accent on hover for social links */
+  color: var(--clr-accent-primary);
+}
+
+.social-icon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  transition: fill var(--transition-standard);
+}
+
+/* Increase spacing and size on larger screens */
+@media (min-width: 768px) {
+  .social {
+    gap: var(--space-m);
+  }
+  
+  .social-icon {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Optional: Add a subtle hover effect */
+.social a:hover .social-icon {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
 }
 
 /* Animations */
@@ -1059,7 +1126,8 @@ footer .container {
 /* Media Queries */
 @media (min-width: 768px) {
   .desktop-nav {
-    display: block;
+    display: flex;
+    align-items: center;
   }
 
   .mobile-nav {
@@ -1364,6 +1432,7 @@ footer .container {
 .theme-toggle-item {
   display: flex;
   align-items: center;
+  height: 100%;
 }
 
 #theme-toggle {
@@ -1378,6 +1447,7 @@ footer .container {
   justify-content: center;
   border-radius: var(--border-radius);
   transition: color 0.2s ease, background-color 0.2s ease;
+  line-height: 1;
 }
 
 #theme-toggle:hover {
@@ -1398,4 +1468,36 @@ footer .container {
 .theme-icon {
   width: 18px; /* Explicit size, matches HTML */
   height: 18px; /* Explicit size, matches HTML */
+}
+
+/* Publications social icons */
+.publications-social {
+  display: flex;
+  justify-content: flex-start;
+  gap: 3.5rem;
+  margin: 1rem 0;
+}
+
+.publications-social .social-icon {
+  width: 96px;
+  height: 96px;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.publications-social a.large-icon-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.publications-social a.large-icon-link:hover .social-icon {
+  transform: scale(1.1);
+  color: var(--clr-accent-primary);
+}
+
+.publications-social a.large-icon-link span {
+  font-size: 0.9rem;
 }
