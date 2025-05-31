@@ -56,6 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Handle URL hash on page load
   handleInitialHash();
   
+  // Set up clickable videos
+  setupClickableVideos();
+  
   // Add window resize handler to check for newly visible elements
   window.addEventListener('resize', debounce(checkForVisibleElements, 150));
 
@@ -72,33 +75,43 @@ document.addEventListener('DOMContentLoaded', () => {
       if (lightIcon) lightIcon.style.display = 'none';
       if (darkIcon) darkIcon.style.display = 'block';
     } else {
-      htmlElement.setAttribute('data-theme', 'light');
+      htmlElement.removeAttribute('data-theme'); // Remove attribute instead of setting to light
       if (themeToggleButton) themeToggleButton.setAttribute('aria-label', 'Switch to dark mode');
       if (lightIcon) lightIcon.style.display = 'block';
       if (darkIcon) darkIcon.style.display = 'none';
     }
   };
 
+  // Check for user's stored preference first
   const storedTheme = localStorage.getItem('theme');
+  
+  // Get system preference using media query
   const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-
-  let currentTheme;
-
+  
+  // Determine which theme to apply
   if (storedTheme) {
-    currentTheme = storedTheme;
+    // User has a stored preference, use that
+    applyTheme(storedTheme);
   } else {
-    currentTheme = systemPrefersDark.matches ? 'dark' : 'light';
+    // No stored preference, use system preference
+    applyTheme(systemPrefersDark.matches ? 'dark' : 'light');
   }
-  applyTheme(currentTheme);
 
+  // Add theme toggle button click handler
   if (themeToggleButton) {
     themeToggleButton.addEventListener('click', () => {
-      const newTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      // Get current theme
+      const currentTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      // Set new theme to the opposite
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      // Store the user's preference
       localStorage.setItem('theme', newTheme);
+      // Apply the new theme
       applyTheme(newTheme);
     });
   }
 
+  // Listen for system preference changes
   systemPrefersDark.addEventListener('change', (e) => {
     // Only apply system preference if no manual preference is stored
     if (!localStorage.getItem('theme')) {
@@ -613,41 +626,287 @@ function setupBackToTop() {
  * Sets up the interests carousel
  */
 function setupCarousel() {
-  const carousel = document.querySelector('.carousel');
-  const prevBtn = document.querySelector('.carousel-btn.prev');
-  const nextBtn = document.querySelector('.carousel-btn.next');
+  const carouselContainer = document.querySelector('#interests .carousel-container');
+  if (!carouselContainer) return;
+
+  const carousel = carouselContainer.querySelector('.carousel');
+  const prevBtn = carouselContainer.querySelector('.carousel-btn.prev');
+  const nextBtn = carouselContainer.querySelector('.carousel-btn.next');
   
-  if (carousel && prevBtn && nextBtn) {
-    // Previous button click
-    prevBtn.addEventListener('click', () => {
-      carousel.scrollBy({
-        left: -280,
-        behavior: 'smooth'
-      });
-    });
+  if (!carousel || !prevBtn || !nextBtn) return;
 
-    // Next button click
-    nextBtn.addEventListener('click', () => {
-      carousel.scrollBy({
-        left: 280,
-        behavior: 'smooth'
-      });
-    });
+  let items = [];
+  let itemWidth = 0;
+  let cloneCount = 0;
 
-    // Make buttons always visible on mobile
-    const updateButtonVisibility = () => {
-      if (window.innerWidth < 768) {
-        prevBtn.style.opacity = '1';
-        nextBtn.style.opacity = '1';
-      } else {
-        prevBtn.style.opacity = '';
-        nextBtn.style.opacity = '';
+  let autoplayIntervalId = null;
+  const AUTOPLAY_INTERVAL_DURATION = 2000; // Time between discrete scrolls
+  const SMOOTH_SCROLL_DURATION = 600; // Estimated duration of smooth scroll
+
+  let isInteracting = false;
+  let interactionTimeoutId = null;
+  const AUTOPLAY_RESUME_DELAY = 5000; // Delay before resuming autoplay after interaction
+
+  let isProgrammaticScroll = false; 
+  let resizeTimeoutId;
+
+  // console.log('Carousel: Initializing...');
+
+  const calculateDimensionsAndClones = () => {
+    const originalItemElements = Array.from(carousel.querySelectorAll('.carousel-item:not(.clone)'));
+    if (originalItemElements.length === 0) {
+      itemWidth = 0;
+      return false;
+    }
+    items = originalItemElements;
+    
+    const testItemWidth = items[0].offsetWidth;
+    if (testItemWidth === 0) {
+      itemWidth = 0;
+      return false;
+    }
+    itemWidth = testItemWidth + parseInt(getComputedStyle(carousel).gap || '0');
+    if (itemWidth === 0 || isNaN(itemWidth)) {
+        itemWidth = 0;
+        return false;
+    }
+
+    const visibleItems = Math.max(1, Math.floor(carousel.offsetWidth / itemWidth));
+    cloneCount = visibleItems + 2;
+    return true;
+  };
+
+  const stopAutoplay = () => {
+    if (autoplayIntervalId) {
+      clearInterval(autoplayIntervalId);
+      autoplayIntervalId = null;
+      // console.log('Carousel: Autoplay stopped (discrete).');
+    }
+  };
+
+  const startAutoplay = () => {
+    stopAutoplay(); 
+    if (isInteracting || document.visibilityState !== 'visible' || itemWidth === 0) {
+      // console.log(`Carousel: Autoplay start prevented (discrete). Conditions: isInteracting=${isInteracting}, visible=${document.visibilityState === 'visible'}, itemWidth=${itemWidth}`);
+      return;
+    }
+    // console.log('Carousel: Autoplay starting (discrete)...');
+    autoplayIntervalId = setInterval(() => {
+      if (isInteracting || document.visibilityState !== 'visible') { 
+        stopAutoplay(); // Stop if conditions change during interval
+        return;
       }
-    };
+      isProgrammaticScroll = true;
+      carousel.scrollBy({ left: itemWidth, behavior: 'smooth' });
+      setTimeout(() => { isProgrammaticScroll = false; }, SMOOTH_SCROLL_DURATION + 100); // Buffer
+    }, AUTOPLAY_INTERVAL_DURATION);
+  };
 
-    updateButtonVisibility();
-    window.addEventListener('resize', updateButtonVisibility);
-  }
+  const setupClonesAndPosition = () => {
+    // console.log('Carousel: setupClonesAndPosition called.');
+    const wasAutoplaying = !!autoplayIntervalId;
+    stopAutoplay();
+    const currentInteractingState = isInteracting; // Preserve interaction state
+    isInteracting = true; // Prevent interactions during DOM manip
+
+    const existingClones = carousel.querySelectorAll('.clone');
+    existingClones.forEach(clone => clone.remove());
+
+    if (!calculateDimensionsAndClones() || items.length === 0) {
+      isInteracting = currentInteractingState; // Restore
+      // console.warn('Carousel: Dimensions/items not available for cloning.');
+      if (wasAutoplaying && !isInteracting && document.visibilityState === 'visible') startAutoplay();
+      return;
+    }
+
+    for (let i = 0; i < cloneCount; i++) {
+      const N = items.length;
+      const cloneEnd = items[(N - 1 - (i % N) + N) % N].cloneNode(true);
+      cloneEnd.classList.add('clone');
+      cloneEnd.setAttribute('aria-hidden', 'true');
+      carousel.insertBefore(cloneEnd, carousel.firstChild);
+
+      const cloneStart = items[i % N].cloneNode(true);
+      cloneStart.classList.add('clone');
+      cloneStart.setAttribute('aria-hidden', 'true');
+      carousel.appendChild(cloneStart);
+    }
+    
+    isProgrammaticScroll = true;
+    carousel.scrollTo({ left: cloneCount * itemWidth, behavior: 'instant' });
+    // console.log(`Carousel: Scrolled to initial clone position: ${carousel.scrollLeft}`);
+    setTimeout(() => { isProgrammaticScroll = false; }, 50);
+
+    isInteracting = currentInteractingState; // Restore interaction state
+    if (wasAutoplaying && !isInteracting && document.visibilityState === 'visible') {
+        // console.log('Carousel: Restarting autoplay after setupClones (was playing).');
+        startAutoplay();
+    } else if (!isInteracting && document.visibilityState === 'visible' && itemWidth > 0 && !autoplayIntervalId) {
+        // console.log('Carousel: Starting autoplay after setupClones (was not playing but conditions met).');
+        startAutoplay(); // Start if wasn't playing but conditions now met
+    }
+  };
+
+  const handleInteractionStart = (interactionType = "unknown") => {
+    // console.log(`Carousel: Interaction start (${interactionType}).`);
+    isInteracting = true;
+    stopAutoplay();
+    clearTimeout(interactionTimeoutId);
+  };
+
+  const handleInteractionEnd = (interactionType = "unknown") => {
+    // console.log(`Carousel: Interaction end (${interactionType}), scheduling autoplay restart.`);
+    clearTimeout(interactionTimeoutId);
+    interactionTimeoutId = setTimeout(() => {
+      isInteracting = false;
+      if (document.visibilityState === 'visible' && itemWidth > 0) { // Check itemWidth too
+        startAutoplay();
+      } else {
+        // console.log('Carousel: Autoplay restart deferred (tab not visible or itemWidth zero).');
+      }
+    }, AUTOPLAY_RESUME_DELAY);
+  };
+
+  const scrollCarouselWithButton = (direction) => {
+    handleInteractionStart("button");
+    isProgrammaticScroll = true;
+    carousel.scrollBy({
+      left: direction * itemWidth,
+      behavior: 'smooth'
+    });
+    setTimeout(() => { 
+        isProgrammaticScroll = false; 
+        handleInteractionEnd("button");
+    }, SMOOTH_SCROLL_DURATION + 100); 
+  };
+
+  const handleScrollLoopingAndInteraction = () => {
+    if (itemWidth === 0 || items.length === 0) return;
+    
+    if (isProgrammaticScroll) return; // If scroll is due to autoplay/button/jump, ignore for interaction detection
+
+    // --- Loop jump logic --- 
+    const currentScroll = carousel.scrollLeft;
+    const originalItemsBlockWidth = items.length * itemWidth;
+    const firstOriginalItemX = cloneCount * itemWidth;
+    let jumped = false;
+
+    // Check for jump to the right (when scrolling left into prepended clones)
+    if (currentScroll < firstOriginalItemX - (itemWidth * 0.5)) { 
+         if (currentScroll < itemWidth * 0.5) { // Close to actual start of scrollable area
+            isProgrammaticScroll = true;
+            carousel.scrollTo({ left: currentScroll + originalItemsBlockWidth, behavior: 'instant' });
+            jumped = true;
+        }
+    } 
+    // Check for jump to the left (when scrolling right into appended clones)
+    else if (currentScroll + carousel.offsetWidth > firstOriginalItemX + originalItemsBlockWidth + (itemWidth * 0.5) ) { 
+       if (currentScroll + carousel.offsetWidth > carousel.scrollWidth - (itemWidth * 0.5)) { // Close to actual end
+            isProgrammaticScroll = true;
+            carousel.scrollTo({ left: currentScroll - originalItemsBlockWidth, behavior: 'instant' });
+            jumped = true;
+        }
+    }
+
+    if (jumped) {
+        // console.log(`Carousel: Loop jump executed. New scrollLeft: ${carousel.scrollLeft}`);
+        setTimeout(() => { isProgrammaticScroll = false; }, 50); 
+        return; // After a jump, don't immediately process as user interaction that stops autoplay
+    }
+
+    // --- If not a programmatic scroll and no jump happened, it's likely user scroll --- 
+    // This scroll event itself signifies interaction. Stop autoplay and schedule restart.
+    handleInteractionStart('scroll_event');
+    handleInteractionEnd('scroll_event'); 
+
+  };
+  const debouncedScrollHandler = debounce(handleScrollLoopingAndInteraction, 50); // Short debounce for scroll events
+
+  carousel.addEventListener('scroll', debouncedScrollHandler);
+
+  prevBtn.addEventListener('click', () => scrollCarouselWithButton(-1));
+  nextBtn.addEventListener('click', () => scrollCarouselWithButton(1));
+
+  // Mouse hover interaction
+  carouselContainer.addEventListener('mouseenter', () => handleInteractionStart("mouseenter"));
+  carouselContainer.addEventListener('mouseleave', () => handleInteractionEnd("mouseleave"));
+
+  // Touch interaction
+  let touchStartScrollLeft = 0;
+  carousel.addEventListener('touchstart', (e) => {
+    handleInteractionStart("touchstart");
+    touchStartScrollLeft = carousel.scrollLeft;
+  }, { passive: true });
+
+  carousel.addEventListener('touchend', () => {
+    // Consider it a drag if scroll position changed significantly
+    if (Math.abs(carousel.scrollLeft - touchStartScrollLeft) > itemWidth / 4) { 
+      handleInteractionEnd("touchend_drag"); 
+    } else { // Otherwise, it was more like a tap
+      handleInteractionEnd("touchend_tap");
+    }
+  });
+
+  // Wheel scroll interaction
+  let wheelScrollTimeoutId;
+  carousel.addEventListener('wheel', () => {
+    handleInteractionStart("wheel");
+    clearTimeout(wheelScrollTimeoutId);
+    wheelScrollTimeoutId = setTimeout(() => {
+        handleInteractionEnd("wheel_end"); // User stopped wheel scrolling
+    }, 150); 
+  }, { passive: true });
+  
+  // Resize handling
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeoutId);
+    resizeTimeoutId = setTimeout(() => {
+      // console.log('Carousel: Resize event triggered.');
+      setupClonesAndPosition(); // This will stop/start autoplay as needed
+    }, 250);
+  });
+  
+  // Tab visibility handling
+  document.addEventListener('visibilitychange', () => {
+    // console.log(`Carousel: Visibility changed to ${document.visibilityState}`);
+    if (document.visibilityState !== 'visible') {
+      stopAutoplay();
+    } else if (!isInteracting && itemWidth > 0) { 
+      startAutoplay();
+    }
+  });
+
+  const initialSetup = () => {
+    if (calculateDimensionsAndClones()) {
+        setupClonesAndPosition();
+        // Autoplay will be started by setupClonesAndPosition if conditions are met
+    } else {
+        // console.warn('Carousel: Initial dimensions could not be determined. Retrying after delay...');
+        setTimeout(() => {
+          // console.log('Carousel: Retrying initial setup...');
+          if (calculateDimensionsAndClones()) {
+              setupClonesAndPosition();
+          } else {
+               // console.error("Carousel: Dimensions still unresolved after delay. Autoplay might not work.");
+          }
+        }, 1000); 
+    }
+  };
+
+  initialSetup();
+
+  const updateButtonVisibility = () => {
+    if (!prevBtn || !nextBtn) return;
+    if (window.innerWidth < 768) {
+      prevBtn.style.opacity = '1';
+      nextBtn.style.opacity = '1';
+    } else {
+      prevBtn.style.opacity = '';
+      nextBtn.style.opacity = '';
+    }
+  };
+  updateButtonVisibility();
+  window.addEventListener('resize', updateButtonVisibility);
 }
 
 /**
@@ -755,4 +1014,72 @@ function setupParallax() {
       }
     });
   }
+}
+
+/**
+ * Sets up clickable videos behavior
+ */
+function setupClickableVideos() {
+  const clickableVideos = document.querySelectorAll('.clickable-video');
+  
+  clickableVideos.forEach(video => {
+    // Ensure video is muted so it can autoplay
+    video.muted = true;
+    
+    // Add loading indicator
+    const videoContainer = video.parentElement;
+    const loadingIndicator = document.createElement('div');
+    loadingIndicator.className = 'video-loading';
+    loadingIndicator.innerHTML = '<span>Loading video...</span>';
+    videoContainer.insertBefore(loadingIndicator, video);
+    
+    // Handle video loading success
+    video.addEventListener('canplay', function() {
+      // Remove loading indicator when video can play
+      if (loadingIndicator && loadingIndicator.parentNode) {
+        loadingIndicator.parentNode.removeChild(loadingIndicator);
+      }
+      console.log('Video loaded and ready to play');
+    });
+    
+    // Handle video loading error
+    video.addEventListener('error', function(e) {
+      console.error('Error loading video:', e);
+      if (loadingIndicator) {
+        loadingIndicator.innerHTML = '<span>Error loading video. Click to try again.</span>';
+      }
+    });
+    
+    // Try to play videos after page load (needed for some browsers)
+    try {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log('Auto-play prevented by browser, waiting for user interaction:', error);
+          
+          // Add click event to play video manually if autoplay fails
+          video.parentElement.addEventListener('click', () => {
+            video.play().catch(e => console.error('Error playing video on click:', e));
+          }, { once: true });
+        });
+      }
+    } catch (error) {
+      console.error('Error playing video:', error);
+    }
+    
+    // Add interaction visual feedback
+    const videoLink = video.closest('.video-link');
+    if (videoLink) {
+      // For touch devices, add a class when touched to show the hover state
+      videoLink.addEventListener('touchstart', () => {
+        videoLink.classList.add('touch-active');
+      });
+      
+      videoLink.addEventListener('touchend', () => {
+        setTimeout(() => {
+          videoLink.classList.remove('touch-active');
+        }, 300);
+      });
+    }
+  });
 }

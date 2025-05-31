@@ -244,7 +244,7 @@
     <section id="projects" class="section">
       <div class="container">
         <h2>Projects</h2>
-        <h3>Recent Audio & Machine Learning Projects</h3>
+        <h3>Audio & Machine Learning Projects</h3>
         <div class="projects-grid" id="projects-grid">
           <!-- Project cards will be populated from content.json -->
           <article class="project-card" data-repo="crlandsc/tiny-audio-diffusion">
@@ -263,18 +263,26 @@
               <li class="forks">⑂ --</li>
             </ul>
           </article>
+          <article class="project-card" data-repo="crlandsc/torch-log-wmse">
+            <h4><a href="https://github.com/crlandsc/torch-log-wmse" target="_blank" rel="noopener noreferrer">LogWMSE (PyTorch)</a></h4>
+            <p>Developed a PyTorch implementation of logWMSE, an audio quality metric and loss function. It addresses shortcomings of common audio metrics, like digital silence targets, making it effective for training and evaluating audio source separation and denoising models.</p>
+            <ul class="meta">
+              <li class="stars">★ --</li>
+              <li class="forks">⑂ --</li>
+            </ul>
+          </article>
           <article class="project-card">
             <h4><a href="https://soundcloud.com/after-august/viridian?si=92b38b8bd23b49b99ba649b03d51349f" target="_blank" rel="noopener noreferrer">Harmonai AI Song Production Challenge</a></h4>
             <p>Wrote and produced a song using AI-generated audio by leveraging the audio diffusion tool Dance Diffusion. Utilized waveform-based (1D convolution) diffusion with unconditional generation and audio style transfer functions to produce high-quality 48kHz samples.</p>
           </article>
-          <article class="project-card" data-repo="crlandsc/Music-Genre-Classification-Using-Convolutional-Neural-Networks">
+          <!-- <article class="project-card" data-repo="crlandsc/Music-Genre-Classification-Using-Convolutional-Neural-Networks">
             <h4><a href="https://github.com/crlandsc/Music-Genre-Classification-Using-Convolutional-Neural-Networks" target="_blank" rel="noopener noreferrer">Music Genre Classification</a></h4>
             <p>A music genre classification system was created using a convolutional neural network (CNN) in Python and achieved an accuracy rate of 83.8% from a baseline accuracy of 10%. The CNN model was trained on Mel-spectrograms of 3-second audio samples. Additional data augmentation and regularization methods were implemented to optimize performance and mitigate overfitting.</p>
             <ul class="meta">
               <li class="stars">★ --</li>
               <li class="forks">⑂ --</li>
             </ul>
-          </article>
+          </article> -->
         </div>
         
         <div class="interactive-demo-container">
@@ -289,7 +297,7 @@
 
     <section id="education" class="section">
       <div class="container">
-        <h2>Education & Research</h2>
+        <h2>Education</h2>
         <h3>My Studies</h3>
         <div class="education-grid" id="education-grid">
           <div class="education-row">
@@ -324,6 +332,7 @@
           </div>
         </div>
         <div class="research">
+          <h2>Research</h2>
           <h3>Academic Publications</h3>
           <div id="research-content">
             <ul class="social publications-social">
@@ -344,7 +353,21 @@
                 </a>
               </li>
             </ul>
-            <p><a href="https://www.chrislandschoot.com/binaural-externalization" target="_blank" rel="noopener noreferrer">Binaural Audio Externalization Processing</a></p>
+            <div class="video-link-container">
+              <a href="https://www.chrislandschoot.com/binaural-externalization" target="_blank" rel="noopener noreferrer" class="video-link" style="text-decoration:none;">
+                <h4 class="video-caption">Binaural Audio Externalization Processing</h4>
+                <video autoplay muted loop playsinline class="clickable-video">
+                  <!-- Multiple sources for cross-browser compatibility -->
+                  <!-- WebM is recommended for transparent videos -->
+                  <source src="assets/binaural-externalization/06 - Circle - Transparent (Sun).webm" type="video/webm">
+                  <!-- MP4 fallback for broader support -->
+                  <source src="assets/binaural-externalization/06 - Circle - Transparent (Sun).mp4" type="video/mp4">
+                  <!-- Original MOV as final fallback -->
+                  <source src="assets/binaural-externalization/06 - Circle - Transparent (Sun).mov" type="video/quicktime">
+                  Your browser does not support the video tag.
+                </video>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -353,6 +376,7 @@
     <section id="skills" class="section">
       <div class="container">
         <h2>Skills</h2>
+        <h3>Professional Competencies</h3>
         <div class="skills-grid">
           <div class="skills-column">
             <div class="skill-icon">
@@ -364,18 +388,18 @@
               </svg>
             </div>
             <h3>Programming</h3>
-            <div id="programming-skills" class="skill-tags">
+            <div id="programming-skills" class="skill-tags three-columns">
               <span class="skill-tag">Python</span>
               <span class="skill-tag">C/C++</span>
               <span class="skill-tag">SQL</span>
               <span class="skill-tag">Git</span>
               <span class="skill-tag">MATLAB</span>
-              <span class="skill-tag">Max/MSP/RNBO</span>
+              <span class="skill-tag">Max/MSP</span>
               <span class="skill-tag">JUCE</span>
-              <span class="skill-tag">Spat (IRCAM)</span>
+              <!-- <span class="skill-tag">Spat (IRCAM)</span> -->
               <span class="skill-tag">PyTorch</span>
-              <span class="skill-tag">TensorFlow</span>
-              <span class="skill-tag">Scikit-learn</span>
+              <!-- <span class="skill-tag">TensorFlow</span> -->
+              <!-- <span class="skill-tag">Scikit-learn</span> -->
               <span class="skill-tag">LaTeX</span>
             </div>
           </div>
@@ -390,7 +414,7 @@
               </svg>
             </div>
             <h3>Music & Audio</h3>
-            <div id="audio-skills" class="skill-tags">
+            <div id="audio-skills" class="skill-tags three-columns">
               <span class="skill-tag">Composing</span>
               <span class="skill-tag">Performing</span>
               <span class="skill-tag">Recording</span>
@@ -454,9 +478,9 @@
               </svg>
             </div>
             <h3>Technical</h3>
-            <div id="technical-skills" class="skill-tags">
-              <span class="skill-tag">Machine Learning & Deep Learning</span>
-              <span class="skill-tag">Digital Signal Processing (DSP)</span>
+            <div id="technical-skills" class="skill-tags two-columns">
+              <span class="skill-tag">Machine Learning<!--  & Deep Learning --></span>
+              <span class="skill-tag">Digital Signal Processing<!--  (DSP) --></span>
               <span class="skill-tag">Real-Time Spatial Audio Processing</span>
               <span class="skill-tag">Audio Algorithm Development</span>
               <span class="skill-tag">Audio Data Engineering</span>
@@ -477,27 +501,21 @@
           <div class="carousel" role="list">
             <div class="carousel-item" role="listitem">
               <img src="assets/interests/music.jpg" alt="Music performance and production" loading="lazy">
-              <span>Music</span>
             </div>
             <div class="carousel-item" role="listitem">
               <img src="assets/interests/hiking.jpg" alt="Hiking and outdoor activities" loading="lazy">
-              <span>Hiking</span>
             </div>
             <div class="carousel-item" role="listitem">
               <img src="assets/interests/adirondacks.jpg" alt="Adirondack Mountains" loading="lazy">
-              <span>Adirondacks</span>
             </div>
             <div class="carousel-item" role="listitem">
               <img src="assets/interests/kayaking.jpg" alt="Kayaking" loading="lazy">
-              <span>Kayaking</span>
             </div>
             <div class="carousel-item" role="listitem">
               <img src="assets/interests/travel.jpg" alt="Travel" loading="lazy">
-              <span>Travel</span>
             </div>
             <div class="carousel-item" role="listitem">
               <img src="assets/interests/queso.jpg" alt="My dog Queso" loading="lazy">
-              <span>Queso</span>
             </div>
           </div>
           <button class="carousel-btn next" aria-label="Next slide">❯</button>
