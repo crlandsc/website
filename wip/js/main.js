@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Set up clickable videos
   setupClickableVideos();
   
-  // Set up the new hero code wave animation
-  initHeroCanvasAnimation();
+  // Set up the sea-of-code wave animation
+  initHeroCodeSea();
   
   // Add window resize handler to check for newly visible elements
   window.addEventListener('resize', debounce(checkForVisibleElements, 150));
@@ -1090,9 +1090,9 @@ function setupClickableVideos() {
 }
 
 /**
- * Initializes and runs the hero canvas code wave animation.
+ * Initializes and runs the sea-of-code wave animation with light/dark theme support.
  */
-function initHeroCanvasAnimation() {
+function initHeroCodeSea() {
   const canvas = document.getElementById('hero-code-canvas');
   if (!canvas) {
     console.error('Hero canvas element not found!');
@@ -1100,15 +1100,22 @@ function initHeroCanvasAnimation() {
   }
   const ctx = canvas.getContext('2d');
 
-  // State variables
-  let W, H;
-  let time = 0;
-  let animationFrameId;
-  let codeCanvas, codeCtx;
-  let horizontalScrollOffset = 0; // For continuous horizontal scroll
-  let effectiveTextBlockWidthForScroll = 1000; // Will be updated by createCodeCanvas
+  /*====================================================================
+    1. WAVE-ANIMATION CONTROLS – tweak these if you like
+  ====================================================================*/
+  const FONT_SIZE   = 12; //15;
+  const WAVE_AMPL   = 5;
+  const WAVE_LENGTH = .045;
+  const WAVE_SPEED  = 0.0025;
+  const WAVE_PHASE_Y= 5;
+  const SIDE_MARGIN = 20;
+  const TOP_MARGIN  = 3;
 
-  // Code lines with varying indentation and lengths for visual variety
+  /*====================================================================
+    2. RAW SOURCE CODE – define codeLines for the sea-of-code animation
+  ====================================================================*/
+
+
   const codeLines = [
     'import torch; import torch.nn as nn; from lightning.torch import LightningModule; from torchaudio.transforms import Spectrogram, MelSpectrogram; import numpy as np; from torch.utils.data import DataLoader, Dataset; import torch.nn.functional as F; from typing import Optional, Dict, Any; import math; import wav',
     '  class AudioModel(LightningModule): def __init__(self, n_fft=2048, lr=1e-3, dropout=0.1, hidden_dim=512, num_layers=6, attention_heads=8, mel_bins=128, sample_rate=44100, hop_length=512, win_length=2048, n_mels=80, fmin=0, fmax=8000, power=2.0, normalized=False, center=True, pad_mode="reflect"): super().__init__',
@@ -1300,234 +1307,64 @@ function initHeroCanvasAnimation() {
     '  def forward(self, x): routing_weights = self.routing_network(x); expert_outputs = [conv(x) for conv in self.expert_convs]; weighted_output = sum(weight * output for weight, output in zip(routing_weights.unbind(1), expert_outputs)); return weighted_output; def get_routing_entropy(self, x): routing_weights = self.routing_network(x); ent',
   ];
 
-  // Theme-aware color variables
-  let textColor = '#6c757d';
-  let backgroundColor = '#ffffff';
+  /*====================================================================
+    3. CHARACTER GRID PRE-COMPUTATION
+  ====================================================================*/
+  const codeChars = codeLines.join(' ').replace(/\s+/g,' ').split('');
+  let cols, rows, charW, lineH, grid;
 
-  function updateThemeColors() {
+  function updateGrid() {
+    cols = Math.ceil(canvas.clientWidth / charW) + SIDE_MARGIN * 2;
+    rows = Math.ceil(canvas.clientHeight / lineH) + TOP_MARGIN * 2;
+    grid = Array.from({ length: rows }, (_, r) =>
+      Array.from({ length: cols }, (_, c) => {
+        const idx = ((r*131 + c*197) ^ (r<<3)) % codeChars.length;
+        return codeChars[idx];
+      })
+    );
+  }
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width  = canvas.clientWidth  * dpr;
+    canvas.height = canvas.clientHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.font = `${FONT_SIZE}px monospace`;
+    ctx.textBaseline = 'top';
+    charW = ctx.measureText('M').width;
+    lineH = FONT_SIZE * 1.25;
+    updateGrid();
+  }
+
+  function getColors() {
     const styles = getComputedStyle(document.documentElement);
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    
-    if (isDark) {
-      textColor = styles.getPropertyValue('--clr-border-primary').trim() || '#4a5055'; // Darker gray for code on dark bg
-      backgroundColor = styles.getPropertyValue('--clr-background-primary').trim() || '#121212';
-    } else {
-      textColor = styles.getPropertyValue('--clr-text-secondary').trim() || '#6c757d'; 
-      backgroundColor = styles.getPropertyValue('--clr-background-primary').trim() || '#ffffff';
-    }
+    const bg = styles.getPropertyValue('--clr-background-primary').trim();
+    const fg = isDark
+      ? styles.getPropertyValue('--clr-border-primary').trim()
+      : styles.getPropertyValue('--clr-text-secondary').trim();
+    return { bg, fg };
   }
 
-  function createCodeCanvas() {
-    if (!codeCanvas) {
-      codeCanvas = document.createElement('canvas');
-      codeCtx = codeCanvas.getContext('2d');
-    }
-    
-    const dpr = window.devicePixelRatio || 1;
-    const fontSize = 15; // Increased font size
-    const lineHeight = 16; // Adjusted line height accordingly
-    
-    const estimatedMaxScreenWidth = Math.max(3000, (W || window.innerWidth) * 2); // Ensure wide enough for scroll
-    const canvasWidth = estimatedMaxScreenWidth; // This is logical width for drawing
-    const canvasHeight = codeLines.length * lineHeight + 100; // Ample height for all lines
-    
-    codeCanvas.width = canvasWidth * dpr;
-    codeCanvas.height = canvasHeight * dpr;
-    codeCtx.setTransform(dpr, 0, 0, dpr, 0, 0); // Drawing commands now use logical coords
-    
-    // Clear canvas with current theme's background color first
-    codeCtx.fillStyle = backgroundColor;
-    codeCtx.fillRect(0, 0, canvasWidth, canvasHeight);
-    
-    // Set text properties
-    codeCtx.font = `${fontSize}px Consolas, 'SF Mono', Monaco, monospace`;
-    codeCtx.fillStyle = textColor;
-    codeCtx.textBaseline = 'top';
-    
-    let maxMeasuredTextWidth = 0;
-    if (codeLines.length > 0) {
-        codeLines.forEach(line => {
-            const metrics = codeCtx.measureText(line); // measureText uses current font
-            if (metrics.width > maxMeasuredTextWidth) {
-                maxMeasuredTextWidth = metrics.width;
-            }
-        });
-    }
-    // Fallback if measureText is problematic or no lines
-    if (maxMeasuredTextWidth === 0 && codeLines.length > 0) { 
-        maxMeasuredTextWidth = codeLines.reduce((max, line) => Math.max(max, line.length), 0) * fontSize * 0.6; // Use new fontSize
-    }
-    if (maxMeasuredTextWidth === 0) {
-        maxMeasuredTextWidth = 800; // Absolute fallback
-    }
-
-    const textBlockPadding = 10; // Space between repetitions
-    effectiveTextBlockWidthForScroll = maxMeasuredTextWidth + textBlockPadding;
-
-    codeLines.forEach((line, index) => {
-      const y = index * lineHeight; // Use new lineHeight
-      // Tile the text horizontally, starting from before the visible area
-      if (effectiveTextBlockWidthForScroll > 0) { // Prevent infinite loop
-        for (let xOffset = 5 - effectiveTextBlockWidthForScroll; xOffset < canvasWidth; xOffset += effectiveTextBlockWidthForScroll) {
-            codeCtx.fillText(line, xOffset, y);
-        }
-      } else { // Draw at least once if width calculation failed
-        codeCtx.fillText(line, 5, y);
+  function draw(ts) {
+    const { bg, fg } = getColors();
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+    ctx.fillStyle = fg;
+    for (let r = 0; r < codeLines.length; r++) {
+      const baseY = (r - TOP_MARGIN) * lineH;
+      const line = codeLines[r];
+      for (let c = 0; c < line.length; c++) {
+        const x = (c - SIDE_MARGIN) * charW;
+        const y = baseY + Math.sin(ts * WAVE_SPEED + x * WAVE_LENGTH + r * WAVE_PHASE_Y) * WAVE_AMPL;
+        ctx.fillText(line[c], x, y);
       }
-    });
+    }
+    requestAnimationFrame(draw);
   }
 
-  function setup() {
-    updateThemeColors();
-    
-    const dpr = window.devicePixelRatio || 1;
-    const heroBg = canvas.parentElement;
-    if (!heroBg) {
-      console.error("Hero background element not found for setup.");
-      W = 0; H = 0; // Reset dimensions if parent is gone
-      return;
-    }
-    
-    const rect = heroBg.getBoundingClientRect();
-    W = rect.width;
-    H = rect.height;
-    
-    if (W === 0 || H === 0) {
-      // console.warn("Hero background has zero dimensions during setup. Canvas not sized.");
-      return; // Will be handled by resize or visibility change
-    }
-    
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
-    canvas.style.width = W + 'px';
-    canvas.style.height = H + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    createCodeCanvas(); // Create/recreate the offscreen code canvas with current theme & W
-  }
-
-  function render() {
-    if (W === 0 || H === 0 || !codeCanvas || !codeCtx) {
-      // console.warn("Render called but canvas/dimensions not ready. Attempting setup.");
-      setup(); 
-      if (W === 0 || H === 0 || !codeCanvas || !codeCtx) {
-        // console.warn("Still not ready after setup attempt in render. Skipping frame.");
-        animationFrameId = requestAnimationFrame(render);
-        return;
-      }
-    }
-
-    time += 0.008;
-    // horizontalScrollOffset = (horizontalScrollOffset + 0.20) % (codeCanvas.width / (window.devicePixelRatio || 1)); // Reduced speed - REMOVED
-
-    // New oscillating horizontal scroll
-    const horizontalWaveSpeedFactor = 1; 
-    const horizontalScrollMagnitude = effectiveTextBlockWidthForScroll / 40;
-    const currentHorizontalShift = Math.sin(time * horizontalWaveSpeedFactor) * horizontalScrollMagnitude;
-
-    ctx.fillStyle = backgroundColor;
-    ctx.fillRect(0, 0, W, H);
-    
-    const amplitude = 15; // User-set fixed moderate amplitude
-    const sliceWidth = 5; // User-set slice width
-    // const targetCycles = 3; // This will be effectively replaced by fixedWavelength approach - REMOVING
-
-    const fixedWavelength = 600; // New: Defines a constant physical wavelength for the waves
-
-    const dpr = window.devicePixelRatio || 1;
-    const effectiveCodeCanvasWidth = codeCanvas.width / dpr;
-
-    for (let destX = 0; destX < W; destX += sliceWidth) {
-      // Modified wave calculation using fixedWavelength
-      const waveY = Math.sin((destX / fixedWavelength) * 2 * Math.PI + time) * amplitude;
-      
-      let sourceX = (destX - currentHorizontalShift); // Apply oscillating shift, subtract for natural movement
-      
-      // Ensure sourceX wraps around the effectiveCodeCanvasWidth
-      sourceX = sourceX % effectiveCodeCanvasWidth;
-      if (sourceX < 0) {
-          sourceX += effectiveCodeCanvasWidth;
-      }
-      
-      const physicalSourceX = sourceX * dpr;
-      const physicalSliceWidth = Math.min(sliceWidth * dpr, codeCanvas.width - physicalSourceX);
-
-      if (physicalSliceWidth > 0) { // Only draw if there's something to draw
-        ctx.drawImage(
-          codeCanvas,
-          physicalSourceX, 0,
-          physicalSliceWidth, codeCanvas.height,
-          destX, waveY,
-          physicalSliceWidth / dpr, H 
-        );
-      }
-    }
-    animationFrameId = requestAnimationFrame(render);
-  }
-
-  // Initial setup and animation start
-  function tryStartAnimation() {
-    if (animationFrameId) cancelAnimationFrame(animationFrameId); // Clear any existing frame
-    animationFrameId = null;
-    setup();
-    if (W > 0 && H > 0 && codeCanvas && codeCtx) {
-      render();
-      // console.log("Animation started successfully.");
-      return true;
-    } else {
-      // console.warn("Animation could not be started due to invalid canvas/dimensions.");
-      return false;
-    }
-  }
-
-  if (!tryStartAnimation()) {
-    // Fallback: Attempt to start on next 'load' or 'pageshow' event if still not ready
-    const fallbackStarter = () => {
-        // console.log("Fallback starter triggered.");
-        if (!animationFrameId) { // Only if not already started
-            tryStartAnimation();
-        }
-        window.removeEventListener('load', fallbackStarter);
-        window.removeEventListener('pageshow', fallbackStarter);
-    };
-    window.addEventListener('load', fallbackStarter);
-    window.addEventListener('pageshow', fallbackStarter); 
-  }
-
-  // Resize handler
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      // console.log("Resize event.");
-      tryStartAnimation(); // Re-setup and restart rendering
-    }, 150);
-  });
-
-  // Theme change observer
-  const themeObserver = new MutationObserver((mutationsList) => {
-    for (const mutation of mutationsList) {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-        // console.log("Theme change detected.");
-        tryStartAnimation(); // Re-setup (updates colors, codeCanvas) and restart rendering
-      }
-    }
-  });
-  themeObserver.observe(document.documentElement, { attributes: true });
-
-  // Handle tab visibility for performance
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
-        animationFrameId = null;
-        // console.log("Animation paused - tab hidden");
-      }
-    } else {
-      // console.log("Animation resumed - tab visible");
-      if (!animationFrameId) { // Only restart if not already running
-        tryStartAnimation();
-      }
-    }
-  });
+  window.addEventListener('resize', resize, { passive: true });
+  new MutationObserver(resize).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  resize();
+  requestAnimationFrame(draw);
 }
