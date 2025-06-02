@@ -6,10 +6,13 @@ To Do:
 - Add project icons
 - Standardize animation (footer different from Academic Publications)
 - Make sure "Let's Connect" box work correctly - just send to mail app?
-- Change hero image - needs to better adapt with light/dark mode
 - Fix GitHub actions
 
 Completed:
+- Change hero image - animation that works with light/dark mode
+    - Add shadow to hero text
+    - Make code waveform text slightly more apparent color-wise (i.e. dark for light mode and vice versa)
+    - Re-implement paralax effect
 - Re-align skills bullets (seemsto be slightly off the cetnering of the titles)
 - Make footer icons a little closer together to make sure they stay on one line in mobile format
 - Replaced text links with icon links for Google Scholar and ResearchGate
