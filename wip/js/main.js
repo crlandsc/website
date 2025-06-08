@@ -349,11 +349,15 @@ function populateContent(data) {
     const educationGrid = document.getElementById('education-grid');
     if (educationGrid) {
       educationGrid.innerHTML = data.education.map(edu => `
-        <div class="edu-card">
-          <h4>${edu.degree}</h4>
-          <p>${edu.school}</p>
-          <p>${edu.period}</p>
-          ${edu.gpa ? `<p>GPA: ${edu.gpa}</p>` : ''}
+        <div class="education-row fade-in-element">
+          <div class="education-right">
+            <div>${edu.degree}</div>
+            <div>${edu.school}</div>
+          </div>
+          <div class="education-left">
+            <div>${edu.period}</div>
+            ${edu.gpa ? `<div>GPA: ${edu.gpa}</div>` : ''}
+          </div>
         </div>
       `).join('');
       console.log('Education section populated');
