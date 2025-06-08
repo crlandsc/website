@@ -991,7 +991,7 @@ function setupContactForm() {
       const message = encodeURIComponent(form.elements.message.value);
       
       // Create the mailto URL with all form data
-      const mailtoUrl = `mailto:clandschoot@example.com?subject=${subject}&body=Name: ${name}%0AEmail: ${email}%0A%0A${message}`;
+      const mailtoUrl = `mailto:crlandschoot@gmail.com?subject=${subject}&body=Name: ${name}%0AEmail: ${email}%0A%0A${message}`;
       
       // Open the user's email client
       window.location.href = mailtoUrl;
