@@ -669,10 +669,12 @@ header .container {
   box-shadow: var(--shadow-standard);
   border: 1px solid var(--clr-border-primary);
   cursor: pointer;
-  /* No transition - all changes happen instantly */
+  /* Override fade-in-element transition for instant hover response */
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease !important;
 }
 
 .project-card:hover {
+  transform: scale(1.02);
   box-shadow: 0 10px 20px var(--clr-shadow-color); /* Enhanced shadow on hover */
   background-color: var(--clr-background-primary); /* Keep card background same on hover */
   border-color: var(--clr-accent-primary);
@@ -683,36 +685,36 @@ header .container {
   padding-bottom: var(--space-xs);
   margin-bottom: var(--space-s);
   text-align: left;
+  position: relative;
 }
 
 .project-card h4 a {
   color: var(--clr-text-headings);
-  position: relative;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-/* Remove default underline and add animated underline */
-.project-card h4 a::after {
+/* Animated underline for the border separator line */
+.project-card h4::after {
   content: '';
   position: absolute;
-  bottom: -3px; /* Adjusted to be on the border */
+  bottom: -2px; /* Position to cover the border line */
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: var(--clr-accent-primary); /* Underline uses accent */
+  background-color: var(--clr-accent-primary);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 0.3s ease;
 }
 
-.project-card h4 a:hover::after {
+.project-card:hover h4::after {
   transform: scaleX(1);
   transform-origin: left;
 }
 
-.project-card h4 a:hover {
-  color: var(--clr-text-headings); /* Keep text color same on hover */
+.project-card:hover h4 a {
+  color: var(--clr-accent-primary); /* Turn text blue on card hover */
 }
 
 .project-demo {
@@ -809,43 +811,60 @@ header .container {
 }
 
 @media (max-width: 700px) {
+  .education-grid {
+    gap: 0;
+  }
+
   .education-row {
     flex-direction: column;
-    gap: var(--space-s);
+    gap: var(--space-xs);
     align-items: center;
+    padding-bottom: var(--space-s);
+    margin-bottom: var(--space-xs);
+    border-bottom: 1px solid var(--clr-border-primary); /* Horizontal line separating each complete education entry */
+  }
+
+  .education-row:last-child {
+    border-bottom: none; /* Remove border from the last education entry */
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
 
   .education-row::after {
-    content: none;
+    content: none; /* Remove the vertical line */
   }
 
+  /* Reorder: degree/institution first (larger text) */
+  .education-right {
+    flex: 0 0 auto;
+    width: 100%;
+    font-size: 1.2rem;
+    font-weight: var(--font-weight-medium);
+    text-align: center;
+    padding-left: 0;
+    border-top: none;
+    padding-top: var(--space-s);
+    margin-top: var(--space-xs);
+    align-items: center;
+    order: 1; /* Show first */
+  }
+
+  /* Date range and GPA second (smaller text) */
   .education-left {
     flex: 0 0 auto;
     width: 100%;
-  text-align: center;
+    font-size: 0.95rem;
+    color: var(--clr-text-secondary);
+    text-align: center;
     padding-right: 0;
     align-items: center;
+    order: 2; /* Show second */
   }
 
   .education-left > div {
     text-align: center;
   }
-
-  .education-right {
-    flex: 0 0 auto;
-    width: 100%;
-    font-size: 1.1rem;
-    text-align: center;
-    padding-left: 0;
-    border-top: 2px solid var(--clr-border-primary); /* Divider color */
-    padding-top: var(--space-s);
-    margin-top: var(--space-xs);
-    align-items: center;
-  }
 }
-
-/* Remove old card and icon styles if present */
-.edu-card, .edu-icon { display: none !important; }
 
 /* Skills Section */
 .skills-grid {
@@ -1251,10 +1270,6 @@ footer .container {
   }
 }
 
-#interests .carousel-item span {
-  /* Already updated by .carousel-item span rule */
-}
-
 #interests .carousel-btn {
   color: var(--clr-text-primary); /* Ensure this is distinct from its background */
 }
@@ -1265,7 +1280,7 @@ footer .container {
 }
 
 .research {
-  margin-top: var(--space-l);
+  margin-top: var(--space-xl); /* Increased spacing for the Research section */
   text-align: center;
 }
 
@@ -1533,7 +1548,7 @@ footer .container {
   padding: 0;
   box-shadow: var(--shadow-standard);
   border: 1px solid var(--clr-border-primary);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease !important;
   text-decoration: none;
 }
 
@@ -1566,12 +1581,32 @@ footer .container {
   transition: color 0.3s ease;
   text-decoration: none;
   border-bottom: 2px solid var(--clr-border-primary);
+  position: relative;
+}
+
+/* Add animated underline effect to video caption like project cards */
+.video-caption::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; /* Position to cover the border line */
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--clr-accent-primary);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
 }
 
 .video-link:hover .video-caption, 
 .video-link.touch-active .video-caption {
   color: var(--clr-accent-primary);
-  border-color: var(--clr-accent-primary);
+}
+
+.video-link:hover .video-caption::after,
+.video-link.touch-active .video-caption::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 /* For mobile devices */
