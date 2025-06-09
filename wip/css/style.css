@@ -121,6 +121,25 @@ h3 {
   text-align: center;
 }
 
+/* Override centering for company names in experience section */
+.company-name {
+  text-align: left;
+  margin-bottom: var(--space-s); /* Reduced from default h3 margin */
+}
+
+/* Style for inline position dates */
+.position-date {
+  font-weight: var(--font-weight-light);
+  color: var(--clr-text-secondary);
+  font-size: 0.9em;
+}
+
+/* Add spacing around the bullet separator */
+.bullet-separator {
+  margin: 0 0.25em;
+  color: var(--clr-text-secondary);
+}
+
 #about h3 {
   margin-bottom: var(--space-xl);
 }
