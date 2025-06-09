@@ -127,6 +127,12 @@ h3 {
   margin-bottom: var(--space-s); /* Reduced from default h3 margin */
 }
 
+/* Style degree names to match company names */
+.degree-name {
+  text-align: left;
+  margin-bottom: var(--space-xs); /* Small gap between degree and institution */
+}
+
 /* Style for inline position dates */
 .position-date {
   font-weight: var(--font-weight-light);
@@ -138,6 +144,14 @@ h3 {
 .bullet-separator {
   margin: 0 0.25em;
   color: var(--clr-text-secondary);
+}
+
+/* Style for education dates and GPA to match experience section */
+.education-date,
+.education-gpa {
+  font-weight: var(--font-weight-light);
+  color: var(--clr-text-secondary);
+  font-size: 0.9em;
 }
 
 #about h3 {
@@ -819,14 +833,17 @@ header .container {
   display: flex;
   flex-direction: column;
   gap: 0.25em;
-  font-size: 1.35rem;
-  color: var(--clr-text-primary); /* Text color for education section */
   text-align: left;
   padding-left: var(--space-m);
 }
 
-.education-right > div {
+.education-right h3,
+.education-right h4 {
   line-height: 1.4;
+}
+
+.education-right h4 {
+  margin-bottom: 0.25em;
 }
 
 @media (max-width: 700px) {
@@ -857,8 +874,6 @@ header .container {
   .education-right {
     flex: 0 0 auto;
     width: 100%;
-    font-size: 1.2rem;
-    font-weight: var(--font-weight-medium);
     text-align: center;
     padding-left: 0;
     border-top: none;
@@ -866,6 +881,11 @@ header .container {
     margin-top: var(--space-xs);
     align-items: center;
     order: 1; /* Show first */
+  }
+
+  .education-right h3 {
+    font-size: 1.2rem;
+    font-weight: var(--font-weight-medium);
   }
 
   /* Date range and GPA second (smaller text) */
@@ -952,6 +972,23 @@ header .container {
 @media (min-width: 768px) {
   .skills-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Adjust degree name font size for larger screens */
+  .degree-name {
+    font-size: 1.4rem; 
+  }
+
+  /* Adjust minor degree info font size for larger screens */
+  .minor-degree-info {
+    font-size: 1.2rem; 
+  }
+}
+
+@media (max-width: 700px) {
+  /* Adjust minor degree info font size for small screens */
+  .minor-degree-info {
+    font-size: 1.2rem; /* Between h3 (1.2rem) and h4 (1rem) */
   }
 }
 
@@ -1238,7 +1275,7 @@ footer .container {
   /* Slightly larger spacing on larger screens */
   .desktop-nav a {
     padding: var(--space-xs) 4px;
-  font-size: 0.9rem;
+    font-size: 0.9rem;
   }
   
   .logo {
