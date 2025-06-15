@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive demonstration of colorless binaural externalization processing for spatial audio - Christopher Landschoot">
+  <meta property="og:title" content="Binaural Externalization Processing Demonstration - Christopher Landschoot">
+  <meta property="og:description" content="Interactive demonstration of colorless binaural externalization processing for spatial audio">
+  <meta property="og:image" content="assets/binaural-externalization/trajectory.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <title>Binaural Externalization Processing Demonstration - Christopher Landschoot</title>
+  
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/binaural-externalization.css">
+  
+  <!-- Favicon links (exact copy from main site) -->
+  <link rel="icon" href="assets/favicon/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/favicon-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon/favicon-512x512.png">
+  <link rel="apple-touch-icon" href="assets/favicon/favicon-192x192.png">
+  
+  <!-- Brandon Grotesque font (exact copy from main site) -->
+  <style>
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Regular.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Medium.otf') format('opentype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Bold.otf') format('opentype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Light.otf') format('opentype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Black.otf') format('opentype');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Regular-Italic.otf') format('opentype');
+      font-weight: normal;
+      font-style: italic;
+      font-display: swap;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container binaural-header-container">
+      <nav aria-label="Binaural Demo">
+        <ul class="desktop-nav">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#abstract">Abstract</a></li>
+          <li><a href="#introduction">Introduction</a></li>
+          <li><a href="#stereo">Stereo</a></li>
+          <li><a href="#binaural">Binaural</a></li>
+          <li><a href="#externalized">Externalized</a></li>
+          <li><a href="#comparisons">Comparisons</a></li>
+          <li><a href="#future-work">Future Work</a></li>
+          <li class="theme-toggle-item">
+            <button id="theme-toggle" title="Toggle theme" aria-label="Switch to dark mode">
+              <svg class="theme-icon theme-icon-light" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                <!-- Sun center -->
+                <circle cx="12" cy="12" r="5" fill="currentColor"/>
+                <!-- Top ray -->
+                <rect x="11" y="1" width="2" height="3" fill="currentColor" rx="1"/>
+                <!-- Bottom ray -->
+                <rect x="11" y="20" width="2" height="3" fill="currentColor" rx="1"/>
+                <!-- Left ray -->
+                <rect x="1" y="11" width="3" height="2" fill="currentColor" rx="1"/>
+                <!-- Right ray -->
+                <rect x="20" y="11" width="3" height="2" fill="currentColor" rx="1"/>
+                <!-- Top-left ray -->
+                <rect x="3.5" y="3.5" width="3" height="2" fill="currentColor" rx="1" transform="rotate(45 5 5)"/>
+                <!-- Top-right ray -->
+                <rect x="17.5" y="3.5" width="3" height="2" fill="currentColor" rx="1" transform="rotate(-45 19 5)"/>
+                <!-- Bottom-left ray -->
+                <rect x="3.5" y="18.5" width="3" height="2" fill="currentColor" rx="1" transform="rotate(-45 5 19)"/>
+                <!-- Bottom-right ray -->
+                <rect x="17.5" y="18.5" width="3" height="2" fill="currentColor" rx="1" transform="rotate(45 19 19)"/>
+              </svg>
+              <svg class="theme-icon theme-icon-dark" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <!-- Moon crescent -->
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"/>
+              </svg>
+            </button>
+          </li>
+        </ul>
+        <details class="mobile-nav">
+          <summary aria-label="Menu toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </summary>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="index.html">← Back to Main Site</a></li>
+            <li><a href="#abstract">Abstract</a></li>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#stereo">Stereo</a></li>
+            <li><a href="#binaural">Binaural</a></li>
+            <li><a href="#externalized">Externalized</a></li>
+            <li><a href="#comparisons">Comparisons</a></li>
+            <li><a href="#future-work">Future Work</a></li>
+          </ul>
+        </details>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero binaural-hero">
+      <div class="hero-bg">
+        <div class="binaural-gradient-bg"></div>
+      </div>
+      <div class="hero-content">
+        <h1>Colorless Binaural Externalization Processing Demonstration</h1>
+        <p class="hero-tagline">Authors: Christopher Landschoot, Jean-Marc Jot</p>
+      </div>
+    </section>
+
+    <section id="abstract" class="section">
+      <div class="container">
+        <h2 class="fade-in-element">Abstract</h2>
+        <div class="abstract-content fade-in-element">
+          <p>In both entertainment and professional applications, conventionally produced stereo or multi-channel audio content is frequently delivered over headphones or earbuds. Use cases involving object-based binaural audio rendering include recently developed immersive multi-channel audio distribution formats, along with the accelerating deployment of virtual or augmented reality applications and head-mounted displays. The appreciation of these listening experiences by end users may be compromised by an unnatural perception of the localization of audio objects: commonly heard near or inside the listener's head even when their specified position is distant. This artifact is particularly common for frontal object localization, and persists despite the provision of perceptual cues that have been known to partially mitigate it, including synthetic acoustic reflections or reverberation, head orientation compensation, personalized HRTF processing, or reinforcing visual information. In <a href="https://www.aes.org/e-lib/browse.cfm?elib=21939" target="_blank" rel="noopener noreferrer">this</a> paper, we review previously reported methods for binaural audio externalization processing, and generalize a recently proposed approach to address object-based audio rendering.</p>
+          <p>In the following demonstration, examples are presented to demonstrate the differences between sample audio rendered with traditional stereo panning, binaural processing, and the proposed externalization algorithm. If you are already familiar with the issues of externalization and front-vs.-back confusion in binaural reproduction technology, please skip to the <strong>'Comparisons'</strong> appendix included at the <a href="#comparisons">bottom of this page</a>.</p>
+        </div>
+        <div class="abstract-presentations fade-in-element">
+          <h4>This research was presented at:</h4>
+          <ul>
+            <li><a href="https://sched.co/1hpkD" target="_blank" rel="noopener noreferrer">AES AVAR 2024 on Aug. 29, 2024</a> [<a href="https://drive.google.com/file/d/1X9EKfiKzPoVZ8LgH7NNEedysL8h6DjeZ/view?usp=drive_link" target="_blank" rel="noopener noreferrer"><em>slides</em></a>]</li>
+            <li><a href="https://sched.co/1RhwD" target="_blank" rel="noopener noreferrer">AES Fall 2023 on Oct. 27, 2023</a> [<a href="https://drive.google.com/file/d/1j2gr79RuLqp8TnEn1mbXXEj8bAY4nHsj" target="_blank" rel="noopener noreferrer"><em>slides</em></a>]</li>
+            <li><a href="https://acousticalsociety.org/chicago-il-8-12-may-2023/" target="_blank" rel="noopener noreferrer">ASA Meeting #184 on May 9, 2023</a></li>
+            <li><a href="https://audio.dev/conference/" target="_blank" rel="noopener noreferrer">ADC 2022 on Nov. 14-16, 2022</a></li>
+            <li><a href="https://sched.co/1CGVW" target="_blank" rel="noopener noreferrer">AES Fall 2022 on Oct. 26, 2022</a> [<a href="https://www.aes.org/e-lib/browse.cfm?elib=21939" target="_blank" rel="noopener noreferrer"><em>paper</em></a>]</li>
+            <li><a href="https://sched.co/mIiD" target="_blank" rel="noopener noreferrer">AES Fall 2021 on Oct. 28, 2022</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="introduction" class="section binaural-intro-bg">
+      <div class="container">
+        <h2 class="fade-in-element">Please use headphones for the following demonstration.</h2>
+        <div class="intro-content fade-in-element">
+          <div class="intro-text">
+            <p>Each section will simulate a single virtual source rotating around the head of the listener using different processing methods.</p>
+            <p><strong>NOTE:</strong> The intended trajectory of the source (shown below) remains consistent for all examples, though perceptually it may vary according to the processing method used. It begins at 90° to your right and travels clockwise 1.5 times around your head in the horizontal plane (initially toward the back).</p>
+          </div>
+          <div class="intro-visual">
+            <div class="head-model-container">
+              <video class="trajectory-video" autoplay muted loop playsinline>
+                <source src="assets/binaural-externalization/06 - Circle - Transparent (Sun).webm" type="video/webm">
+                <p>Your browser does not support the video element.</p>
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stereo" class="section">
+      <div class="container">
+        <h2 class="fade-in-element">Traditional Stereo Panning</h2>
+        <div class="stereo-grid fade-in-element">
+          <div class="stereo-visual">
+            <h4>Perceptual Representation of Stereo Panning</h4>
+            <div class="head-model-container">
+              <video class="stereo-animation" autoplay muted loop playsinline>
+                <source src="assets/binaural-externalization/08 - Line - Transparent (Sun).webm" type="video/webm">
+                <p>Your browser does not support the video element.</p>
+              </video>
+            </div>
+          </div>
+          <div class="stereo-explanation">
+            <h4>Explanation:</h4>
+            <ul>
+              <li>Stereo audio is the most ubiquitous audio format found in the world today.</li>
+              <li>However, without additional processing, traditional stereo playback has limited spatial positioning capabilities. It only allows for a single degree of directional freedom (left/right), ignoring the other two degrees (front/back and up/down).</li>
+              <li>Because of this, if a sound source were to be rotated around the listener's head for stereo playback over headphones, it would simply sound like it was traveling side to side through the head.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="audio-demo-section fade-in-element">
+          <h4>Demonstration:</h4>
+          <div class="custom-audio-player">
+            <div class="audio-controls">
+              <button class="play-pause-btn" aria-label="Play audio">
+                <svg class="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg class="pause-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+              </button>
+              <div class="audio-progress-container">
+                <div class="audio-progress-bar">
+                  <div class="audio-progress-fill"></div>
+                </div>
+              </div>
+              <div class="audio-time-display">
+                <span class="current-time">00:00</span> / <span class="total-time">00:00</span>
+              </div>
+            </div>
+            <audio preload="metadata">
+              <source src="assets/binaural-externalization/stereo-demo.mp3" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+          <ul class="demo-instructions">
+            <li>Close your eyes and press play. Keep your head still, facing straight ahead.</li>
+            <li>Does the source sound like it travels around your head or back and forth through your head as shown in the animation to the left?</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="binaural" class="section">
+      <div class="container">
+        <h2 class="fade-in-element">Binaural Processing</h2>
+        <div class="binaural-grid fade-in-element">
+          <div class="binaural-explanation">
+            <h4>Explanation:</h4>
+            <ul>
+              <li>To overcome these shortcomings of traditional stereo panning, applying binaural processing to an audio file can help to account for the other degrees of directional freedom.</li>
+              <li>Binaural processing can be achieved by applying filters and delays that simulate the physical characteristics of a human head and ears.</li>
+              <li><strong>Binaural Processing:</strong>
+                <ul>
+                  <li>The cartilage around the ear canal (pinna) and the geometry of a human head combine to act as a filter that can help humans to distinguish directional information (i.e. front vs back, up vs down, left vs right).</li>
+                  <li>This filter can be measured and approximated by a Head-Related Transfer Function (HRTF).</li>
+                  <li>The spectrum of an HRTF changes based on where a sound source is located.</li>
+                </ul>
+              </li>
+              <li>Binaural Processing improves spatialization over stereo panning but still has some shortcomings.</li>
+              <li>One specific issue is that as the source passes in front of the listener, the perceived trajectory often moves up and over the head rather than remaining in the horizontal plane as intended.</li>
+            </ul>
+          </div>
+          <div class="binaural-visual">
+            <h4>Spectrum of an HRTF (Neumann KU 100) as a source rotates clockwise around the listener.</h4>
+            <p><em>(Thanks to IRCAM Spat)</em></p>
+            <div class="hrtf-spectrum-container">
+              <video class="hrtf-spectrum" autoplay muted loop playsinline>
+                <source src="assets/binaural-externalization/02 - HRTF Spectrum Plot (slow).mp4" type="video/mp4">
+                <p>Your browser does not support the video element.</p>
+              </video>
+            </div>
+            <h4>Perceptual Representation of Binaural Rotation</h4>
+            <div class="head-model-container">
+              <video class="binaural-animation" autoplay muted loop playsinline>
+                <source src="assets/binaural-externalization/07 - Circle Elevation - Transparent (Sun).webm" type="video/webm">
+                <p>Your browser does not support the video element.</p>
+              </video>
+            </div>
+          </div>
+        </div>
+        <div class="audio-demo-section fade-in-element">
+          <h4>Demonstration:</h4>
+          <div class="custom-audio-player">
+            <div class="audio-controls">
+              <button class="play-pause-btn" aria-label="Play audio">
+                <svg class="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg class="pause-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+              </button>
+              <div class="audio-progress-container">
+                <div class="audio-progress-bar">
+                  <div class="audio-progress-fill"></div>
+                </div>
+              </div>
+              <div class="audio-time-display">
+                <span class="current-time">00:00</span> / <span class="total-time">00:00</span>
+              </div>
+            </div>
+            <audio preload="metadata">
+              <source src="assets/binaural-externalization/binaural-demo.mp3" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+          <ul class="demo-instructions">
+            <li>Close your eyes and press play. Keep your head still, facing straight ahead.</li>
+            <li>Does the source sound like it travels around your head? Does the source feel like it remains in the horizontal plane or does it elevate above your head as it passes in front as shown in the animation to the right?</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="externalized" class="section">
+      <div class="container">
+        <h2 class="fade-in-element">Externalization Processing</h2>
+        <div class="externalized-grid fade-in-element">
+          <div class="externalized-visual">
+            <h4>Perceptual Representation of Externalized Binaural Rotation</h4>
+            <div class="head-model-container">
+              <video class="externalized-animation" autoplay muted loop playsinline>
+                <source src="assets/binaural-externalization/06 - Circle - Transparent (Sun).webm" type="video/webm">
+                <p>Your browser does not support the video element.</p>
+              </video>
+            </div>
+          </div>
+          <div class="externalized-explanation">
+            <h4>Explanation:</h4>
+            <ul>
+              <li>A common method to approximate spatialization and/or distance from the listener is introducing synthetic reverberation.</li>
+              <li>Reverberation, however, also introduces timbral coloration of the sound, ultimately changing its characteristics (e.g. a singer in a bedroom vs a concert hall).</li>
+              <li>The proposed processing method of this demonstration seeks to exploit the perceptual triggers of externalization produced by reverberation, while minimizing spectral coloration artifacts.</li>
+              <li>This is achieved by processing the source signal through a 2-channel quasi-all-pass filter that has the effect of adding a brief diffuse reverberation-like decay tail.</li>
+              <li>More detailed discussion and description of this method are available in <a href="https://www.aes.org/e-lib/browse.cfm?elib=21939" target="_blank" rel="noopener noreferrer">this paper</a> and <a href="https://drive.google.com/file/d/1X9EKfiKzPoVZ8LgH7NNEedysL8h6DjeZ/view?usp=drive_link" target="_blank" rel="noopener noreferrer">these slides</a>.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="audio-demo-section fade-in-element">
+          <h4>Demonstration:</h4>
+          <div class="custom-audio-player">
+            <div class="audio-controls">
+              <button class="play-pause-btn" aria-label="Play audio">
+                <svg class="play-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
+                <svg class="pause-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                </svg>
+              </button>
+              <div class="audio-progress-container">
+                <div class="audio-progress-bar">
+                  <div class="audio-progress-fill"></div>
+                </div>
+              </div>
+              <div class="audio-time-display">
+                <span class="current-time">00:00</span> / <span class="total-time">00:00</span>
+              </div>
+            </div>
+            <audio preload="metadata">
+              <source src="assets/binaural-externalization/externalized-demo.mp3" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+          <ul class="demo-instructions">
+            <li>Close your eyes and press play. Keep your head still, facing straight ahead.</li>
+            <li>Does the source sound like it travels around your head? Does the source feel like it remains in the horizontal plane (as shown in the animation to the left) or does it elevate above your head as it passes in front similar to the previous section?</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="comparisons" class="section">
+      <div class="container">
+        <h2 class="fade-in-element">Appendix - Comparisons</h2>
+        <div class="comparisons-intro fade-in-element">
+          <h4>Demonstration:</h4>
+          <ul>
+            <li>In addition to the rotation examples presented above, this section includes examples for a stationary sound source at various positions around the listener's head in the horizontal plane.</li>
+            <li>In particular, we recommend checking out lateral positions, comparing front (±30 or ±45 degrees) vs. back (±150 or ±135 degrees), with or without the Externalization enhancement.</li>
+            <li>Does the position of the source sound more elevated or more "internalized" when you play the 'Binaural' version after playing the 'Externalized' version?</li>
+            <li>As in the above examples, we recommend that you <strong>close your eyes</strong> before playing.</li>
+          </ul>
+        </div>
+        <div class="comparison-grid fade-in-element">
+          <!-- Comparison grid will be populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <section id="future-work" class="section">
+      <div class="container">
+        <h2 class="fade-in-element">Future Work</h2>
+        <div class="future-work-content fade-in-element">
+          <ul>
+            <li>Psychophysical investigations of the perception of concurrent free-field and diffuse-field components of a sound event.</li>
+            <li>Producing binaural recordings that leverage familiar 2-channel stereo production techniques (such as stereo flanger or chorus effects), or apply externalization processing to selected tracks or stems in a stereo mix (e.g. a vocal track).</li>
+            <li>Virtual meeting and augmented or virtual reality experiences, combining the proposed externalization processing scheme with head tracking and HRTF personalization.</li>
+          </ul>
+          
+          <div class="acknowledgments">
+            <p>Thanks to <strong>Alexey Lukin</strong>, <strong>Kurt Werner</strong>, and <strong>Evan Allen</strong> for previous work presented at the AES Show Fall 2021.</p>
+            <p>Thanks to <strong>Alexey Lukin</strong> and <strong>Roth Michaels</strong> for early investigations towards extending the prototype implementation and its evaluation in Max.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button class="to-top" aria-label="Back to top">↑</button>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p><a href="index.html" class="back-to-main">← Back to Christopher Landschoot's Main Site</a></p>
+      <small>© 2025 Christopher Landschoot</small>
+      <small>© 2025 Virtual Works</small>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/binaural-externalization.js"></script>
+</body>
+</html> 

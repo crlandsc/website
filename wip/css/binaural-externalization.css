@@ -1,0 +1,478 @@
+/* Binaural Externalization Page Styles */
+
+/* Override scroll behavior for proper section positioning */
+html {
+  scroll-padding-top: 70px; /* Account for sticky header - matches main site */
+}
+
+/* Header modifications for centered navigation - using higher specificity */
+header .container.binaural-header-container {
+  display: flex;
+  justify-content: center !important; /* Override main site's space-between */
+  align-items: center;
+  height: 70px;
+  padding-left: var(--space-xs);
+  padding-right: var(--space-xs);
+}
+
+/* Center desktop navigation */
+header .container.binaural-header-container .desktop-nav {
+  display: flex !important; /* Override main site's display: none on mobile-first approach */
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+/* Center mobile navigation */
+header .container.binaural-header-container .mobile-nav {
+  position: relative;
+  margin: 0 auto;
+}
+
+/* Responsive nav visibility with higher specificity */
+@media (min-width: 768px) {
+  header .container.binaural-header-container .desktop-nav {
+    display: flex !important;
+  }
+  
+  header .container.binaural-header-container .mobile-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  header .container.binaural-header-container .desktop-nav {
+    display: none !important;
+  }
+  
+  header .container.binaural-header-container .mobile-nav {
+    display: block;
+  }
+}
+
+/* Hero section styling - matching main site pattern */
+.binaural-hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--clr-background-primary);
+  background-color: var(--clr-accent-primary); /* Use accent color for hero background */
+}
+
+/* Remove custom gradient background */
+.binaural-gradient-bg {
+  display: none;
+}
+
+.binaural-hero .hero-content {
+  max-width: 800px;
+  padding: 0 var(--space-m);
+}
+
+.binaural-hero h1 {
+  font-size: 2.5rem;
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-m);
+  line-height: 1.2;
+}
+
+.binaural-hero .hero-tagline {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-light);
+  opacity: 0.9;
+}
+
+/* Abstract section styling - centered layout */
+.abstract-content {
+  max-width: 700px;
+  margin: 0 auto var(--space-l) auto;
+  text-align: center;
+}
+
+.abstract-content p {
+  text-align: justify;
+  line-height: 1.8;
+  margin-bottom: var(--space-m);
+  font-size: 1.1rem;
+}
+
+.abstract-presentations {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.abstract-presentations h4 {
+  margin-bottom: var(--space-m);
+  font-weight: var(--font-weight-medium);
+}
+
+.abstract-presentations ul {
+  list-style: none;
+  padding: 0;
+}
+
+.abstract-presentations li {
+  margin-bottom: var(--space-s);
+  line-height: 1.6;
+}
+
+.abstract-presentations a {
+  color: var(--clr-accent-primary);
+  text-decoration: none;
+  font-weight: var(--font-weight-regular);
+}
+
+.abstract-presentations a:hover {
+  color: var(--clr-accent-secondary);
+  text-decoration: underline;
+}
+
+/* Introduction section styling - matching hero section background */
+.binaural-intro-bg {
+  background-color: var(--clr-accent-primary); /* Same as hero section */
+  color: var(--clr-background-primary); /* White text for contrast */
+}
+
+.binaural-intro-bg h2,
+.binaural-intro-bg p {
+  color: var(--clr-background-primary); /* Ensure all text is white */
+}
+
+/* Section background alternating pattern - matching main site */
+/* Primary background (white) sections */
+#stereo,
+#externalized,
+#future-work {
+  background-color: var(--clr-background-primary);
+}
+
+/* Secondary background (gray) sections use default from main site .section rule */
+/* #abstract, #introduction, #binaural, #comparisons will use var(--clr-background-secondary) */
+
+.intro-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-l);
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.head-model-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.trajectory-video {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+}
+
+/* Grid layouts for content sections */
+.stereo-grid,
+.binaural-grid,
+.externalized-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-l);
+  margin-bottom: var(--space-l);
+}
+
+.stereo-visual,
+.binaural-visual,
+.externalized-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stereo-explanation,
+.binaural-explanation,
+.externalized-explanation {
+  display: flex;
+  flex-direction: column;
+}
+
+.stereo-explanation h4,
+.binaural-explanation h4,
+.externalized-explanation h4 {
+  margin-bottom: var(--space-m);
+}
+
+.stereo-explanation ul,
+.binaural-explanation ul,
+.externalized-explanation ul {
+  list-style-type: disc;
+  margin-left: 1.5em;
+}
+
+.stereo-explanation li,
+.binaural-explanation li,
+.externalized-explanation li {
+  margin-bottom: var(--space-s);
+  line-height: 1.6;
+}
+
+/* Video styling */
+.stereo-animation,
+.binaural-animation,
+.externalized-animation,
+.hrtf-spectrum {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px var(--clr-shadow-color);
+}
+
+.hrtf-spectrum-container {
+  margin: var(--space-m) 0;
+}
+
+/* Audio demo section styling */
+.audio-demo-section {
+  background-color: var(--clr-background-secondary);
+  padding: var(--space-l);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--clr-border-primary);
+  margin-top: var(--space-l);
+}
+
+.audio-demo-section h4 {
+  margin-bottom: var(--space-m);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Custom audio player styling */
+.custom-audio-player {
+  background-color: var(--clr-background-primary);
+  border: 1px solid var(--clr-border-primary);
+  border-radius: var(--border-radius);
+  padding: var(--space-m);
+  margin: var(--space-m) 0;
+}
+
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-m);
+}
+
+.play-pause-btn {
+  background-color: var(--clr-accent-primary);
+  color: var(--clr-background-primary);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-standard);
+}
+
+.play-pause-btn:hover {
+  background-color: var(--clr-accent-secondary);
+}
+
+.audio-progress-container {
+  flex: 1;
+  background-color: var(--clr-background-secondary);
+  border-radius: 10px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.audio-progress-bar {
+  width: 100%;
+  height: 100%;
+  background-color: var(--clr-border-primary);
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+}
+
+.audio-progress-fill {
+  height: 100%;
+  background-color: var(--clr-accent-primary);
+  border-radius: 10px;
+  width: 0%;
+  transition: width 0.1s ease;
+}
+
+.audio-time-display {
+  font-size: 0.9rem;
+  color: var(--clr-text-secondary);
+  white-space: nowrap;
+}
+
+/* Demo instructions styling */
+.demo-instructions {
+  list-style-type: disc;
+  margin-left: 1.5em;
+  margin-top: var(--space-m);
+  color: var(--clr-text-primary);
+}
+
+.demo-instructions li {
+  margin-bottom: var(--space-s);
+  line-height: 1.6;
+}
+
+/* Comparisons section styling */
+.comparisons-intro {
+  margin-bottom: var(--space-l);
+}
+
+.comparisons-intro h4 {
+  margin-bottom: var(--space-m);
+  font-weight: var(--font-weight-medium);
+}
+
+.comparisons-intro ul {
+  list-style-type: disc;
+  margin-left: 1.5em;
+}
+
+.comparisons-intro li {
+  margin-bottom: var(--space-s);
+  line-height: 1.6;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-m);
+  margin-top: var(--space-l);
+}
+
+/* Future work section styling */
+.future-work-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.future-work-content ul {
+  list-style-type: disc;
+  margin-left: 1.5em;
+  text-align: left;
+  margin-bottom: var(--space-l);
+}
+
+.future-work-content li {
+  margin-bottom: var(--space-m);
+  line-height: 1.6;
+}
+
+.acknowledgments {
+  background-color: var(--clr-background-secondary);
+  padding: var(--space-l);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--clr-border-primary);
+  margin-top: var(--space-l);
+}
+
+.acknowledgments p {
+  margin-bottom: var(--space-s);
+  font-style: italic;
+}
+
+/* Footer styling */
+.back-to-main {
+  color: var(--clr-accent-primary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+}
+
+.back-to-main:hover {
+  color: var(--clr-accent-secondary);
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .binaural-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .binaural-hero .hero-tagline {
+    font-size: 1.2rem;
+  }
+  
+  .intro-content,
+  .stereo-grid,
+  .binaural-grid,
+  .externalized-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-m);
+  }
+  
+  .abstract-content,
+  .abstract-presentations {
+    padding: 0 var(--space-s);
+  }
+  
+  .audio-controls {
+    flex-direction: column;
+    gap: var(--space-s);
+  }
+  
+  .audio-time-display {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .binaural-hero h1 {
+    font-size: 1.8rem;
+  }
+  
+  .abstract-content p {
+    font-size: 1rem;
+  }
+}
+
+/* Desktop-specific adjustments */
+@media (min-width: 1024px) {
+  .abstract-content {
+    max-width: 700px;
+  }
+  
+  .trajectory-video,
+  .stereo-animation,
+  .binaural-animation,
+  .externalized-animation {
+    max-width: 350px;
+  }
+  
+  .hrtf-spectrum {
+    max-width: 450px;
+  }
+}
+
+/* Animation support */
+@media (prefers-reduced-motion: reduce) {
+  .trajectory-video,
+  .stereo-animation,
+  .binaural-animation,
+  .externalized-animation,
+  .hrtf-spectrum {
+    animation: none;
+  }
+}
+
+/* High contrast support */
+@media (prefers-contrast: high) {
+  
+  .custom-audio-player {
+    border-width: 2px;
+  }
+} 
