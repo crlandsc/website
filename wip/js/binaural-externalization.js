@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize all functionality
   // Note: Theme toggle is handled by main.js to avoid conflicts
   initializeSmoothScrolling();
-  initializeAudioPlayers();
   initializeIntersectionObserver();
   initializeNavigationHighlighting();
   initializeComparisonGrid();
+  initializeAudioPlayers();
   initializeBackToTop();
   initializeMobileNavigation();
   
@@ -245,12 +245,14 @@ function initializeComparisonGrid() {
   const comparisonGrid = document.querySelector('.comparison-grid');
   if (!comparisonGrid) return;
   
+  const audio_dir = "assets/binaural-externalization/audio/240622 - Tom's Diner";
+
   // Define the comparison data
   const comparisonData = [
-    { angle: 0, label: 'Front (0°)' },
-    { angle: 30, label: 'Front Right (30°)' },
-    { angle: 45, label: 'Front Right (45°)' },
-    { angle: 90, label: 'Right (90°)' },
+    { angle: 0,   label: 'Front (0°)' },
+    { angle: 30,  label: 'Front Right (30°)' },
+    { angle: 45,  label: 'Front Right (45°)' },
+    { angle: 90,  label: 'Right (90°)' },
     { angle: 135, label: 'Back Right (135°)' },
     { angle: 150, label: 'Back Right (150°)' },
     { angle: 180, label: 'Back (180°)' },
@@ -259,36 +261,49 @@ function initializeComparisonGrid() {
     { angle: 270, label: 'Left (270°)' },
     { angle: 315, label: 'Front Left (315°)' },
     { angle: 330, label: 'Front Left (330°)' }
-  ];
+  ].map(item => ({
+    ...item,
+    stereo_url:       `${audio_dir}/Tom_s Diner (loop) ${String(item.angle).padStart(3, '0')}_deg.wav`,
+    binaural_url:     `${audio_dir}/Tom_s Diner (loop) ${String(item.angle).padStart(3, '0')}_deg, binaural.wav`,
+    externalized_url: `${audio_dir}/Tom_s Diner (loop) ${String(item.angle).padStart(3, '0')}_deg, binaural, externalized.wav`
+  }));
   
   // Create comparison cards
   comparisonData.forEach(item => {
     const card = document.createElement('div');
     card.className = 'comparison-card fade-in-element';
-    
+
     card.innerHTML = `
       <h5>${item.label}</h5>
-      <div class="comparison-audio-players">
+      <div class="comparison-audio-players vertical">
         <div class="comparison-player">
-          <h6>Binaural</h6>
+          <h6>Traditional Stereo (No Processing)</h6>
+          <div class="custom-audio-player compact">
+            <div class="audio-controls">
+              <button class="play-pause-btn" aria-label="Play stereo audio">
+                <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+              </button>
+              <div class="audio-progress-container"><div class="audio-progress-bar"><div class="audio-progress-fill"></div></div></div>
+            </div>
+            <audio preload="metadata">
+              <source src="${item.stereo_url}" type="audio/wav">
+              Your browser does not support the audio element.
+            </audio>
+          </div>
+        </div>
+        <div class="comparison-player">
+          <h6>Binaural Processing</h6>
           <div class="custom-audio-player compact">
             <div class="audio-controls">
               <button class="play-pause-btn" aria-label="Play binaural audio">
-                <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-                <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
-                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                </svg>
+                <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
               </button>
-              <div class="audio-progress-container">
-                <div class="audio-progress-bar">
-                  <div class="audio-progress-fill"></div>
-                </div>
-              </div>
+              <div class="audio-progress-container"><div class="audio-progress-bar"><div class="audio-progress-fill"></div></div></div>
             </div>
             <audio preload="metadata">
-              <source src="assets/binaural-externalization/binaural-${item.angle}.mp3" type="audio/mpeg">
+              <source src="${item.binaural_url}" type="audio/wav">
               Your browser does not support the audio element.
             </audio>
           </div>
@@ -298,21 +313,13 @@ function initializeComparisonGrid() {
           <div class="custom-audio-player compact">
             <div class="audio-controls">
               <button class="play-pause-btn" aria-label="Play externalized audio">
-                <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-                <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
-                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                </svg>
+                <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
               </button>
-              <div class="audio-progress-container">
-                <div class="audio-progress-bar">
-                  <div class="audio-progress-fill"></div>
-                </div>
-              </div>
+              <div class="audio-progress-container"><div class="audio-progress-bar"><div class="audio-progress-fill"></div></div></div>
             </div>
             <audio preload="metadata">
-              <source src="assets/binaural-externalization/externalized-${item.angle}.mp3" type="audio/mpeg">
+              <source src="${item.externalized_url}" type="audio/wav">
               Your browser does not support the audio element.
             </audio>
           </div>
@@ -324,7 +331,7 @@ function initializeComparisonGrid() {
   });
   
   // Re-initialize audio players for the new comparison grid
-  initializeAudioPlayers();
+  // initializeAudioPlayers();
   
   // Re-initialize intersection observer for new elements
   const newFadeElements = comparisonGrid.querySelectorAll('.fade-in-element');
