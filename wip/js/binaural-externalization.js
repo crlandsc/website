@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeSmoothScrolling();
   initializeIntersectionObserver();
   initializeNavigationHighlighting();
-  initializeComparisonGrid();
-  initializeAudioPlayers();
+  initializeAudioPlayers(); // Initialize existing audio players first
+  initializeComparisonGrid(); // This will create new ones and initialize them
   initializeBackToTop();
   initializeMobileNavigation();
   
@@ -56,7 +56,7 @@ function initializeSmoothScrolling() {
  * Initialize custom audio players
  */
 function initializeAudioPlayers() {
-  const audioPlayers = document.querySelectorAll('.custom-audio-player');
+  const audioPlayers = document.querySelectorAll('.custom-audio-player:not([data-initialized])');
   
   audioPlayers.forEach(player => {
     const audio = player.querySelector('audio');
@@ -68,7 +68,10 @@ function initializeAudioPlayers() {
     const currentTimeSpan = player.querySelector('.current-time');
     const totalTimeSpan = player.querySelector('.total-time');
     
-    if (!audio) return;
+    if (!audio || !playPauseBtn) return;
+    
+    // Mark as initialized to avoid double-initialization
+    player.setAttribute('data-initialized', 'true');
     
     // Ensure all other audio players are paused when one starts playing
     const pauseOtherPlayers = () => {
@@ -97,14 +100,24 @@ function initializeAudioPlayers() {
     };
     
     // Play/Pause button click handler
-    playPauseBtn.addEventListener('click', () => {
+    const playPauseHandler = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
       if (audio.paused) {
         pauseOtherPlayers();
-        audio.play();
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.error('Audio play failed:', error);
+          });
+        }
       } else {
         audio.pause();
       }
-    });
+    };
+    
+    playPauseBtn.addEventListener('click', playPauseHandler);
     
     // Audio event listeners
     audio.addEventListener('play', () => {
@@ -116,7 +129,7 @@ function initializeAudioPlayers() {
     });
     
     audio.addEventListener('timeupdate', () => {
-      if (audio.duration) {
+      if (audio.duration && !isNaN(audio.duration)) {
         const progress = (audio.currentTime / audio.duration) * 100;
         if (progressFill) progressFill.style.width = `${progress}%`;
         if (currentTimeSpan) currentTimeSpan.textContent = formatTime(audio.currentTime);
@@ -124,15 +137,28 @@ function initializeAudioPlayers() {
     });
     
     audio.addEventListener('loadedmetadata', () => {
-      if (totalTimeSpan) totalTimeSpan.textContent = formatTime(audio.duration);
+      if (totalTimeSpan && audio.duration && !isNaN(audio.duration)) {
+        totalTimeSpan.textContent = formatTime(audio.duration);
+      }
+    });
+    
+    audio.addEventListener('durationchange', () => {
+      if (totalTimeSpan && audio.duration && !isNaN(audio.duration)) {
+        totalTimeSpan.textContent = formatTime(audio.duration);
+      }
     });
     
     // Progress bar click handler
     if (progressBar) {
       progressBar.addEventListener('click', (e) => {
-        const rect = progressBar.getBoundingClientRect();
-        const percent = (e.clientX - rect.left) / rect.width;
-        audio.currentTime = percent * audio.duration;
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (audio.duration && !isNaN(audio.duration)) {
+          const rect = progressBar.getBoundingClientRect();
+          const percent = (e.clientX - rect.left) / rect.width;
+          audio.currentTime = percent * audio.duration;
+        }
       });
     }
     
@@ -142,6 +168,31 @@ function initializeAudioPlayers() {
       if (progressFill) progressFill.style.width = '0%';
       if (currentTimeSpan) currentTimeSpan.textContent = '00:00';
     });
+    
+    // Handle loading errors
+    audio.addEventListener('error', (e) => {
+      console.error('Audio loading error:', e, 'Source:', audio.src);
+      console.error('Error details:', audio.error);
+    });
+    
+    audio.addEventListener('loadstart', () => {
+      console.log('Audio loading started:', audio.src);
+    });
+    
+    audio.addEventListener('canplaythrough', () => {
+      console.log('Audio can play through:', audio.src);
+    });
+    
+    // Try to load metadata immediately
+    if (audio.readyState >= 1) {
+      console.log('Audio ready state >= 1:', audio.src, 'Duration:', audio.duration);
+      if (totalTimeSpan && audio.duration && !isNaN(audio.duration)) {
+        totalTimeSpan.textContent = formatTime(audio.duration);
+      }
+    } else {
+      console.log('Loading audio:', audio.src);
+      audio.load();
+    }
   });
 }
 
@@ -239,7 +290,7 @@ function initializeNavigationHighlighting() {
 }
 
 /**
- * Initialize comparison grid with audio samples
+ * Initialize simple grid comparison layout with audio samples
  */
 function initializeComparisonGrid() {
   const comparisonGrid = document.querySelector('.comparison-grid');
@@ -247,115 +298,172 @@ function initializeComparisonGrid() {
   
   const audio_dir = "assets/binaural-externalization/audio/240622 - Tom's Diner";
 
-  // Define the comparison data
-  const comparisonData = [
-    { angle: 0,   label: 'Front (0°)' },
-    { angle: 30,  label: 'Front Right (30°)' },
-    { angle: 45,  label: 'Front Right (45°)' },
-    { angle: 90,  label: 'Right (90°)' },
-    { angle: 135, label: 'Back Right (135°)' },
-    { angle: 150, label: 'Back Right (150°)' },
-    { angle: 180, label: 'Back (180°)' },
-    { angle: 210, label: 'Back Left (210°)' },
-    { angle: 225, label: 'Back Left (225°)' },
-    { angle: 270, label: 'Left (270°)' },
-    { angle: 315, label: 'Front Left (315°)' },
-    { angle: 330, label: 'Front Left (330°)' }
-  ].map(item => ({
-    ...item,
-    stereo_url:       `${audio_dir}/Tom_s Diner (loop) ${String(item.angle).padStart(3, '0')}_deg.wav`,
-    binaural_url:     `${audio_dir}/Tom_s Diner (loop) ${String(item.angle).padStart(3, '0')}_deg, binaural.wav`,
-    externalized_url: `${audio_dir}/Tom_s Diner (loop) ${String(item.angle).padStart(3, '0')}_deg, binaural, externalized.wav`
-  }));
-  
-  // Create comparison cards
-  comparisonData.forEach(item => {
-    const card = document.createElement('div');
-    card.className = 'comparison-card fade-in-element';
+  // Clear existing content and set up simple grid layout
+  comparisonGrid.innerHTML = '';
+  comparisonGrid.className = 'comparison-grid comparison-container';
 
-    card.innerHTML = `
-      <h5>${item.label}</h5>
-      <div class="comparison-audio-players vertical">
-        <div class="comparison-player">
-          <h6>Traditional Stereo (No Processing)</h6>
-          <div class="custom-audio-player compact">
-            <div class="audio-controls">
-              <button class="play-pause-btn" aria-label="Play stereo audio">
-                <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-              </button>
-              <div class="audio-progress-container"><div class="audio-progress-bar"><div class="audio-progress-fill"></div></div></div>
-            </div>
-            <audio preload="metadata">
-              <source src="${item.stereo_url}" type="audio/wav">
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        </div>
-        <div class="comparison-player">
-          <h6>Binaural Processing</h6>
-          <div class="custom-audio-player compact">
-            <div class="audio-controls">
-              <button class="play-pause-btn" aria-label="Play binaural audio">
-                <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-              </button>
-              <div class="audio-progress-container"><div class="audio-progress-bar"><div class="audio-progress-fill"></div></div></div>
-            </div>
-            <audio preload="metadata">
-              <source src="${item.binaural_url}" type="audio/wav">
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        </div>
-        <div class="comparison-player">
-          <h6>Externalized</h6>
-          <div class="custom-audio-player compact">
-            <div class="audio-controls">
-              <button class="play-pause-btn" aria-label="Play externalized audio">
-                <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-              </button>
-              <div class="audio-progress-container"><div class="audio-progress-bar"><div class="audio-progress-fill"></div></div></div>
-            </div>
-            <audio preload="metadata">
-              <source src="${item.externalized_url}" type="audio/wav">
-              Your browser does not support the audio element.
-            </audio>
-          </div>
-        </div>
-      </div>
-    `;
+  // Define the panel data for 3x5 grid layout
+  const gridPanels = [
+    // First: Rotating source (center of grid)
+    { angle: 'rotating', label: 'Rotating Source (Clockwise)', isRotating: true },
+    // Then all the static angles in the order they appear in the grid
+    { angle: 0, label: 'Front 0°' },
+    { angle: 30, label: '+30°' },
+    { angle: 45, label: '+45°' },
+    { angle: 90, label: '+90°' },
+    { angle: 135, label: '+135°' },
+    { angle: 150, label: '+150°' },
+    { angle: 180, label: 'Behind 180°' },
+    { angle: 210, label: '-150°' },
+    { angle: 225, label: '-135°' },
+    { angle: 270, label: '-90°' },
+    { angle: 315, label: '-45°' },
+    { angle: 330, label: '-30°' }
+  ];
+
+  // Create all panels
+  gridPanels.forEach(item => {
+    const panel = document.createElement('div');
+    panel.className = `comparison-panel fade-in-element ${item.isRotating ? 'rotating' : ''}`;
+    panel.setAttribute('data-angle', item.angle);
     
-    comparisonGrid.appendChild(card);
+    let stereoUrl, binauralUrl, externalizedUrl;
+    
+    if (item.isRotating) {
+      // Rotating source has different file names
+      stereoUrl = `${audio_dir}/Tom_s Diner (loop) rotating.wav`;
+      binauralUrl = `${audio_dir}/Tom_s Diner (loop) rotating, binaural.wav`;
+      externalizedUrl = `${audio_dir}/Tom_s Diner (loop) rotating, binaural, externalized.wav`;
+    } else {
+      // Static angles use degree-based file names
+      stereoUrl = `${audio_dir}/Tom_s Diner (loop) ${String(item.angle).padStart(3, '0')}_deg.wav`;
+      binauralUrl = `${audio_dir}/Tom_s Diner (loop) ${String(item.angle).padStart(3, '0')}_deg, binaural.wav`;
+      externalizedUrl = `${audio_dir}/Tom_s Diner (loop) ${String(item.angle).padStart(3, '0')}_deg, binaural, externalized.wav`;
+    }
+    
+    panel.innerHTML = createAudioPlayerSection(item.label, stereoUrl, binauralUrl, externalizedUrl);
+    comparisonGrid.appendChild(panel);
   });
   
-  // Re-initialize audio players for the new comparison grid
-  // initializeAudioPlayers();
+  // Wait for DOM to be fully updated before initializing audio players
+  setTimeout(() => {
+    initializeAudioPlayers();
+  }, 50);
   
-  // Re-initialize intersection observer for new elements
-  const newFadeElements = comparisonGrid.querySelectorAll('.fade-in-element');
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
+  // Re-initialize intersection observer for new elements with a small delay
+  setTimeout(() => {
+    const newFadeElements = comparisonGrid.querySelectorAll('.fade-in-element');
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.05,
+        rootMargin: '50px 0px 50px 0px'
       });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
-    
-    newFadeElements.forEach(element => {
-      observer.observe(element);
-    });
-  } else {
-    newFadeElements.forEach(element => {
-      element.classList.add('visible');
-    });
-  }
+      
+      newFadeElements.forEach(element => {
+        observer.observe(element);
+      });
+    } else {
+      // Fallback for browsers without IntersectionObserver
+      newFadeElements.forEach(element => {
+        element.classList.add('visible');
+      });
+    }
+  }, 100);
+}
+
+/**
+ * Create audio player section HTML for comparison panels
+ */
+function createAudioPlayerSection(title, stereoUrl, binauralUrl, externalizedUrl) {
+  const titleTag = title.includes('Rotating') ? 'h4' : 'h5';
+  
+  // Debug: Creating audio section
+  console.log('Creating audio section for:', title);
+  
+  return `
+    <${titleTag}>${title}</${titleTag}>
+    <div class="comparison-audio-players">
+      <div class="comparison-player">
+        <h6>Traditional Stereo (No Processing)</h6>
+        <div class="custom-audio-player">
+          <div class="audio-controls">
+            <button class="play-pause-btn" aria-label="Play stereo audio" type="button">
+              <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+            <div class="audio-progress-container">
+              <div class="audio-progress-bar">
+                <div class="audio-progress-fill"></div>
+              </div>
+            </div>
+            <div class="audio-time-display">
+              <span class="current-time">00:00</span> / <span class="total-time">00:00</span>
+            </div>
+          </div>
+          <audio preload="metadata" crossorigin="anonymous">
+            <source src="${stereoUrl}" type="audio/wav">
+            <source src="${stereoUrl}" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      </div>
+      <div class="comparison-player">
+        <h6>Binaural Processing</h6>
+        <div class="custom-audio-player">
+          <div class="audio-controls">
+            <button class="play-pause-btn" aria-label="Play binaural audio" type="button">
+              <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+            <div class="audio-progress-container">
+              <div class="audio-progress-bar">
+                <div class="audio-progress-fill"></div>
+              </div>
+            </div>
+            <div class="audio-time-display">
+              <span class="current-time">00:00</span> / <span class="total-time">00:00</span>
+            </div>
+          </div>
+          <audio preload="metadata" crossorigin="anonymous">
+            <source src="${binauralUrl}" type="audio/wav">
+            <source src="${binauralUrl}" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      </div>
+      <div class="comparison-player">
+        <h6>Externalized</h6>
+        <div class="custom-audio-player">
+          <div class="audio-controls">
+            <button class="play-pause-btn" aria-label="Play externalized audio" type="button">
+              <svg class="play-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              <svg class="pause-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+            <div class="audio-progress-container">
+              <div class="audio-progress-bar">
+                <div class="audio-progress-fill"></div>
+              </div>
+            </div>
+            <div class="audio-time-display">
+              <span class="current-time">00:00</span> / <span class="total-time">00:00</span>
+            </div>
+          </div>
+          <audio preload="metadata" crossorigin="anonymous">
+            <source src="${externalizedUrl}" type="audio/wav">
+            <source src="${externalizedUrl}" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 /**

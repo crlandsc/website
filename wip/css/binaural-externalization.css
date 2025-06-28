@@ -1342,17 +1342,17 @@ header .container.binaural-header-container .mobile-nav {
 
 /* Custom audio player styling */
 .custom-audio-player {
-  background-color: var(--clr-background-primary);
+  background-color: var(--clr-background-secondary);
   border: 1px solid var(--clr-border-primary);
   border-radius: var(--border-radius);
-  padding: var(--space-m);
-  margin: var(--space-m) 0;
+  padding: 6px;
+  margin: 4px 0;
 }
 
 .audio-controls {
   display: flex;
   align-items: center;
-  gap: var(--space-m);
+  gap: 8px;
 }
 
 .play-pause-btn {
@@ -1360,8 +1360,8 @@ header .container.binaural-header-container .mobile-nav {
   color: var(--clr-background-primary);
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1375,9 +1375,9 @@ header .container.binaural-header-container .mobile-nav {
 
 .audio-progress-container {
   flex: 1;
-  background-color: var(--clr-background-secondary);
-  border-radius: 10px;
-  height: 8px;
+  background-color: var(--clr-background-primary);
+  border-radius: 6px;
+  height: 5px;
   overflow: hidden;
 }
 
@@ -1385,7 +1385,7 @@ header .container.binaural-header-container .mobile-nav {
   width: 100%;
   height: 100%;
   background-color: var(--clr-border-primary);
-  border-radius: 10px;
+  border-radius: 6px;
   position: relative;
   cursor: pointer;
 }
@@ -1393,13 +1393,13 @@ header .container.binaural-header-container .mobile-nav {
 .audio-progress-fill {
   height: 100%;
   background-color: var(--clr-accent-primary);
-  border-radius: 10px;
+  border-radius: 6px;
   width: 0%;
   transition: width 0.1s ease;
 }
 
 .audio-time-display {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--clr-text-secondary);
   white-space: nowrap;
 }
@@ -1437,22 +1437,157 @@ header .container.binaural-header-container .mobile-nav {
   line-height: 1.6;
 }
 
-.comparison-grid {
+/* Simple Grid Layout for Comparisons - Clean & Maintainable */
+.comparison-container {
+  max-width: 1000px;
+  margin: var(--space-m) auto;
+  padding: var(--space-s);
+  
+  /* Desktop: 3x5 CSS Grid */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--space-m);
-  margin-top: var(--space-l);
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: repeat(5, auto);
+  gap: 8px var(--space-s);
+  grid-template-areas:
+    "angle-minus-30  angle-0     angle-plus-30"
+    "angle-minus-45  empty-1     angle-plus-45"
+    "angle-minus-90  rotating    angle-plus-90"
+    "angle-minus-135 empty-2     angle-plus-135"
+    "angle-minus-150 angle-180   angle-plus-150";
 }
 
+/* Individual grid panel styling */
+.comparison-panel {
+  background-color: var(--clr-background-primary);
+  border: 1px solid var(--clr-border-primary);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px var(--clr-shadow-color);
+  padding: var(--space-s);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Special styling for the rotating panel in center */
+.comparison-panel.rotating {
+  grid-area: rotating;
+  border: 2px solid var(--clr-border-primary);
+  box-shadow: 0 4px 12px var(--clr-shadow-color);
+}
+
+/* Grid area assignments for each panel */
+.comparison-panel[data-angle="rotating"] { grid-area: rotating; }
+.comparison-panel[data-angle="0"] { grid-area: angle-0; }
+.comparison-panel[data-angle="30"] { grid-area: angle-plus-30; }
+.comparison-panel[data-angle="45"] { grid-area: angle-plus-45; }
+.comparison-panel[data-angle="90"] { grid-area: angle-plus-90; }
+.comparison-panel[data-angle="135"] { grid-area: angle-plus-135; }
+.comparison-panel[data-angle="150"] { grid-area: angle-plus-150; }
+.comparison-panel[data-angle="180"] { grid-area: angle-180; }
+.comparison-panel[data-angle="210"] { grid-area: angle-minus-150; }
+.comparison-panel[data-angle="225"] { grid-area: angle-minus-135; }
+.comparison-panel[data-angle="270"] { grid-area: angle-minus-90; }
+.comparison-panel[data-angle="315"] { grid-area: angle-minus-45; }
+.comparison-panel[data-angle="330"] { grid-area: angle-minus-30; }
+
+/* Panel content styling */
+.comparison-panel h4,
+.comparison-panel h5 {
+  text-align: center;
+  margin-bottom: 6px;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.1;
+}
+
+.comparison-panel h4 {
+  font-size: 1.1rem;
+}
+
+.comparison-panel h5 {
+  font-size: 1rem;
+}
+
+/* Audio players container within each panel */
 .comparison-audio-players {
   display: flex;
   flex-direction: column;
-  gap: var(--space-s);
+  gap: 6px;
+  flex: 1;
 }
 
 .comparison-player {
-  margin-bottom: var(--space-s);
+  margin-bottom: 3px;
 }
+
+.comparison-player:last-child {
+  margin-bottom: 0;
+}
+
+.comparison-player h6 {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  text-align: center;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.1;
+  color: var(--clr-text-primary);
+}
+
+/* Large screen: 5x3 grid layout for wide displays */
+@media (min-width: 1201px) {
+  .comparison-container {
+    max-width: 1300px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, auto);
+    gap: 8px 12px;
+    grid-template-areas:
+      "angle-minus-45  angle-minus-30  angle-0        angle-plus-30   angle-plus-45"
+      "angle-minus-90  empty-1         rotating       empty-2         angle-plus-90"  
+      "angle-minus-135 angle-minus-150 angle-180      angle-plus-150  angle-plus-135";
+  }
+}
+
+/* Medium screen: 3x5 grid layout - uses default styles defined above */
+
+/* Mobile responsive: Switch to single column layout */
+@media (max-width: 768px) {
+  .comparison-container {
+    margin: var(--space-s) auto;
+    padding: var(--space-xs);
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(13, auto);
+    gap: 6px;
+    grid-template-areas:
+      "rotating"
+      "angle-0"
+      "angle-plus-30"
+      "angle-plus-45"
+      "angle-plus-90"
+      "angle-plus-135"
+      "angle-plus-150"
+      "angle-180"
+      "angle-minus-150"
+      "angle-minus-135"
+      "angle-minus-90"
+      "angle-minus-45"
+      "angle-minus-30";
+  }
+  
+  .comparison-panel {
+    padding: 10px;
+  }
+  
+  .play-pause-btn {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .audio-progress-container {
+    height: 4px;
+  }
+  
+
+}
+
 
 /* Future work section styling */
 .future-work-content {
@@ -1521,13 +1656,9 @@ header .container.binaural-header-container .mobile-nav {
     padding: 0 var(--space-s);
   }
   
+  /* Keep audio controls in horizontal layout for better usability */
   .audio-controls {
-    flex-direction: column;
-    gap: var(--space-s);
-  }
-  
-  .audio-time-display {
-    order: -1;
+    gap: 6px;
   }
 }
 
@@ -1654,4 +1785,6 @@ header .container.binaural-header-container .mobile-nav {
   .custom-audio-player {
     border-width: 2px;
   }
-} 
+}
+
+ 
