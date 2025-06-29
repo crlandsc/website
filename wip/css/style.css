@@ -231,7 +231,6 @@ h3.fade-in-element {
 .project-card.fade-in-element,
 .education-row.fade-in-element,
 .skills-column.fade-in-element,
-.carousel-container.fade-in-element,
 #contact-form.fade-in-element,
 .research.fade-in-element {
   transition-delay: 0.2s;
@@ -992,76 +991,7 @@ header .container {
   }
 }
 
-/* Interests Carousel */
-.carousel-container {
-  position: relative;
-  padding: var(--space-s) 0;
-}
 
-.carousel {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  gap: var(--space-m);
-  padding: var(--space-s) 0;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-}
-
-.carousel::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-.carousel-item {
-  flex: 0 0 250px;
-  height: 250px;
-  scroll-snap-align: center;
-  position: relative;
-  border-radius: var(--border-radius);
-  overflow: hidden;
-}
-
-.carousel-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--clr-background-secondary); /* Button background */
-  color: var(--clr-text-primary); /* Button icon color */
-  border: 1px solid var(--clr-border-primary);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-size: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 2;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.carousel-container:hover .carousel-btn {
-  opacity: 1;
-}
-
-.carousel-btn.prev {
-  left: 10px;
-}
-
-.carousel-btn.next {
-  right: 10px;
-}
-
-.carousel-btn:focus {
-  outline: 2px solid var(--clr-accent-primary);
-}
 
 /* Contact Section */
 #contact-form {
@@ -1266,9 +1196,7 @@ footer .container {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .carousel-btn {
-    opacity: 0.7;
-  }
+
 }
 
 @media (min-width: 1024px) {
@@ -1326,14 +1254,7 @@ footer .container {
   }
 }
 
-#interests .carousel-btn {
-  color: var(--clr-text-primary); /* Ensure this is distinct from its background */
-}
 
-#interests .carousel-btn:hover {
-  background: var(--clr-background-secondary); /* Slightly darker background on hover */
-  border-color: var(--clr-accent-primary);
-}
 
 .research {
   margin-top: var(--space-xl); /* Increased spacing for the Research section */
@@ -1698,4 +1619,55 @@ footer .container {
   padding: 0.75rem 1.5rem;
   border-radius: var(--border-radius);
   font-size: 1rem;
+}
+
+/* Interests Carousel */
+.carousel-container {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  margin: var(--space-l) 0;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  gap: var(--space-s);
+  animation: none; /* JavaScript will handle animation */
+  will-change: transform; /* Optimize for animations */
+}
+
+.carousel-track img,
+.carousel-track video {
+  height: 300px;
+  width: auto;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-standard);
+  flex-shrink: 0;
+}
+
+.carousel-track video {
+  background: var(--clr-background-secondary);
+}
+
+
+
+@media (max-width: 768px) {
+  .carousel-container {
+    height: 250px;
+  }
+  
+  .carousel-track img,
+  .carousel-track video {
+    height: 250px;
+  }
+}
+
+/* Reduced motion support for carousel */
+@media (prefers-reduced-motion: reduce) {
+  .carousel-track {
+    animation: none !important;
+  }
 }

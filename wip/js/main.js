@@ -41,8 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Set up back-to-top button
   setupBackToTop();
 
-  // Set up carousel
-  setupCarousel();
+
 
   // Set up contact form
   setupContactForm();
@@ -61,6 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Set up the sea-of-code wave animation
   initHeroCodeSea();
+  
+  // Set up interests carousel
+  setupInterestsCarousel();
   
   // Add window resize handler to check for newly visible elements
   window.addEventListener('resize', debounce(checkForVisibleElements, 150));
@@ -632,289 +634,7 @@ function setupBackToTop() {
 /**
  * Sets up the interests carousel
  */
-function setupCarousel() {
-  const carouselContainer = document.querySelector('#interests .carousel-container');
-  if (!carouselContainer) return;
 
-  const carousel = carouselContainer.querySelector('.carousel');
-  const prevBtn = carouselContainer.querySelector('.carousel-btn.prev');
-  const nextBtn = carouselContainer.querySelector('.carousel-btn.next');
-  
-  if (!carousel || !prevBtn || !nextBtn) return;
-
-  let items = [];
-  let itemWidth = 0;
-  let cloneCount = 0;
-
-  let autoplayIntervalId = null;
-  const AUTOPLAY_INTERVAL_DURATION = 2000; // Time between discrete scrolls
-  const SMOOTH_SCROLL_DURATION = 600; // Estimated duration of smooth scroll
-
-  let isInteracting = false;
-  let interactionTimeoutId = null;
-  const AUTOPLAY_RESUME_DELAY = 5000; // Delay before resuming autoplay after interaction
-
-  let isProgrammaticScroll = false; 
-  let resizeTimeoutId;
-
-  // console.log('Carousel: Initializing...');
-
-  const calculateDimensionsAndClones = () => {
-    const originalItemElements = Array.from(carousel.querySelectorAll('.carousel-item:not(.clone)'));
-    if (originalItemElements.length === 0) {
-      itemWidth = 0;
-      return false;
-    }
-    items = originalItemElements;
-    
-    const testItemWidth = items[0].offsetWidth;
-    if (testItemWidth === 0) {
-      itemWidth = 0;
-      return false;
-    }
-    itemWidth = testItemWidth + parseInt(getComputedStyle(carousel).gap || '0');
-    if (itemWidth === 0 || isNaN(itemWidth)) {
-        itemWidth = 0;
-        return false;
-    }
-
-    const visibleItems = Math.max(1, Math.floor(carousel.offsetWidth / itemWidth));
-    cloneCount = visibleItems + 2;
-    return true;
-  };
-
-  const stopAutoplay = () => {
-    if (autoplayIntervalId) {
-      clearInterval(autoplayIntervalId);
-      autoplayIntervalId = null;
-      // console.log('Carousel: Autoplay stopped (discrete).');
-    }
-  };
-
-  const startAutoplay = () => {
-    stopAutoplay(); 
-    if (isInteracting || document.visibilityState !== 'visible' || itemWidth === 0) {
-      // console.log(`Carousel: Autoplay start prevented (discrete). Conditions: isInteracting=${isInteracting}, visible=${document.visibilityState === 'visible'}, itemWidth=${itemWidth}`);
-      return;
-    }
-    // console.log('Carousel: Autoplay starting (discrete)...');
-    autoplayIntervalId = setInterval(() => {
-      if (isInteracting || document.visibilityState !== 'visible') { 
-        stopAutoplay(); // Stop if conditions change during interval
-        return;
-      }
-      isProgrammaticScroll = true;
-      carousel.scrollBy({ left: itemWidth, behavior: 'smooth' });
-      setTimeout(() => { isProgrammaticScroll = false; }, SMOOTH_SCROLL_DURATION + 100); // Buffer
-    }, AUTOPLAY_INTERVAL_DURATION);
-  };
-
-  const setupClonesAndPosition = () => {
-    // console.log('Carousel: setupClonesAndPosition called.');
-    const wasAutoplaying = !!autoplayIntervalId;
-    stopAutoplay();
-    const currentInteractingState = isInteracting; // Preserve interaction state
-    isInteracting = true; // Prevent interactions during DOM manip
-
-    const existingClones = carousel.querySelectorAll('.clone');
-    existingClones.forEach(clone => clone.remove());
-
-    if (!calculateDimensionsAndClones() || items.length === 0) {
-      isInteracting = currentInteractingState; // Restore
-      // console.warn('Carousel: Dimensions/items not available for cloning.');
-      if (wasAutoplaying && !isInteracting && document.visibilityState === 'visible') startAutoplay();
-      return;
-    }
-
-    for (let i = 0; i < cloneCount; i++) {
-      const N = items.length;
-      const cloneEnd = items[(N - 1 - (i % N) + N) % N].cloneNode(true);
-      cloneEnd.classList.add('clone');
-      cloneEnd.setAttribute('aria-hidden', 'true');
-      carousel.insertBefore(cloneEnd, carousel.firstChild);
-
-      const cloneStart = items[i % N].cloneNode(true);
-      cloneStart.classList.add('clone');
-      cloneStart.setAttribute('aria-hidden', 'true');
-      carousel.appendChild(cloneStart);
-    }
-    
-    isProgrammaticScroll = true;
-    carousel.scrollTo({ left: cloneCount * itemWidth, behavior: 'instant' });
-    // console.log(`Carousel: Scrolled to initial clone position: ${carousel.scrollLeft}`);
-    setTimeout(() => { isProgrammaticScroll = false; }, 50);
-
-    isInteracting = currentInteractingState; // Restore interaction state
-    if (wasAutoplaying && !isInteracting && document.visibilityState === 'visible') {
-        // console.log('Carousel: Restarting autoplay after setupClones (was playing).');
-        startAutoplay();
-    } else if (!isInteracting && document.visibilityState === 'visible' && itemWidth > 0 && !autoplayIntervalId) {
-        // console.log('Carousel: Starting autoplay after setupClones (was not playing but conditions met).');
-        startAutoplay(); // Start if wasn't playing but conditions now met
-    }
-  };
-
-  const handleInteractionStart = (interactionType = "unknown") => {
-    // console.log(`Carousel: Interaction start (${interactionType}).`);
-    isInteracting = true;
-    stopAutoplay();
-    clearTimeout(interactionTimeoutId);
-  };
-
-  const handleInteractionEnd = (interactionType = "unknown") => {
-    // console.log(`Carousel: Interaction end (${interactionType}), scheduling autoplay restart.`);
-    clearTimeout(interactionTimeoutId);
-    interactionTimeoutId = setTimeout(() => {
-      isInteracting = false;
-      if (document.visibilityState === 'visible' && itemWidth > 0) { // Check itemWidth too
-        startAutoplay();
-      } else {
-        // console.log('Carousel: Autoplay restart deferred (tab not visible or itemWidth zero).');
-      }
-    }, AUTOPLAY_RESUME_DELAY);
-  };
-
-  const scrollCarouselWithButton = (direction) => {
-    handleInteractionStart("button");
-    isProgrammaticScroll = true;
-    carousel.scrollBy({
-      left: direction * itemWidth,
-      behavior: 'smooth'
-    });
-    setTimeout(() => { 
-        isProgrammaticScroll = false; 
-        handleInteractionEnd("button");
-    }, SMOOTH_SCROLL_DURATION + 100); 
-  };
-
-  const handleScrollLoopingAndInteraction = () => {
-    if (itemWidth === 0 || items.length === 0) return;
-    
-    if (isProgrammaticScroll) return; // If scroll is due to autoplay/button/jump, ignore for interaction detection
-
-    // --- Loop jump logic --- 
-    const currentScroll = carousel.scrollLeft;
-    const originalItemsBlockWidth = items.length * itemWidth;
-    const firstOriginalItemX = cloneCount * itemWidth;
-    let jumped = false;
-
-    // Check for jump to the right (when scrolling left into prepended clones)
-    if (currentScroll < firstOriginalItemX - (itemWidth * 0.5)) { 
-         if (currentScroll < itemWidth * 0.5) { // Close to actual start of scrollable area
-            isProgrammaticScroll = true;
-            carousel.scrollTo({ left: currentScroll + originalItemsBlockWidth, behavior: 'instant' });
-            jumped = true;
-        }
-    } 
-    // Check for jump to the left (when scrolling right into appended clones)
-    else if (currentScroll + carousel.offsetWidth > firstOriginalItemX + originalItemsBlockWidth + (itemWidth * 0.5) ) { 
-       if (currentScroll + carousel.offsetWidth > carousel.scrollWidth - (itemWidth * 0.5)) { // Close to actual end
-            isProgrammaticScroll = true;
-            carousel.scrollTo({ left: currentScroll - originalItemsBlockWidth, behavior: 'instant' });
-            jumped = true;
-        }
-    }
-
-    if (jumped) {
-        // console.log(`Carousel: Loop jump executed. New scrollLeft: ${carousel.scrollLeft}`);
-        setTimeout(() => { isProgrammaticScroll = false; }, 50); 
-        return; // After a jump, don't immediately process as user interaction that stops autoplay
-    }
-
-    // --- If not a programmatic scroll and no jump happened, it's likely user scroll --- 
-    // This scroll event itself signifies interaction. Stop autoplay and schedule restart.
-    handleInteractionStart('scroll_event');
-    handleInteractionEnd('scroll_event'); 
-
-  };
-  const debouncedScrollHandler = debounce(handleScrollLoopingAndInteraction, 50); // Short debounce for scroll events
-
-  carousel.addEventListener('scroll', debouncedScrollHandler);
-
-  prevBtn.addEventListener('click', () => scrollCarouselWithButton(-1));
-  nextBtn.addEventListener('click', () => scrollCarouselWithButton(1));
-
-  // Mouse hover interaction
-  carouselContainer.addEventListener('mouseenter', () => handleInteractionStart("mouseenter"));
-  carouselContainer.addEventListener('mouseleave', () => handleInteractionEnd("mouseleave"));
-
-  // Touch interaction
-  let touchStartScrollLeft = 0;
-  carousel.addEventListener('touchstart', (e) => {
-    handleInteractionStart("touchstart");
-    touchStartScrollLeft = carousel.scrollLeft;
-  }, { passive: true });
-
-  carousel.addEventListener('touchend', () => {
-    // Consider it a drag if scroll position changed significantly
-    if (Math.abs(carousel.scrollLeft - touchStartScrollLeft) > itemWidth / 4) { 
-      handleInteractionEnd("touchend_drag"); 
-    } else { // Otherwise, it was more like a tap
-      handleInteractionEnd("touchend_tap");
-    }
-  });
-
-  // Wheel scroll interaction
-  let wheelScrollTimeoutId;
-  carousel.addEventListener('wheel', () => {
-    handleInteractionStart("wheel");
-    clearTimeout(wheelScrollTimeoutId);
-    wheelScrollTimeoutId = setTimeout(() => {
-        handleInteractionEnd("wheel_end"); // User stopped wheel scrolling
-    }, 150); 
-  }, { passive: true });
-  
-  // Resize handling
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeoutId);
-    resizeTimeoutId = setTimeout(() => {
-      // console.log('Carousel: Resize event triggered.');
-      setupClonesAndPosition(); // This will stop/start autoplay as needed
-    }, 250);
-  });
-  
-  // Tab visibility handling
-  document.addEventListener('visibilitychange', () => {
-    // console.log(`Carousel: Visibility changed to ${document.visibilityState}`);
-    if (document.visibilityState !== 'visible') {
-      stopAutoplay();
-    } else if (!isInteracting && itemWidth > 0) { 
-      startAutoplay();
-    }
-  });
-
-  const initialSetup = () => {
-    if (calculateDimensionsAndClones()) {
-        setupClonesAndPosition();
-        // Autoplay will be started by setupClonesAndPosition if conditions are met
-    } else {
-        // console.warn('Carousel: Initial dimensions could not be determined. Retrying after delay...');
-        setTimeout(() => {
-          // console.log('Carousel: Retrying initial setup...');
-          if (calculateDimensionsAndClones()) {
-              setupClonesAndPosition();
-          } else {
-               // console.error("Carousel: Dimensions still unresolved after delay. Autoplay might not work.");
-          }
-        }, 1000); 
-    }
-  };
-
-  initialSetup();
-
-  const updateButtonVisibility = () => {
-    if (!prevBtn || !nextBtn) return;
-    if (window.innerWidth < 768) {
-      prevBtn.style.opacity = '1';
-      nextBtn.style.opacity = '1';
-    } else {
-      prevBtn.style.opacity = '';
-      nextBtn.style.opacity = '';
-    }
-  };
-  updateButtonVisibility();
-  window.addEventListener('resize', updateButtonVisibility);
-}
 
 /**
  * Sets up the GitHub stats fetch for projects
@@ -1412,4 +1132,64 @@ function initHeroCodeSea() {
   new MutationObserver(resize).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   resize();
   requestAnimationFrame(draw);
+}
+
+/**
+ * Sets up the interests carousel with infinite horizontal scrolling
+ */
+function setupInterestsCarousel() {
+  const carouselTrack = document.getElementById('carousel-track');
+  if (!carouselTrack) return;
+
+  // Calculate animation speed based on 20-second transit time
+  const viewportWidth = window.innerWidth;
+  const speed = viewportWidth / 20000; // pixels per millisecond
+
+  let currentPosition = 0;
+  let lastTimestamp = 0;
+  
+  // Get the width of the original content (first half of duplicated content)
+  const originalItems = carouselTrack.children;
+  const originalCount = originalItems.length / 2; // Since we duplicate everything
+  
+  function calculateOriginalWidth() {
+    let width = 0;
+    for (let i = 0; i < originalCount; i++) {
+      width += originalItems[i].offsetWidth + 16; // +16 for gap
+    }
+    return width;
+  }
+
+  function animate(timestamp) {
+    if (!lastTimestamp) lastTimestamp = timestamp;
+    const deltaTime = timestamp - lastTimestamp;
+    lastTimestamp = timestamp;
+
+    // Move left by speed * time elapsed
+    currentPosition -= speed * deltaTime;
+
+    // Reset position when we've scrolled through the original content
+    const originalWidth = calculateOriginalWidth();
+    if (Math.abs(currentPosition) >= originalWidth) {
+      currentPosition = 0;
+    }
+
+    carouselTrack.style.transform = `translateX(${currentPosition}px)`;
+    requestAnimationFrame(animate);
+  }
+
+  // Wait for images to load before starting animation
+  Promise.all(Array.from(carouselTrack.querySelectorAll('img')).map(img => {
+    return new Promise(resolve => {
+      if (img.complete) resolve();
+      else img.onload = resolve;
+    });
+  })).then(() => {
+    requestAnimationFrame(animate);
+  });
+
+  // Recalculate on window resize
+  window.addEventListener('resize', debounce(() => {
+    // Speed will automatically adjust based on new viewport width
+  }, 250));
 }
