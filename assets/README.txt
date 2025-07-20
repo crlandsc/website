@@ -18,4 +18,4 @@ All images should be optimized for web use and appropriately sized:
 - profile.jpg: 400×400px square
 - interests/*.jpg: 250×250px square
 
-Note: These placeholder images should be replaced with actual photos before deployment. 
+Note: These placeholder images should be replaced with actual photos before deployment.
