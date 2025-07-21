@@ -1211,6 +1211,7 @@ header .container.binaural-header-container .mobile-nav {
 .section.binaural-intro-bg {
   background-color: var(--clr-accent-primary) !important; /* Same as hero section - override general section rule */
   color: var(--clr-background-primary); /* White text for contrast */
+  text-align: center;
 }
 
 .binaural-intro-bg h2,
@@ -1237,12 +1238,24 @@ header .container.binaural-header-container .mobile-nav {
 /* #abstract, #introduction, #binaural, #comparisons will use var(--clr-background-secondary) */
 
 .intro-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-l);
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  max-width: 1000px;
+  gap: var(--space-l);
+  max-width: 800px;
   margin: 0 auto;
+  text-align: center;
+}
+
+.intro-text {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: justify;
+}
+
+.intro-text p {
+  margin-bottom: var(--space-s);
+  line-height: 1.6;
 }
 
 .head-model-container {
@@ -1252,7 +1265,8 @@ header .container.binaural-header-container .mobile-nav {
 }
 
 .trajectory-video {
-  max-width: 100%;
+  max-width: 500px;
+  width: 100%;
   height: auto;
   border-radius: var(--border-radius);
 }
@@ -1420,6 +1434,9 @@ header .container.binaural-header-container .mobile-nav {
 /* Comparisons section styling */
 .comparisons-intro {
   margin-bottom: var(--space-l);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .comparisons-intro h4 {
@@ -1643,7 +1660,16 @@ header .container.binaural-header-container .mobile-nav {
     font-size: 1.2rem;
   }
   
-  .intro-content,
+  .intro-content {
+    gap: var(--space-m);
+    max-width: 100%;
+    padding: 0 var(--space-s);
+  }
+
+  .trajectory-video {
+    max-width: 350px;
+  }
+
   .stereo-grid,
   .binaural-grid,
   .externalized-grid {
@@ -1678,15 +1704,21 @@ header .container.binaural-header-container .mobile-nav {
     max-width: 700px;
   }
   
-  .trajectory-video,
-  .stereo-animation,
+  .trajectory-video {
+    max-width: 600px;
+  }
+
+  .stereo-animation {
+    max-width: 450px;
+  }
+
   .binaural-animation,
   .externalized-animation {
-    max-width: 350px;
+    max-width: 450px;
   }
   
   .hrtf-spectrum {
-    max-width: 450px;
+    max-width: 400px;
   }
 }
 
@@ -1703,6 +1735,46 @@ header .container.binaural-header-container .mobile-nav {
   /* Disable orbital animation for users who prefer reduced motion */
   .orbital-animation {
     display: none;
+  }
+}
+
+/* iOS/Mobile video background fix for transparent videos */
+@media (max-width: 768px) {
+  /* Fix transparent video backgrounds on mobile by matching section backgrounds */
+  #introduction .trajectory-video {
+    background-color: var(--clr-accent-primary);
+  }
+  
+  #stereo .stereo-animation {
+    background-color: var(--clr-background-primary);
+  }
+  
+  #binaural .binaural-animation {
+    background-color: var(--clr-background-secondary);
+  }
+  
+  #externalized .externalized-animation {
+    background-color: var(--clr-background-primary);
+  }
+}
+
+/* Additional iOS-specific fix using -webkit-playsinline support detection */
+@supports (-webkit-overflow-scrolling: touch) {
+  /* iOS Safari specific video background fixes */
+  #introduction .trajectory-video {
+    background-color: var(--clr-accent-primary);
+  }
+  
+  #stereo .stereo-animation {
+    background-color: var(--clr-background-primary);
+  }
+  
+  #binaural .binaural-animation {
+    background-color: var(--clr-background-secondary);
+  }
+  
+  #externalized .externalized-animation {
+    background-color: var(--clr-background-primary);
   }
 }
 
