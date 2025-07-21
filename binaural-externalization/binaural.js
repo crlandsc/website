@@ -296,7 +296,7 @@ function initializeComparisonGrid() {
   const comparisonGrid = document.querySelector('.comparison-grid');
   if (!comparisonGrid) return;
   
-  const audio_dir = "assets/binaural-externalization/audio/240622 - Tom's Diner";
+  const audio_dir = "../assets/binaural-externalization/audio/240622 - Tom's Diner";
 
   // Clear existing content and set up simple grid layout
   comparisonGrid.innerHTML = '';
