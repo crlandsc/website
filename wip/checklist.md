@@ -1,28 +1,12 @@
 To Do:
-- Fix "interests" carousel - better images and better looking boxes/cards
-    - Auto-scroll sort of works. But it takes time to start for some reason and then has trouble once it gets to the end of the images.
+- Fix video backgrounds for mobile
+    - Is there a better format to dave these as? What is the smallest file size I can make them?
+    - Works fine for desktop, but appears goofy for mobile. Just make the background match whatever color it is overtop of (responsive to light/dark mode)?
+- Light/Dark mode for desktop. Seems to work well for mobile, but does not appear to infer light/dark setting from Mac/desktop.
+- Fix "interests" carousel
+    - Further curate images (decent for now, but could be better)
+    - Auto-scroll works, but there is no interactivity. Add arrows or ability to swipe? How to integrate this without creating bugs/conflicts
+- Finish "Binaural-Externalizer page"
 - Change header "Music", "Portfolio", and "Resume" to highlight separate color (yellow/gold?)
 - Add project icons
-- Fix GitHub actions
-
-Completed:
-- Standardize animations
-    - Fixed persistent lag in zoom animation for cards - now they have the same smooth/instant zoom as the icons
-    - Fixed underline animation to be consistent between binaural externalization card and project cards
-    - Text highlights blue on all card to help signify this is a link
-- Fix Education & Research in small screen mode - position is wrong and horizontal lines don't work
-- Make sure "Let's Connect" box work correctly - only client-side solution is to use mailto protocol.
-- Change hero image - animation that works with light/dark mode
-    - Add shadow to hero text
-    - Make code waveform text slightly more apparent color-wise (i.e. dark for light mode and vice versa)
-    - Re-implement paralax effect
-- Re-align skills bullets (seemsto be slightly off the cetnering of the titles)
-- Make footer icons a little closer together to make sure they stay on one line in mobile format
-- Replaced text links with icon links for Google Scholar and ResearchGate
-- Added larger icons with labels in the Academic Publications section
-- Added hover effects with accent color highlighting for publication icons
-- Made project cards fully clickable with JavaScript
-- Added visual cues (border highlight and shadow) to project cards on hover
-- Add binaural externalization GIF
-
-
+- after-august.com site - Change reference to go to After August site.
