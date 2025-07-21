@@ -1,0 +1,43 @@
+_misc/
+Luther_1_0_0/
+
+# Dependencies
+node_modules/
+bower_components/
+vendor/
+
+# Build output
+dist/
+build/
+out/
+wix-files/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Cache and temp files
+.cache/
+.temp/
+.tmp/

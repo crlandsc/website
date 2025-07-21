@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Christopher Landschoot - Machine Learning Engineer specializing in audio technology and deep learning">
+  <meta property="og:title" content="Christopher Landschoot - Personal Website">
+  <meta property="og:description" content="Machine Learning Engineer specializing in audio technology and deep learning">
+  <meta property="og:image" content="assets/profile.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <title>Christopher Landschoot</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="assets/favicon/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/favicon-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon/favicon-512x512.png">
+  <link rel="apple-touch-icon" href="assets/favicon/favicon-192x192.png">
+  <!-- Brandon Grotesque font -->
+  <style>
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Regular.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Medium.otf') format('opentype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Bold.otf') format('opentype');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Light.otf') format('opentype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Black.otf') format('opentype');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Brandon Grotesque';
+      src: url('assets/fonts/Brandon-Grotesque/Brandon-Regular-Italic.otf') format('opentype');
+      font-weight: normal;
+      font-style: italic;
+      font-display: swap;
+    }
+  </style>
+  <!-- Inline verification script -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      console.log('DOM loaded in inline script, will try to fetch content.json...');
+      
+      // Test direct fetch inside HTML
+      fetch('./content.json')
+        .then(response => {
+          console.log('Inline script - Fetch response status:', response.status);
+          if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Inline script - Content loaded successfully!', Object.keys(data));
+        })
+        .catch(error => {
+          console.error('Inline script - Error loading content:', error);
+        });
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <a href="#home" class="logo">CHRISTOPHER LANDSCHOOT</a>
+      <nav aria-label="Primary">
+        <ul class="desktop-nav">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#interests">Interests</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <!-- <li><a href="https://after-august.com/" target="_blank" rel="noopener noreferrer">Music</a></li> -->
+          <li><a href="https://www.youtube.com/@AfterAugust" target="_blank" rel="noopener noreferrer">Music</a></li>
+          <li><a href="https://github.com/crlandsc" target="_blank" rel="noopener noreferrer">Portfolio</a></li>
+          <li><a href="assets/Christopher Landschoot's Resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a></li>
+          <li class="theme-toggle-item">
+            <button id="theme-toggle" title="Toggle theme" aria-label="Switch to dark mode">
+              <svg class="theme-icon theme-icon-light" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                <!-- Sun center -->
+                <circle cx="12" cy="12" r="5" fill="currentColor"/>
+                <!-- Top ray -->
+                <rect x="11" y="1" width="2" height="3" fill="currentColor" rx="1"/>
+                <!-- Bottom ray -->
+                <rect x="11" y="20" width="2" height="3" fill="currentColor" rx="1"/>
+                <!-- Left ray -->
+                <rect x="1" y="11" width="3" height="2" fill="currentColor" rx="1"/>
+                <!-- Right ray -->
+                <rect x="20" y="11" width="3" height="2" fill="currentColor" rx="1"/>
+                <!-- Top-left ray -->
+                <rect x="3.5" y="3.5" width="3" height="2" fill="currentColor" rx="1" transform="rotate(45 5 5)"/>
+                <!-- Top-right ray -->
+                <rect x="17.5" y="3.5" width="3" height="2" fill="currentColor" rx="1" transform="rotate(-45 19 5)"/>
+                <!-- Bottom-left ray -->
+                <rect x="3.5" y="18.5" width="3" height="2" fill="currentColor" rx="1" transform="rotate(-45 5 19)"/>
+                <!-- Bottom-right ray -->
+                <rect x="17.5" y="18.5" width="3" height="2" fill="currentColor" rx="1" transform="rotate(45 19 19)"/>
+              </svg>
+              <svg class="theme-icon theme-icon-dark" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: none;">
+                <!-- Moon crescent -->
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"/>
+              </svg>
+            </button>
+          </li>
+        </ul>
+        <details class="mobile-nav">
+          <summary aria-label="Menu toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+          </summary>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#interests">Interests</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <!-- <li><a href="https://after-august.com/" target="_blank" rel="noopener noreferrer">Music</a></li> -->
+            <li><a href="https://www.youtube.com/@AfterAugust" target="_blank" rel="noopener noreferrer">Music</a></li>
+            <li><a href="https://github.com/crlandsc" target="_blank" rel="noopener noreferrer">Portfolio</a></li>
+            <li><a href="assets/Christopher Landschoot's Resume.pdf" target="_blank" rel="noopener noreferrer">Resume</a></li>
+          </ul>
+        </details>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="hero-bg">
+        <canvas id="hero-code-canvas"></canvas>
+      </div>
+      <div class="hero-content">
+        <h1>Hi, I'm Chris.</h1>
+        <p class="hero-tagline">I love everything to do with sound.</p>
+        <p>Welcome to my site.</p>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <h2>About</h2>
+        <h3>Personal Profile</h3>
+        <div class="about-grid">
+          <div class="about-image">
+            <img src="assets/profile.png" alt="Christopher Landschoot">
+          </div>
+          <div class="about-content">
+            <p>I love everything involving music, technology, and sound. I work as a machine learning engineer researching and developing new audio technologies with a focus on deep learning and spatial audio. I have also consulted on the acoustical design of the built environment, with projects ranging from performance venues to recording studios. My work and research include developing and implementing algorithms to perform audio source separation, music sample generation, sound source detection, and binaural audio externalization. I have also developed other software to measure acoustics metrics, model wave behavior, process spatial audio, and create audio effects plugins.</p>
+            <p>When I am not focused on the design of sound and technology through my work or research, I am writing, recording, or performing music. I play guitar (electric, acoustic, bass), percussion, piano, and even dabble with the banjo. My artist name is After August (check me out on Spotify), and I play musical styles from jazz to rock to folk and everything in between. I love all types of music.</p>
+            <p>I live in Chicago with my wife, Steph, and our little dog, Queso. Steph works as an IR Nurse at Northwestern Memorial Hospital assisting with groundbreaking operations daily and Queso takes naps on my lap daily as I work at my desk. I play in the local kickball league and love to escape to the Adirondack Mountains in NY each summer for some hiking, kayaking, and time with the family.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience" class="section">
+      <div class="container">
+        <h2>Professional Experience</h2>
+        <h3>Background & Expertise</h3>
+        <div class="timeline-container">
+          <div class="experience-item">
+            <div class="experience-content">
+              <h3 class="company-name">Whitebalance</h3>
+              <div class="position">
+                <h4>Machine Learning Engineer<span class="bullet-separator"> • </span><span class="position-date">August 2023 - Present</span></h4>
+                <p>Developing deep learning algorithms for audio source separation, event detection, classification, fingerprinting, recognition, generation, and enhancement. Building core product technology by designing state-of-the-art audio model architectures & frameworks, researching novel applications, and curating audio datasets.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="experience-item">
+            <div class="experience-content">
+              <h3 class="company-name">Virtuel Works</h3>
+              <div class="position">
+                <h4>Advisor<span class="bullet-separator"> • </span><span class="position-date">August 2023 - Present</span></h4>
+              </div>
+              <div class="position">
+                <h4>Audio Research Collaborator<span class="bullet-separator"> • </span><span class="position-date">August 2022 - August 2023</span></h4>
+                <p>Collaboratively develop and implement a post-processing real-time binaural externalization algorithm for object-based spatial audio focused on improving immersive audio experiences without introducing timbral artifacts.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="experience-item">
+            <div class="experience-content">
+              <h3 class="company-name">Threshold Acoustics</h3>
+              <div class="position">
+                <h4>Acoustics Consultant<span class="bullet-separator"> • </span><span class="position-date">March 2020 - February 2023</span></h4>
+                <p>Performed acoustic design in room acoustics, sound isolation, and noise control disciplines. Collaborated on a research team developing in-house software to model wave behavior via the finite-difference time-domain method as well as tools for impulse response and general acoustics analysis.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="experience-item">
+            <div class="experience-content">
+              <h3 class="company-name">Kirkegaard Associates</h3>
+              <div class="position">
+                <h4>Audio & Acoustics Specialist<span class="bullet-separator"> • </span><span class="position-date">August 2018 - March 2020</span></h4>
+                <p>Performed acoustic design in room acoustics, sound isolation, and noise control disciplines. Developed auralization software using Max MSP that can encode, convolve, and decode higher-order ambisonic signals. Created a graphical user interface for client presentation and internal use.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="experience-item">
+            <div class="experience-content">
+              <h3 class="company-name">Rensselaer Polytechnic Institute</h3>
+              <div class="position">
+                <h4>Research Assistant<span class="bullet-separator"> • </span><span class="position-date">August 2017 - August 2018</span></h4>
+                <p>Created a novel machine-learning algorithm using Matlab that estimates the directions of arrival and relative levels of an arbitrary number of sound sources using a spherical microphone array. Produced two scientific papers published in peer-reviewed scholastic journals as well as a pending patent.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="container">
+        <h2>Projects</h2>
+        <h3>Audio & Machine Learning Projects</h3>
+        <div class="projects-grid" id="projects-grid">
+          <!-- Project cards will be populated from content.json -->
+          <article class="project-card" data-repo="crlandsc/tiny-audio-diffusion">
+            <h4><a href="https://github.com/crlandsc/tiny-audio-diffusion" target="_blank" rel="noopener noreferrer">Tiny Audio Diffusion</a></h4>
+            <p>Built a lightweight system that applies waveform diffusion (1D U-Net) to generate short audio samples (such as drum sounds) to be trained and run on a low-level consumer GPU (&lt;2GB VRAM). The purpose of this project is to provide access to waveform diffusion code for those interested in exploration but who have limited hardware resources.</p>
+            <ul class="meta">
+              <li class="stars">★ --</li>
+              <li class="forks">⑂ --</li>
+            </ul>
+          </article>
+          <article class="project-card" data-repo="crlandsc/Music-Demixing-with-Band-Split-RNN">
+            <h4><a href="https://github.com/crlandsc/Music-Demixing-with-Band-Split-RNN" target="_blank" rel="noopener noreferrer">Music "Demixing" (Sound Source Separation)</a></h4>
+            <p>Built a music source separation system in Python using a band-split recurrent neural network (RNN) framework based on a research paper to compete in AIcrowd's Sound Demixing Challenge 2023. Four models (voice, bass, drums, other) were trained on a Google Cloud Platform GPUs with W&B tracking and resulted in an improvement over the baseline model on the "Label Noise" track by 42%.</p>
+            <ul class="meta">
+              <li class="stars">★ --</li>
+              <li class="forks">⑂ --</li>
+            </ul>
+          </article>
+          <article class="project-card" data-repo="crlandsc/torch-log-wmse">
+            <h4><a href="https://github.com/crlandsc/torch-log-wmse" target="_blank" rel="noopener noreferrer">LogWMSE (PyTorch)</a></h4>
+            <p>Developed a PyTorch implementation of logWMSE, an audio quality metric and loss function. It addresses shortcomings of common audio metrics, like digital silence targets, making it effective for training and evaluating audio source separation and denoising models.</p>
+            <ul class="meta">
+              <li class="stars">★ --</li>
+              <li class="forks">⑂ --</li>
+            </ul>
+          </article>
+          <article class="project-card">
+            <h4><a href="https://soundcloud.com/after-august/viridian?si=92b38b8bd23b49b99ba649b03d51349f" target="_blank" rel="noopener noreferrer">Harmonai AI Song Production Challenge</a></h4>
+            <p>Wrote and produced a song using AI-generated audio by leveraging the audio diffusion tool Dance Diffusion. Utilized waveform-based (1D convolution) diffusion with unconditional generation and audio style transfer functions to produce high-quality 48kHz samples.</p>
+          </article>
+          <!-- <article class="project-card" data-repo="crlandsc/Music-Genre-Classification-Using-Convolutional-Neural-Networks">
+            <h4><a href="https://github.com/crlandsc/Music-Genre-Classification-Using-Convolutional-Neural-Networks" target="_blank" rel="noopener noreferrer">Music Genre Classification</a></h4>
+            <p>A music genre classification system was created using a convolutional neural network (CNN) in Python and achieved an accuracy rate of 83.8% from a baseline accuracy of 10%. The CNN model was trained on Mel-spectrograms of 3-second audio samples. Additional data augmentation and regularization methods were implemented to optimize performance and mitigate overfitting.</p>
+            <ul class="meta">
+              <li class="stars">★ --</li>
+              <li class="forks">⑂ --</li>
+            </ul>
+          </article> -->
+        </div>
+        
+        <div class="interactive-demo-container">
+          <h3><a href="https://huggingface.co/spaces/crlandsc/tiny-audio-diffusion" target="_blank" rel="noopener noreferrer">Generate Samples With Tiny Audio Diffusion</a></h3>
+          <div class="interactive-demo">
+            <script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/4.36.0/gradio.js"></script>
+            <gradio-app src="https://crlandsc-tiny-audio-diffusion.hf.space"></gradio-app>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="education" class="section">
+      <div class="container">
+        <h2>Education</h2>
+        <h3>My Studies</h3>
+        <div class="education-grid" id="education-grid">
+          <div class="education-row">
+            <div class="education-left">
+              <div class="education-date">January 2023 - April 2023</div>
+            </div>
+            <div class="education-right">
+              <h3 class="degree-name">Data Science Immersive</h3>
+              <h4>General Assembly</h4>
+            </div>
+          </div>
+          <div class="education-row">
+            <div class="education-left">
+              <div class="education-date">August 2017 - August 2018</div>
+              <div class="education-gpa">GPA: 4.00/4.00</div>
+            </div>
+            <div class="education-right">
+              <h3 class="degree-name">Master of Science, Acoustics</h3>
+              <h4>Rensselaer Polytechnic Institute</h4>
+            </div>
+          </div>
+          <div class="education-row">
+            <div class="education-left">
+              <div class="education-date">August 2012 - May 2016</div>
+              <div class="education-gpa">GPA: 3.50/4.00</div>
+            </div>
+            <div class="education-right">
+              <h3 class="degree-name">Bachelor of Science, Mechanical Engineering</h3>
+              <h4 class="minor-degree-info">Minor, Music Performance, Guitar</h4>
+              <h4>SUNY University at Buffalo</h4>
+            </div>
+          </div>
+        </div>
+        <div class="research">
+          <h2>Research</h2>
+          <h3>Academic Publications</h3>
+          <div id="research-content">
+            <ul class="social publications-social">
+              <li>
+                <a href="https://scholar.google.com/citations?hl=en&view_op=list_works&gmla=AJsN-F6PaFcTdi4cTxZ3Kpvf2xwKM4ramDbqVKFm_buMLElpYMNzxViHQuKgOPeLMMP3KkcK6besvk4Tu9wURTx-4smBAfXZtw&user=4K5CzM4AAAAJ" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar" class="large-icon-link">
+                  <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="48" height="48">
+                    <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/>
+                  </svg>
+                  <span>Google Scholar</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.researchgate.net/profile/Christopher-Landschoot/research" target="_blank" rel="noopener noreferrer" aria-label="ResearchGate" class="large-icon-link">
+                  <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="48" height="48">
+                    <path d="M 5 5 L 5 27 L 27 27 L 27 5 L 5 5 z M 7 7 L 25 7 L 25 25 L 7 25 L 7 7 z M 19.164062 10.001953 C 17.881062 10.001953 17.441406 10.919156 17.441406 11.535156 L 17.441406 13.169922 C 17.441406 13.999922 17.8935 14.792969 19.0625 14.792969 C 21.0245 14.790969 20.787109 13.306391 20.787109 12.275391 L 19.253906 12.275391 L 19.253906 12.816406 L 20.158203 12.816406 C 20.158203 13.621406 19.781453 14.162109 19.064453 14.162109 C 18.498453 14.162109 18.171875 13.671188 18.171875 12.992188 L 18.171875 11.634766 C 18.171875 11.005766 18.762062 10.642578 19.164062 10.642578 C 19.881062 10.642578 20.15625 11.271484 20.15625 11.271484 L 20.697266 10.90625 C 20.697266 10.90625 20.434062 10.001953 19.164062 10.001953 z M 13.583984 13.091797 C 12.678984 13.091797 11.296953 13.178906 10.001953 13.128906 L 10.001953 13.53125 C 10.781953 13.68225 11.107422 13.606281 11.107422 14.738281 L 11.107422 20.269531 C 11.107422 21.413531 10.780953 21.325563 10.001953 21.476562 L 10.001953 21.892578 C 10.378953 21.879578 11.031266 21.841797 11.697266 21.841797 C 12.326266 21.841797 13.144094 21.867578 13.496094 21.892578 L 13.496094 21.476562 C 12.490094 21.338562 12.1875 21.451531 12.1875 20.269531 L 12.1875 17.931641 C 12.5275 17.956641 12.817531 17.955078 13.269531 17.955078 C 14.124531 19.489078 14.94125 20.634781 15.40625 21.175781 C 16.24825 22.193781 17.594875 22.043578 17.921875 21.892578 L 17.921875 21.515625 C 17.418875 21.514625 16.914781 21.175437 16.550781 20.773438 C 15.934781 20.107437 15.104781 19.025641 14.425781 17.806641 C 15.557781 17.529641 16.400391 16.461297 16.400391 15.404297 C 16.400391 13.820297 15.179984 13.091797 13.583984 13.091797 z M 13.320312 13.730469 C 14.502313 13.730469 15.205078 14.346516 15.205078 15.478516 C 15.204078 16.586516 14.450359 17.326172 13.193359 17.326172 C 12.728359 17.326172 12.5145 17.314063 12.1875 17.289062 L 12.1875 13.767578 C 12.5145 13.729578 12.942312 13.730469 13.320312 13.730469 z"/>
+                  </svg>
+                  <span>ResearchGate</span>
+                </a>
+              </li>
+            </ul>
+            <div class="video-link-container">
+              <a href="binaural-externalization/" class="video-link" style="text-decoration:none;">
+                <h4 class="video-caption">Binaural Audio Externalization Processing</h4>
+                <video autoplay muted loop playsinline class="clickable-video">
+                  <!-- Multiple sources for cross-browser compatibility -->
+                  <!-- WebM is recommended for transparent videos -->
+                  <source src="assets/binaural-externalization/06 - Circle - Transparent (Sun).webm" type="video/webm">
+                  <!-- MOV fallback for mobile support -->
+                  <source src="assets/binaural-externalization/06 - Circle - Transparent (Sun).mov" type="video/quicktime">
+                  Your browser does not support the video tag.
+                </video>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <div class="container">
+        <h2>Skills</h2>
+        <h3>Professional Competencies</h3>
+        <div class="skills-grid">
+          <div class="skills-column">
+            <div class="skill-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="18" height="12" stroke="currentColor" stroke-width="2" rx="1"/>
+                <rect x="5" y="5" width="14" height="8" fill="currentColor" opacity="0.2"/>
+                <rect x="10" y="15" width="4" height="3" fill="currentColor"/>
+                <rect x="7" y="18" width="10" height="2" fill="currentColor" rx="1"/>
+              </svg>
+            </div>
+            <h3>Programming</h3>
+            <div id="programming-skills" class="skill-tags three-columns">
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">C/C++</span>
+              <span class="skill-tag">SQL</span>
+              <span class="skill-tag">Git</span>
+              <span class="skill-tag">MATLAB</span>
+              <span class="skill-tag">Max/MSP</span>
+              <span class="skill-tag">JUCE</span>
+              <!-- <span class="skill-tag">Spat (IRCAM)</span> -->
+              <span class="skill-tag">PyTorch</span>
+              <!-- <span class="skill-tag">TensorFlow</span> -->
+              <!-- <span class="skill-tag">Scikit-learn</span> -->
+              <span class="skill-tag">LaTeX</span>
+            </div>
+          </div>
+          <div class="skills-column">
+            <div class="skill-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="10" width="2" height="4" fill="currentColor" rx="1"/>
+                <rect x="7" y="6" width="2" height="12" fill="currentColor" rx="1"/>
+                <rect x="11" y="8" width="2" height="8" fill="currentColor" rx="1"/>
+                <rect x="15" y="4" width="2" height="16" fill="currentColor" rx="1"/>
+                <rect x="19" y="9" width="2" height="6" fill="currentColor" rx="1"/>
+              </svg>
+            </div>
+            <h3>Music & Audio</h3>
+            <div id="audio-skills" class="skill-tags three-columns">
+              <span class="skill-tag">Composing</span>
+              <span class="skill-tag">Performing</span>
+              <span class="skill-tag">Recording</span>
+              <span class="skill-tag">Producing</span>
+              <span class="skill-tag">Mixing</span>
+              <span class="skill-tag">Mastering</span>
+              <span class="skill-tag">Pro Tools</span>
+              <span class="skill-tag">Audacity</span>
+              <span class="skill-tag">Reaper</span>
+              <span class="skill-tag">EASE/EASERA</span>
+              <span class="skill-tag">Odeon</span>
+              <span class="skill-tag">CATT Acoustic</span>
+              <span class="skill-tag">Electric, Acoustic, & Bass Guitar</span>
+              <span class="skill-tag">Piano</span>
+              <span class="skill-tag">Percussion</span>
+              <span class="skill-tag">Vocals</span>
+              <span class="skill-tag">Banjo</span>
+            </div>
+          </div>
+          <div class="skills-column">
+            <div class="skill-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Top row - 1 dot -->
+                <circle cx="12" cy="3" r="1.3" fill="currentColor"/>
+                
+                <!-- Second row - 3 dots -->
+                <circle cx="9" cy="6" r="1.25" fill="currentColor"/>
+                <circle cx="12" cy="6" r="1.25" fill="currentColor"/>
+                <circle cx="15" cy="6" r="1.25" fill="currentColor"/>
+                
+                <!-- Third row - 5 dots -->
+                <circle cx="6" cy="9" r="1.2" fill="currentColor" opacity="0.8"/>
+                <circle cx="9" cy="9" r="1.2" fill="currentColor" opacity="0.8"/>
+                <circle cx="12" cy="9" r="1.2" fill="currentColor" opacity="0.8"/>
+                <circle cx="15" cy="9" r="1.2" fill="currentColor" opacity="0.8"/>
+                <circle cx="18" cy="9" r="1.2" fill="currentColor" opacity="0.8"/>
+                
+                <!-- Fourth row - 7 dots (middle row) -->
+                <circle cx="3" cy="12" r="1.15" fill="currentColor" opacity="0.6"/>
+                <circle cx="6" cy="12" r="1.15" fill="currentColor" opacity="0.6"/>
+                <circle cx="9" cy="12" r="1.15" fill="currentColor" opacity="0.6"/>
+                <circle cx="12" cy="12" r="1.15" fill="currentColor" opacity="0.6"/>
+                <circle cx="15" cy="12" r="1.15" fill="currentColor" opacity="0.6"/>
+                <circle cx="18" cy="12" r="1.15" fill="currentColor" opacity="0.6"/>
+                <circle cx="21" cy="12" r="1.15" fill="currentColor" opacity="0.6"/>
+                
+                <!-- Fifth row - 5 dots -->
+                <circle cx="6" cy="15" r="1.1" fill="currentColor" opacity="0.4"/>
+                <circle cx="9" cy="15" r="1.1" fill="currentColor" opacity="0.4"/>
+                <circle cx="12" cy="15" r="1.1" fill="currentColor" opacity="0.4"/>
+                <circle cx="15" cy="15" r="1.1" fill="currentColor" opacity="0.4"/>
+                <circle cx="18" cy="15" r="1.1" fill="currentColor" opacity="0.4"/>
+                
+                <!-- Sixth row - 3 dots -->
+                <circle cx="9" cy="18" r="1.05" fill="currentColor" opacity="0.2"/>
+                <circle cx="12" cy="18" r="1.05" fill="currentColor" opacity="0.2"/>
+                <circle cx="15" cy="18" r="1.05" fill="currentColor" opacity="0.2"/>
+                
+                <!-- Bottom row - 1 dot -->
+                <circle cx="12" cy="21" r="1" fill="currentColor" opacity="0.05"/>
+              </svg>
+            </div>
+            <h3>Technical</h3>
+            <div id="technical-skills" class="skill-tags two-columns">
+              <span class="skill-tag">Machine Learning<!--  & Deep Learning --></span>
+              <span class="skill-tag">Digital Signal Processing<!--  (DSP) --></span>
+              <span class="skill-tag">Real-Time Spatial Audio Processing</span>
+              <span class="skill-tag">Audio Algorithm Development</span>
+              <span class="skill-tag">Audio Data Engineering</span>
+              <span class="skill-tag">Acoustics Simulation, Modeling, and Measurement</span>
+              <span class="skill-tag">Project Management</span>
+              <span class="skill-tag">Technical Writing</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="interests" class="section">
+      <div class="container">
+        <h2>Interests</h2>
+        <div class="carousel-container fade-in-element">
+          <div class="carousel-track" id="carousel-track">
+            <!-- Original sequence of all media files -->
+            <!-- <img src="assets/photos/carousel/landschootmaternity13.JPG" alt=""> -->
+            <img src="assets/photos/carousel/cubs_1.jpg" alt="">
+            <img src="assets/photos/carousel/the_bean_1.jpg" alt="">
+            <img src="assets/photos/carousel/the_bean_2.jpg" alt="">
+            <img src="assets/photos/carousel/queso_1.JPG" alt="">
+            <img src="assets/photos/carousel/Bills_1.JPG" alt="">
+            <img src="assets/photos/carousel/boat_1.jpg" alt="">
+            <img src="assets/photos/carousel/kickball_champs.JPG" alt="">
+            <img src="assets/photos/carousel/the_boys_1.jpg" alt="">
+            <img src="assets/photos/carousel/Coffee Art.jpg" alt="">
+            <video src="assets/photos/carousel/Indoor Sky Diving.mov" autoplay muted loop playsinline></video>
+            <img src="assets/photos/carousel/band_1.JPG" alt="">
+            <img src="assets/photos/carousel/band_boat.JPG" alt="">
+            <img src="assets/photos/carousel/guitar_profile_1.JPG" alt="">
+            <img src="assets/photos/carousel/hike_1.jpg" alt="">
+            <img src="assets/photos/carousel/hike_2.jpg" alt="">
+            <img src="assets/photos/carousel/hike_3.jpg" alt="">
+            <img src="assets/photos/carousel/honeymoon_1.jpg" alt="">
+            <img src="assets/photos/carousel/studio_square.jpg" alt="">
+            <img src="assets/photos/carousel/wedding_1.JPG" alt="">
+            <img src="assets/photos/carousel/wedding_2.JPG" alt="">
+            
+            <!-- Duplicate sequence for seamless looping -->
+            <img src="assets/photos/carousel/landschootmaternity13.JPG" alt="">
+            <img src="assets/photos/carousel/cubs_1.jpg" alt="">
+            <img src="assets/photos/carousel/the_bean_1.jpg" alt="">
+            <img src="assets/photos/carousel/the_bean_2.jpg" alt="">
+            <img src="assets/photos/carousel/queso_1.JPG" alt="">
+            <img src="assets/photos/carousel/Bills_1.JPG" alt="">
+            <img src="assets/photos/carousel/boat_1.jpg" alt="">
+            <img src="assets/photos/carousel/kickball_champs.JPG" alt="">
+            <img src="assets/photos/carousel/the_boys_1.jpg" alt="">
+            <img src="assets/photos/carousel/Coffee Art.jpg" alt="">
+            <video src="assets/photos/carousel/Indoor Sky Diving.mov" autoplay muted loop playsinline></video>
+            <img src="assets/photos/carousel/band_1.JPG" alt="">
+            <img src="assets/photos/carousel/band_boat.JPG" alt="">
+            <img src="assets/photos/carousel/guitar_profile_1.JPG" alt="">
+            <img src="assets/photos/carousel/hike_1.jpg" alt="">
+            <img src="assets/photos/carousel/hike_2.jpg" alt="">
+            <img src="assets/photos/carousel/hike_3.jpg" alt="">
+            <img src="assets/photos/carousel/honeymoon_1.jpg" alt="">
+            <img src="assets/photos/carousel/studio_square.jpg" alt="">
+            <img src="assets/photos/carousel/wedding_1.JPG" alt="">
+            <img src="assets/photos/carousel/wedding_2.JPG" alt="">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <h2>Contact</h2>
+        <h3>Let's Connect!</h3>
+        <form id="contact-form">
+          <label>Name <input type="text" name="name" required></label>
+          <label>Email <input type="email" name="email" required></label>
+          <label>Subject <input type="text" name="subject"></label>
+          <label>Message <textarea name="message" rows="5" required></textarea></label>
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </section>
+
+    <button class="to-top" aria-label="Back to top">↑</button>
+  </main>
+
+  <footer>
+    <div class="container">
+      <ul class="social" id="social-links">
+        <!-- Social links with icons -->
+        <li>
+          <a href="https://www.linkedin.com/in/christopher-landschoot/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path d="M19 3H5C3.895 3 3 3.895 3 5v14c0 1.105 0.895 2 2 2h14c1.105 0 2-0.895 2-2V5c0-1.105-0.895-2-2-2zm-11 14h-2v-7h2v7zm-1-8.6c-0.694 0-1.2-0.506-1.2-1.2 0-0.694 0.506-1.2 1.2-1.2 0.694 0 1.2 0.506 1.2 1.2 0 0.694-0.506 1.2-1.2 1.2zm9 8.6h-2v-3.9c0-1.3-0.7-1.6-0.9-1.6s-1.1 0.4-1.1 1.6V17h-2v-7h2v1.3c0.6-1.2 1.6-1.3 2-1.3s2 0.3 2 2.4V17z"/>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/crlandsc" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path d="M10.9,2.1c-4.6,0.5-8.3,4.2-8.8,8.7c-0.5,4.7,2.2,8.9,6.3,10.5C8.7,21.4,9,21.2,9,20.8v-1.6c0,0-0.4,0.1-0.9,0.1 c-1.4,0-2-1.2-2.1-1.9c-0.1-0.4-0.3-0.7-0.6-1C5.1,16.3,5,16.3,5,16.2C5,16,5.3,16,5.4,16c0.6,0,1.1,0.7,1.3,1c0.5,0.8,1.1,1,1.4,1 c0.4,0,0.7-0.1,0.9-0.2c0.1-0.7,0.4-1.4,1-1.8c-2.3-0.5-4-1.8-4-4c0-1.1,0.5-2.2,1.2-3C7.1,8.8,7,8.3,7,7.6C7,7.2,7,6.6,7.3,6 c0,0,1.4,0,2.8,1.3C10.6,7.1,11.3,7,12,7s1.4,0.1,2,0.3C15.3,6,16.8,6,16.8,6C17,6.6,17,7.2,17,7.6c0,0.8-0.1,1.2-0.2,1.4 c0.7,0.8,1.2,1.8,1.2,3c0,2.2-1.7,3.5-4,4c0.6,0.5,1,1.4,1,2.3v2.6c0,0.3,0.3,0.6,0.7,0.5c3.7-1.5,6.3-5.1,6.3-9.3 C22,6.1,16.9,1.4,10.9,2.1z"/>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.youtube.com/AfterAugust" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path d="M21.582,6.186c-0.23-0.86-0.908-1.538-1.768-1.768C18.254,4,12,4,12,4S5.746,4,4.186,4.418 c-0.86,0.23-1.538,0.908-1.768,1.768C2,7.746,2,12,2,12s0,4.254,0.418,5.814c0.23,0.86,0.908,1.538,1.768,1.768 C5.746,20,12,20,12,20s6.254,0,7.814-0.418c0.861-0.23,1.538-0.908,1.768-1.768C22,16.254,22,12,22,12S22,7.746,21.582,6.186z M10,15.464V8.536L16,12L10,15.464z"/>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.facebook.com/TheAfterAugust/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path d="M12,2C6.477,2,2,6.477,2,12c0,5.013,3.693,9.153,8.505,9.876V14.65H8.031v-2.629h2.474v-1.749 c0-2.896,1.411-4.167,3.818-4.167c1.153,0,1.762,0.085,2.051,0.124v2.294h-1.642c-1.022,0-1.379,0.969-1.379,2.061v1.437h2.995 l-0.406,2.629h-2.588v7.247C18.235,21.236,22,17.062,22,12C22,6.477,17.523,2,12,2z"/>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.instagram.com/the_after_august/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path d="M 8 3 C 5.239 3 3 5.239 3 8 L 3 16 C 3 18.761 5.239 21 8 21 L 16 21 C 18.761 21 21 18.761 21 16 L 21 8 C 21 5.239 18.761 3 16 3 L 8 3 z M 18 5 C 18.552 5 19 5.448 19 6 C 19 6.552 18.552 7 18 7 C 17.448 7 17 6.552 17 6 C 17 5.448 17.448 5 18 5 z M 12 7 C 14.761 7 17 9.239 17 12 C 17 14.761 14.761 17 12 17 C 9.239 17 7 14.761 7 12 C 7 9.239 9.239 7 12 7 z M 12 9 A 3 3 0 0 0 9 12 A 3 3 0 0 0 12 15 A 3 3 0 0 0 15 12 A 3 3 0 0 0 12 9 z"/>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="https://scholar.google.com/citations?hl=en&view_op=list_works&gmla=AJsN-F6PaFcTdi4cTxZ3Kpvf2xwKM4ramDbqVKFm_buMLElpYMNzxViHQuKgOPeLMMP3KkcK6besvk4Tu9wURTx-4smBAfXZtw&user=4K5CzM4AAAAJ" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar">
+            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.researchgate.net/profile/Christopher-Landschoot/research" target="_blank" rel="noopener noreferrer" aria-label="ResearchGate">
+            <svg class="social-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24">
+              <path d="M 5 5 L 5 27 L 27 27 L 27 5 L 5 5 z M 7 7 L 25 7 L 25 25 L 7 25 L 7 7 z M 19.164062 10.001953 C 17.881062 10.001953 17.441406 10.919156 17.441406 11.535156 L 17.441406 13.169922 C 17.441406 13.999922 17.8935 14.792969 19.0625 14.792969 C 21.0245 14.790969 20.787109 13.306391 20.787109 12.275391 L 19.253906 12.275391 L 19.253906 12.816406 L 20.158203 12.816406 C 20.158203 13.621406 19.781453 14.162109 19.064453 14.162109 C 18.498453 14.162109 18.171875 13.671188 18.171875 12.992188 L 18.171875 11.634766 C 18.171875 11.005766 18.762062 10.642578 19.164062 10.642578 C 19.881062 10.642578 20.15625 11.271484 20.15625 11.271484 L 20.697266 10.90625 C 20.697266 10.90625 20.434062 10.001953 19.164062 10.001953 z M 13.583984 13.091797 C 12.678984 13.091797 11.296953 13.178906 10.001953 13.128906 L 10.001953 13.53125 C 10.781953 13.68225 11.107422 13.606281 11.107422 14.738281 L 11.107422 20.269531 C 11.107422 21.413531 10.780953 21.325563 10.001953 21.476562 L 10.001953 21.892578 C 10.378953 21.879578 11.031266 21.841797 11.697266 21.841797 C 12.326266 21.841797 13.144094 21.867578 13.496094 21.892578 L 13.496094 21.476562 C 12.490094 21.338562 12.1875 21.451531 12.1875 20.269531 L 12.1875 17.931641 C 12.5275 17.956641 12.817531 17.955078 13.269531 17.955078 C 14.124531 19.489078 14.94125 20.634781 15.40625 21.175781 C 16.24825 22.193781 17.594875 22.043578 17.921875 21.892578 L 17.921875 21.515625 C 17.418875 21.514625 16.914781 21.175437 16.550781 20.773438 C 15.934781 20.107437 15.104781 19.025641 14.425781 17.806641 C 15.557781 17.529641 16.400391 16.461297 16.400391 15.404297 C 16.400391 13.820297 15.179984 13.091797 13.583984 13.091797 z M 13.320312 13.730469 C 14.502313 13.730469 15.205078 14.346516 15.205078 15.478516 C 15.204078 16.586516 14.450359 17.326172 13.193359 17.326172 C 12.728359 17.326172 12.5145 17.314063 12.1875 17.289062 L 12.1875 13.767578 C 12.5145 13.729578 12.942312 13.730469 13.320312 13.730469 z"/>
+            </svg>
+          </a>
+        </li>
+      </ul>
+      <small>© 2025 Christopher Landschoot</small>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Make project cards clickable
+    document.addEventListener('DOMContentLoaded', function() {
+      const projectCards = document.querySelectorAll('.project-card');
+      projectCards.forEach(card => {
+        const link = card.querySelector('h4 a');
+        if (link) {
+          // Make the entire card clickable
+          card.addEventListener('click', function(e) {
+            // Only trigger if the click wasn't on the link itself
+            if (!e.target.closest('a')) {
+              link.click();
+            }
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

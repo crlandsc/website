@@ -1,0 +1,1790 @@
+/* Binaural Externalization Page Styles */
+
+/* Override scroll behavior for proper section positioning */
+html {
+  scroll-padding-top: 70px; /* Account for sticky header - matches main site */
+}
+
+/* Header modifications for centered navigation - using higher specificity */
+header .container.binaural-header-container {
+  display: flex;
+  justify-content: center !important; /* Override main site's space-between */
+  align-items: center;
+  height: 70px;
+  padding-left: var(--space-xs);
+  padding-right: var(--space-xs);
+}
+
+/* Center desktop navigation */
+header .container.binaural-header-container .desktop-nav {
+  display: flex !important; /* Override main site's display: none on mobile-first approach */
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+/* Center mobile navigation */
+header .container.binaural-header-container .mobile-nav {
+  position: relative;
+  margin: 0 auto;
+}
+
+/* Responsive nav visibility with higher specificity */
+@media (min-width: 768px) {
+  header .container.binaural-header-container .desktop-nav {
+    display: flex !important;
+  }
+  
+  header .container.binaural-header-container .mobile-nav {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  header .container.binaural-header-container .desktop-nav {
+    display: none !important;
+  }
+  
+  header .container.binaural-header-container .mobile-nav {
+    display: block;
+  }
+}
+
+/* Hero section styling - matching main site pattern */
+.binaural-hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--clr-background-primary);
+  background-color: var(--clr-accent-primary); /* Use accent color for hero background */
+  overflow: hidden; /* Contain the animation */
+}
+
+/* Orbital Sound Visualization Animation */
+.orbital-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  opacity: 0.6;
+  z-index: 1;
+}
+
+.orbital-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  max-width: 150vw;
+  max-height: 150vh;
+}
+
+/* Concentric waveforms representing sound waves */
+.sound-wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 2px solid var(--clr-background-primary);
+  transform: translate(-50%, -50%);
+  opacity: 0.4;
+  animation: waveform-pulse 4s ease-in-out infinite;
+}
+
+.sound-wave:nth-child(1) {
+  width: 120px;
+  height: 120px;
+  border-radius: 60% 40% 60% 40%;
+  animation: waveform-pulse-1 3s ease-in-out infinite;
+  animation-delay: -1.2s;
+}
+
+.sound-wave:nth-child(2) {
+  width: 200px;
+  height: 200px;
+  border-radius: 40% 60% 40% 60%;
+  animation: waveform-pulse-2 3.5s ease-in-out infinite;
+  animation-delay: -0.8s;
+}
+
+.sound-wave:nth-child(3) {
+  width: 280px;
+  height: 280px;
+  border-radius: 65% 35% 65% 35%;
+  animation: waveform-pulse-3 4s ease-in-out infinite;
+  animation-delay: -0.3s;
+}
+
+.sound-wave:nth-child(4) {
+  width: 360px;
+  height: 360px;
+  border-radius: 35% 65% 35% 65%;
+  animation: waveform-pulse-4 4.5s ease-in-out infinite;
+  animation-delay: -2.1s;
+}
+
+.sound-wave:nth-child(5) {
+  width: 440px;
+  height: 440px;
+  border-radius: 55% 45% 55% 45%;
+  animation: waveform-pulse-5 5s ease-in-out infinite;
+  animation-delay: -1.7s;
+}
+
+.sound-wave:nth-child(6) {
+  width: 520px;
+  height: 520px;
+  border-radius: 45% 55% 45% 55%;
+  animation: waveform-pulse-6 5.5s ease-in-out infinite;
+  animation-delay: -3.2s;
+}
+
+.sound-wave:nth-child(7) {
+  width: 600px;
+  height: 600px;
+  border-radius: 58% 42% 58% 42%;
+  animation: waveform-pulse-7 6s ease-in-out infinite;
+  animation-delay: -2.8s;
+}
+
+.sound-wave:nth-child(8) {
+  width: 680px;
+  height: 680px;
+  border-radius: 42% 58% 42% 58%;
+  animation: waveform-pulse-8 6.5s ease-in-out infinite;
+  animation-delay: -4.1s;
+}
+
+.sound-wave:nth-child(9) {
+  width: 760px;
+  height: 760px;
+  border-radius: 52% 48% 52% 48%;
+  animation: waveform-pulse-9 7s ease-in-out infinite;
+  animation-delay: -3.5s;
+}
+
+/* Spatial Audio Network - Sound Source Nodes */
+.sound-source {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: var(--clr-background-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 20px var(--clr-background-primary);
+  opacity: 0.8;
+}
+
+/* Ripple effects using pseudo-elements that automatically follow the moving nodes */
+.sound-source::before {
+  content: '';
+  position: absolute;
+  border: 1px solid var(--clr-background-primary);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  width: 24px;
+  height: 24px;
+}
+
+/* Dynamic ripple system - each source randomly samples from predefined ripple patterns */
+/* Each pattern creates 1-5 ripples using box-shadow for maximum visual diversity */
+
+/* Evenly distributed starting positions - accounting for animated positions at page load */
+.sound-source[data-source="1"] {
+  top: 50%;
+  left: 88%;
+  animation: source-float-1 20s ease-in-out infinite, source-pulse-1 3.5s ease-in-out infinite;
+  animation-delay: -3.2s, -0.5s;
+}
+
+.sound-source[data-source="1"]::before {
+  animation: ripple-random-1 16s ease-out infinite;
+  animation-delay: 0s;
+}
+
+.sound-source[data-source="2"] {
+  top: 77%;
+  left: 77%;
+  animation: source-float-2 22s ease-in-out infinite, source-pulse-2 4s ease-in-out infinite;
+  animation-delay: -6.8s, -1s;
+}
+
+.sound-source[data-source="2"]::before {
+  animation: ripple-random-2 19s ease-out infinite;
+  animation-delay: 0s;
+}
+
+.sound-source[data-source="3"] {
+  top: 88%;
+  left: 50%;
+  animation: source-float-3 19s ease-in-out infinite, source-pulse-3 3.8s ease-in-out infinite;
+  animation-delay: -4.5s, -0.8s;
+}
+
+.sound-source[data-source="3"]::before {
+  animation: ripple-random-3 22s ease-out infinite;
+  animation-delay: 0s;
+}
+
+.sound-source[data-source="4"] {
+  top: 77%;
+  left: 23%;
+  animation: source-float-4 21s ease-in-out infinite, source-pulse-4 4.2s ease-in-out infinite;
+  animation-delay: -8.2s, -1.2s;
+}
+
+.sound-source[data-source="4"]::before {
+  animation: ripple-random-4 18s ease-out infinite;
+  animation-delay: 0s;
+}
+
+.sound-source[data-source="5"] {
+  top: 50%;
+  left: 12%;
+  animation: source-float-5 23s ease-in-out infinite, source-pulse-5 3.6s ease-in-out infinite;
+  animation-delay: -5.1s, -0.6s;
+}
+
+.sound-source[data-source="5"]::before {
+  animation: ripple-random-5 20s ease-out infinite;
+  animation-delay: 0s;
+}
+
+.sound-source[data-source="6"] {
+  top: 23%;
+  left: 23%;
+  animation: source-float-6 18s ease-in-out infinite, source-pulse-6 4.5s ease-in-out infinite;
+  animation-delay: -9.3s, -1.5s;
+}
+
+.sound-source[data-source="6"]::before {
+  animation: ripple-random-6 17s ease-out infinite;
+  animation-delay: 0s;
+}
+
+.sound-source[data-source="7"] {
+  top: 12%;
+  left: 50%;
+  animation: source-float-7 20s ease-in-out infinite, source-pulse-7 3.9s ease-in-out infinite;
+  animation-delay: -7.7s, -0.9s;
+}
+
+.sound-source[data-source="7"]::before {
+  animation: ripple-random-7 21s ease-out infinite;
+  animation-delay: 0s;
+}
+
+.sound-source[data-source="8"] {
+  top: 23%;
+  left: 77%;
+  animation: source-float-8 22s ease-in-out infinite, source-pulse-8 4.1s ease-in-out infinite;
+  animation-delay: -10.0s, -1.1s;
+}
+
+.sound-source[data-source="8"]::before {
+  animation: ripple-random-8 19s ease-out infinite;
+  animation-delay: 0s;
+}
+
+/* Animation keyframes for waveform undulations */
+@keyframes waveform-pulse-1 {
+  0%, 100% {
+    opacity: 0.4;
+    border-radius: 60% 40% 60% 40%;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.7;
+    border-radius: 40% 60% 40% 60%;
+    transform: translate(-50%, -50%) scale(1.05) rotate(5deg);
+  }
+}
+
+@keyframes waveform-pulse-2 {
+  0%, 100% {
+    opacity: 0.4;
+    border-radius: 40% 60% 40% 60%;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.6;
+    border-radius: 65% 35% 65% 35%;
+    transform: translate(-50%, -50%) scale(1.04) rotate(-3deg);
+  }
+}
+
+@keyframes waveform-pulse-3 {
+  0%, 100% {
+    opacity: 0.4;
+    border-radius: 65% 35% 65% 35%;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.5;
+    border-radius: 35% 65% 35% 65%;
+    transform: translate(-50%, -50%) scale(1.03) rotate(4deg);
+  }
+}
+
+@keyframes waveform-pulse-4 {
+  0%, 100% {
+    opacity: 0.4;
+    border-radius: 35% 65% 35% 65%;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.5;
+    border-radius: 55% 45% 55% 45%;
+    transform: translate(-50%, -50%) scale(1.02) rotate(-2deg);
+  }
+}
+
+@keyframes waveform-pulse-5 {
+  0%, 100% {
+    opacity: 0.4;
+    border-radius: 55% 45% 55% 45%;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.3;
+    border-radius: 45% 55% 45% 55%;
+    transform: translate(-50%, -50%) scale(1.01) rotate(3deg);
+  }
+}
+
+@keyframes waveform-pulse-6 {
+  0%, 100% {
+    opacity: 0.3;
+    border-radius: 45% 55% 45% 55%;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.2;
+    border-radius: 60% 40% 60% 40%;
+    transform: translate(-50%, -50%) scale(1.005) rotate(-4deg);
+  }
+}
+
+@keyframes waveform-pulse-7 {
+  0%, 100% {
+    opacity: 0.3;
+    border-radius: 58% 42% 58% 42%;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.2;
+    border-radius: 42% 58% 42% 58%;
+    transform: translate(-50%, -50%) scale(1.003) rotate(2deg);
+  }
+}
+
+@keyframes waveform-pulse-8 {
+  0%, 100% {
+    opacity: 0.25;
+    border-radius: 42% 58% 42% 58%;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.15;
+    border-radius: 55% 45% 55% 45%;
+    transform: translate(-50%, -50%) scale(1.002) rotate(-1deg);
+  }
+}
+
+@keyframes waveform-pulse-9 {
+  0%, 100% {
+    opacity: 0.2;
+    border-radius: 52% 48% 52% 48%;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  50% {
+    opacity: 0.1;
+    border-radius: 48% 52% 48% 52%;
+    transform: translate(-50%, -50%) scale(1.001) rotate(1deg);
+  }
+}
+
+/* Natural Floating Movement Animations - Strictly Constrained Within Sound Field */
+/* TIGHT CONSTRAINTS: Dots stay outside 120px radius and inside 350px radius from center */
+/* Maximum movement displacement: 50px to ensure no boundary violations */
+
+@keyframes source-float-1 {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  10% { transform: translate(40px, -15px) rotate(36deg); }
+  20% { transform: translate(50px, 10px) rotate(72deg); }
+  30% { transform: translate(45px, 35px) rotate(108deg); }
+  40% { transform: translate(20px, 45px) rotate(144deg); }
+  50% { transform: translate(-10px, 40px) rotate(180deg); }
+  60% { transform: translate(-35px, 25px) rotate(216deg); }
+  70% { transform: translate(-45px, -5px) rotate(252deg); }
+  80% { transform: translate(-35px, -30px) rotate(288deg); }
+  90% { transform: translate(-10px, -40px) rotate(324deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes source-float-2 {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  12% { transform: translate(-30px, 25px) rotate(43deg); }
+  24% { transform: translate(-45px, 15px) rotate(86deg); }
+  36% { transform: translate(-50px, -10px) rotate(129deg); }
+  48% { transform: translate(-40px, -35px) rotate(172deg); }
+  60% { transform: translate(-20px, -45px) rotate(215deg); }
+  72% { transform: translate(15px, -40px) rotate(258deg); }
+  84% { transform: translate(35px, -25px) rotate(301deg); }
+  96% { transform: translate(45px, 10px) rotate(344deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes source-float-3 {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  15% { transform: translate(30px, -25px) rotate(54deg); }
+  30% { transform: translate(20px, -45px) rotate(108deg); }
+  45% { transform: translate(-15px, -50px) rotate(162deg); }
+  60% { transform: translate(-40px, -35px) rotate(216deg); }
+  75% { transform: translate(-45px, -10px) rotate(270deg); }
+  90% { transform: translate(-35px, 20px) rotate(324deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes source-float-4 {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  8% { transform: translate(35px, 20px) rotate(29deg); }
+  16% { transform: translate(50px, -5px) rotate(58deg); }
+  24% { transform: translate(45px, -25px) rotate(87deg); }
+  32% { transform: translate(40px, -45px) rotate(116deg); }
+  40% { transform: translate(25px, -50px) rotate(145deg); }
+  48% { transform: translate(0, -45px) rotate(174deg); }
+  56% { transform: translate(-25px, -40px) rotate(203deg); }
+  64% { transform: translate(-40px, -20px) rotate(232deg); }
+  72% { transform: translate(-45px, 10px) rotate(261deg); }
+  80% { transform: translate(-35px, 30px) rotate(290deg); }
+  88% { transform: translate(-20px, 45px) rotate(319deg); }
+  96% { transform: translate(10px, 40px) rotate(348deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes source-float-5 {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  11% { transform: translate(-25px, 30px) rotate(40deg); }
+  22% { transform: translate(-10px, 45px) rotate(80deg); }
+  33% { transform: translate(20px, 50px) rotate(120deg); }
+  44% { transform: translate(40px, 35px) rotate(160deg); }
+  55% { transform: translate(50px, 15px) rotate(200deg); }
+  66% { transform: translate(45px, -10px) rotate(240deg); }
+  77% { transform: translate(35px, -30px) rotate(280deg); }
+  88% { transform: translate(10px, -45px) rotate(320deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes source-float-6 {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  9% { transform: translate(-35px, -10px) rotate(32deg); }
+  18% { transform: translate(-50px, -25px) rotate(64deg); }
+  27% { transform: translate(-45px, -45px) rotate(96deg); }
+  36% { transform: translate(-30px, -50px) rotate(128deg); }
+  45% { transform: translate(-15px, -45px) rotate(160deg); }
+  54% { transform: translate(10px, -40px) rotate(192deg); }
+  63% { transform: translate(35px, -25px) rotate(224deg); }
+  72% { transform: translate(45px, 5px) rotate(256deg); }
+  81% { transform: translate(40px, 30px) rotate(288deg); }
+  90% { transform: translate(20px, 45px) rotate(320deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes source-float-7 {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  14% { transform: translate(40px, 20px) rotate(50deg); }
+  28% { transform: translate(50px, 40px) rotate(100deg); }
+  42% { transform: translate(45px, 50px) rotate(150deg); }
+  56% { transform: translate(20px, 45px) rotate(200deg); }
+  70% { transform: translate(-10px, 40px) rotate(250deg); }
+  84% { transform: translate(-35px, 25px) rotate(300deg); }
+  98% { transform: translate(-25px, 5px) rotate(350deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+@keyframes source-float-8 {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  13% { transform: translate(-25px, -20px) rotate(47deg); }
+  26% { transform: translate(-30px, -40px) rotate(94deg); }
+  39% { transform: translate(-10px, -50px) rotate(141deg); }
+  52% { transform: translate(15px, -45px) rotate(188deg); }
+  65% { transform: translate(40px, -35px) rotate(235deg); }
+  78% { transform: translate(50px, -20px) rotate(282deg); }
+  91% { transform: translate(45px, -5px) rotate(329deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+/* Sound Source Pulse Animations */
+@keyframes source-pulse-1 {
+  0%, 100% {
+    opacity: 0.8;
+    box-shadow: 0 0 20px var(--clr-background-primary);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 30px var(--clr-background-primary);
+  }
+}
+
+@keyframes source-pulse-2 {
+  0%, 100% {
+    opacity: 0.7;
+    box-shadow: 0 0 18px var(--clr-background-primary);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 35px var(--clr-background-primary);
+  }
+}
+
+@keyframes source-pulse-3 {
+  0%, 100% {
+    opacity: 0.8;
+    box-shadow: 0 0 22px var(--clr-background-primary);
+  }
+  50% {
+    opacity: 0.9;
+    box-shadow: 0 0 28px var(--clr-background-primary);
+  }
+}
+
+@keyframes source-pulse-4 {
+  0%, 100% {
+    opacity: 0.7;
+    box-shadow: 0 0 25px var(--clr-background-primary);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 40px var(--clr-background-primary);
+  }
+}
+
+@keyframes source-pulse-5 {
+  0%, 100% {
+    opacity: 0.9;
+    box-shadow: 0 0 15px var(--clr-background-primary);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 25px var(--clr-background-primary);
+  }
+}
+
+@keyframes source-pulse-6 {
+  0%, 100% {
+    opacity: 0.6;
+    box-shadow: 0 0 30px var(--clr-background-primary);
+  }
+  50% {
+    opacity: 0.9;
+    box-shadow: 0 0 45px var(--clr-background-primary);
+  }
+}
+
+@keyframes source-pulse-7 {
+  0%, 100% {
+    opacity: 0.8;
+    box-shadow: 0 0 20px var(--clr-background-primary);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 32px var(--clr-background-primary);
+  }
+}
+
+@keyframes source-pulse-8 {
+  0%, 100% {
+    opacity: 0.7;
+    box-shadow: 0 0 28px var(--clr-background-primary);
+  }
+  50% {
+    opacity: 0.95;
+    box-shadow: 0 0 38px var(--clr-background-primary);
+  }
+}
+
+/* Random ripple sampling system - each source cycles through different patterns */
+/* All animations are expansion-only, with instantaneous resets between phases. */
+
+/* Source 1: Cycles through patterns A→E→B→D→F (1→5→2→4→1 ripples) */
+@keyframes ripple-random-1 {
+  /* --- Phase 1: Single Ripple (0-20%) --- */
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.7;
+    box-shadow: 0 0 0 0 var(--clr-background-primary);
+  }
+  19.9% {
+    transform: translate(-50%, -50%) scale(4.0);
+    opacity: 0;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  20%, 100% { /* Reset and idle state */
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    box-shadow: none;
+  }
+
+  /* --- Phase 2: Penta Ripple (20-40%) --- */
+  20.01% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.4;
+    box-shadow: 
+      0 0 0 3px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  25% {
+    box-shadow: 
+      0 0 0 12px transparent, 0 0 0 3px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  30% {
+    box-shadow: 
+      0 0 0 18px transparent, 0 0 0 12px transparent,
+      0 0 0 3px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  35% {
+    box-shadow: 
+      0 0 0 24px transparent, 0 0 0 18px transparent,
+      0 0 0 12px transparent, 0 0 0 3px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  39.9% {
+    transform: translate(-50%, -50%) scale(5.0);
+    opacity: 0;
+    box-shadow: 
+      0 0 0 40px transparent, 0 0 0 35px transparent, 0 0 0 30px transparent,
+      0 0 0 25px transparent, 0 0 0 20px transparent;
+  }
+  40% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 3: Double Ripple (40-60%) --- */
+  40.01% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0.6;
+    box-shadow: 0 0 0 8px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  48% { box-shadow: 0 0 0 16px transparent, 0 0 0 8px var(--clr-background-primary); }
+  59.9% {
+    transform: translate(-50%, -50%) scale(4.5);
+    opacity: 0;
+    box-shadow: 0 0 0 32px transparent, 0 0 0 24px transparent;
+  }
+  60% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 4: Quad Ripple (60-80%) --- */
+  60.01% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.5;
+    box-shadow: 
+      0 0 0 4px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  68% {
+    box-shadow: 
+      0 0 0 12px transparent, 0 0 0 4px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  72% {
+    box-shadow: 
+      0 0 0 20px transparent, 0 0 0 12px transparent,
+      0 0 0 4px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  79.9% {
+    transform: translate(-50%, -50%) scale(3.5);
+    opacity: 0;
+    box-shadow: 
+      0 0 0 32px transparent, 0 0 0 28px transparent,
+      0 0 0 20px transparent, 0 0 0 12px transparent;
+  }
+  80% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+  
+  /* --- Phase 5: Intense Single (80-100%) --- */
+  80.01% {
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0.9;
+    box-shadow: 0 0 0 0 var(--clr-background-primary);
+  }
+  99.9% {
+    transform: translate(-50%, -50%) scale(3.2);
+    opacity: 0;
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/* Source 2: Cycles through patterns C→F→D→A→B (3→1→4→1→2 ripples) */
+@keyframes ripple-random-2 {
+  /* --- Phase 1: Triple Ripple (0-20%) --- */
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.8;
+    box-shadow: 
+      0 0 0 6px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  8% {
+    box-shadow: 
+      0 0 0 18px transparent, 0 0 0 6px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  12% {
+    box-shadow: 
+      0 0 0 24px transparent, 0 0 0 18px transparent,
+      0 0 0 6px var(--clr-background-primary);
+  }
+  19.9% {
+    transform: translate(-50%, -50%) scale(3.8);
+    opacity: 0;
+    box-shadow: 0 0 0 36px transparent, 0 0 0 30px transparent, 0 0 0 24px transparent;
+  }
+  20%, 100% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 2: Intense Single (20-40%) --- */
+  20.01% {
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0.9;
+    box-shadow: 0 0 0 0 var(--clr-background-primary);
+  }
+  39.9% {
+    transform: translate(-50%, -50%) scale(3.2);
+    opacity: 0;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  40% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 3: Quad Ripple (40-60%) --- */
+  40.01% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.5;
+    box-shadow: 
+      0 0 0 4px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  48% {
+    box-shadow: 
+      0 0 0 12px transparent, 0 0 0 4px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  52% {
+    box-shadow: 
+      0 0 0 20px transparent, 0 0 0 12px transparent,
+      0 0 0 4px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  59.9% {
+    transform: translate(-50%, -50%) scale(3.5);
+    opacity: 0;
+    box-shadow: 
+      0 0 0 28px transparent, 0 0 0 20px transparent,
+      0 0 0 12px transparent, 0 0 0 4px var(--clr-background-primary);
+  }
+  60% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 4: Single Ripple (60-80%) --- */
+  60.01% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.7;
+    box-shadow: 0 0 0 0 var(--clr-background-primary);
+  }
+  79.9% {
+    transform: translate(-50%, -50%) scale(4.0);
+    opacity: 0;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  80% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 5: Double Ripple (80-100%) --- */
+  80.01% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0.6;
+    box-shadow: 0 0 0 8px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  88% { box-shadow: 0 0 0 16px transparent, 0 0 0 8px var(--clr-background-primary); }
+  99.9% {
+    transform: translate(-50%, -50%) scale(4.5);
+    opacity: 0;
+    box-shadow: 0 0 0 32px transparent, 0 0 0 24px transparent;
+  }
+}
+
+/* Source 3: Cycles through patterns D→A→E→C→F (4→1→5→3→1 ripples) */
+@keyframes ripple-random-3 {
+  /* --- Phase 1: Quad Ripple (0-20%) --- */
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.5;
+    box-shadow: 
+      0 0 0 4px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  5% {
+    box-shadow: 
+      0 0 0 12px transparent, 0 0 0 4px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  10% {
+    box-shadow: 
+      0 0 0 20px transparent, 0 0 0 12px transparent,
+      0 0 0 4px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  19.9% {
+    transform: translate(-50%, -50%) scale(3.5);
+    opacity: 0;
+  }
+  20%, 100% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+  
+  /* --- Phase 2: Single Ripple (20-40%) --- */
+  20.01% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.7;
+    box-shadow: 0 0 0 0 var(--clr-background-primary);
+  }
+  39.9% {
+    transform: translate(-50%, -50%) scale(4.0);
+    opacity: 0;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  40% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 3: Penta Ripple (40-60%) --- */
+  40.01% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.4;
+    box-shadow: 
+      0 0 0 3px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  45% {
+    box-shadow: 
+      0 0 0 12px transparent, 0 0 0 3px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  50% {
+    box-shadow: 
+      0 0 0 18px transparent, 0 0 0 12px transparent,
+      0 0 0 3px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  59.9% {
+    transform: translate(-50%, -50%) scale(5.0);
+    opacity: 0;
+  }
+  60% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 4: Triple Ripple (60-80%) --- */
+  60.01% {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 0.8;
+    box-shadow: 
+      0 0 0 6px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  68% {
+    box-shadow: 
+      0 0 0 18px transparent, 0 0 0 6px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  72% {
+    box-shadow: 
+      0 0 0 24px transparent, 0 0 0 18px transparent,
+      0 0 0 6px var(--clr-background-primary);
+  }
+  79.9% {
+    transform: translate(-50%, -50%) scale(3.8);
+    opacity: 0;
+  }
+  80% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 5: Intense Single (80-100%) --- */
+  80.01% {
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0.9;
+    box-shadow: 0 0 0 0 var(--clr-background-primary);
+  }
+  99.9% {
+    transform: translate(-50%, -50%) scale(3.2);
+    opacity: 0;
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/* Source 4: Cycles through patterns B→E→A→C→D (2→5→1→3→4 ripples) */
+@keyframes ripple-random-4 {
+  /* --- Phase 1: Double Ripple (0-20%) --- */
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.6;
+    box-shadow: 0 0 0 8px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  5% { box-shadow: 0 0 0 16px transparent, 0 0 0 8px var(--clr-background-primary); }
+  19.9% {
+    transform: translate(-50%, -50%) scale(4.5);
+    opacity: 0;
+    box-shadow: 0 0 0 32px transparent, 0 0 0 24px transparent;
+  }
+  20%, 100% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 2: Penta Ripple (20-40%) --- */
+  20.01% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.4;
+    box-shadow: 
+      0 0 0 3px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  25% {
+    box-shadow: 
+      0 0 0 12px transparent, 0 0 0 3px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  30% {
+    box-shadow: 
+      0 0 0 18px transparent, 0 0 0 12px transparent,
+      0 0 0 3px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  39.9% {
+    transform: translate(-50%, -50%) scale(5.0);
+    opacity: 0;
+  }
+  40% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 3: Single Ripple (40-60%) --- */
+  40.01% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.7;
+    box-shadow: 0 0 0 0 var(--clr-background-primary);
+  }
+  59.9% {
+    transform: translate(-50%, -50%) scale(4.0);
+    opacity: 0;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  60% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 4: Triple Ripple (60-80%) --- */
+  60.01% {
+    transform: translate(-50%, -50%) scale(0.4);
+    opacity: 0.8;
+    box-shadow: 
+      0 0 0 6px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  68% {
+    box-shadow: 
+      0 0 0 18px transparent, 0 0 0 6px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary);
+  }
+  72% {
+    box-shadow: 
+      0 0 0 24px transparent, 0 0 0 18px transparent,
+      0 0 0 6px var(--clr-background-primary);
+  }
+  79.9% {
+    transform: translate(-50%, -50%) scale(3.8);
+    opacity: 0;
+  }
+  80% { transform: translate(-50%, -50%) scale(0); opacity: 0; box-shadow: none; }
+
+  /* --- Phase 5: Quad Ripple (80-100%) --- */
+  80.01% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.5;
+    box-shadow: 
+      0 0 0 4px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  88% {
+    box-shadow: 
+      0 0 0 12px transparent, 0 0 0 4px var(--clr-background-primary),
+      0 0 0 0px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  92% {
+    box-shadow: 
+      0 0 0 20px transparent, 0 0 0 12px transparent,
+      0 0 0 4px var(--clr-background-primary), 0 0 0 0px var(--clr-background-primary);
+  }
+  99.9% {
+    transform: translate(-50%, -50%) scale(3.5);
+    opacity: 0;
+  }
+}
+
+/* Source 5: Cycles through patterns E→D→F→B→A (5→4→1→2→1 ripples) */
+@keyframes ripple-random-5 {
+  /* --- Phase 1: Penta Ripple (0-20%) --- */
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0.4; }
+  19.9% { transform: translate(-50%, -50%) scale(5.0); opacity: 0; }
+  20%, 100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 2: Quad Ripple (20-40%) --- */
+  20.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.5; }
+  39.9% { transform: translate(-50%, -50%) scale(3.5); opacity: 0; }
+  40% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 3: Intense Single (40-60%) --- */
+  40.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.9; }
+  59.9% { transform: translate(-50%, -50%) scale(3.2); opacity: 0; }
+  60% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 4: Double Ripple (60-80%) --- */
+  60.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.6; }
+  79.9% { transform: translate(-50%, -50%) scale(4.5); opacity: 0; }
+  80% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 5: Single Ripple (80-100%) --- */
+  80.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.7; }
+  99.9% { transform: translate(-50%, -50%) scale(4.0); opacity: 0; }
+}
+
+/* Source 6: Cycles through patterns F→C→A→E→D (1→3→1→5→4 ripples) */
+@keyframes ripple-random-6 {
+  /* --- Phase 1: Intense Single (0-20%) --- */
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0.9; }
+  19.9% { transform: translate(-50%, -50%) scale(3.2); opacity: 0; }
+  20%, 100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 2: Triple Ripple (20-40%) --- */
+  20.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.8; }
+  39.9% { transform: translate(-50%, -50%) scale(3.8); opacity: 0; }
+  40% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 3: Single Ripple (40-60%) --- */
+  40.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.7; }
+  59.9% { transform: translate(-50%, -50%) scale(4.0); opacity: 0; }
+  60% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 4: Penta Ripple (60-80%) --- */
+  60.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.4; }
+  79.9% { transform: translate(-50%, -50%) scale(5.0); opacity: 0; }
+  80% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 5: Quad Ripple (80-100%) --- */
+  80.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.5; }
+  99.9% { transform: translate(-50%, -50%) scale(3.5); opacity: 0; }
+}
+
+/* Source 7: Cycles through patterns A→B→D→F→E (1→2→4→1→5 ripples) */
+@keyframes ripple-random-7 {
+  /* --- Phase 1: Single Ripple (0-20%) --- */
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0.7; }
+  19.9% { transform: translate(-50%, -50%) scale(4.0); opacity: 0; }
+  20%, 100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 2: Double Ripple (20-40%) --- */
+  20.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.6; }
+  39.9% { transform: translate(-50%, -50%) scale(4.5); opacity: 0; }
+  40% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 3: Quad Ripple (40-60%) --- */
+  40.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.5; }
+  59.9% { transform: translate(-50%, -50%) scale(3.5); opacity: 0; }
+  60% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 4: Intense Single (60-80%) --- */
+  60.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.9; }
+  79.9% { transform: translate(-50%, -50%) scale(3.2); opacity: 0; }
+  80% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 5: Penta Ripple (80-100%) --- */
+  80.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.4; }
+  99.9% { transform: translate(-50%, -50%) scale(5.0); opacity: 0; }
+}
+
+/* Source 8: Cycles through patterns C→A→F→E→B (3→1→1→5→2 ripples) */
+@keyframes ripple-random-8 {
+  /* --- Phase 1: Triple Ripple (0-20%) --- */
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0.8; }
+  19.9% { transform: translate(-50%, -50%) scale(3.8); opacity: 0; }
+  20%, 100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 2: Single Ripple (20-40%) --- */
+  20.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.7; }
+  39.9% { transform: translate(-50%, -50%) scale(4.0); opacity: 0; }
+  40% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 3: Intense Single (40-60%) --- */
+  40.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.9; }
+  59.9% { transform: translate(-50%, -50%) scale(3.2); opacity: 0; }
+  60% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 4: Penta Ripple (60-80%) --- */
+  60.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.4; }
+  79.9% { transform: translate(-50%, -50%) scale(5.0); opacity: 0; }
+  80% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+
+  /* --- Phase 5: Double Ripple (80-100%) --- */
+  80.01% { transform: translate(-50%, -50%) scale(0); opacity: 0.6; }
+  99.9% { transform: translate(-50%, -50%) scale(4.5); opacity: 0; }
+}
+
+/* Ensure hero content is above animation */
+.binaural-hero .hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+  padding: 0 var(--space-m);
+}
+
+/* Remove custom gradient background */
+.binaural-gradient-bg {
+  display: none;
+}
+
+.binaural-hero h1 {
+  font-size: 2.5rem;
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-m);
+  line-height: 1.2;
+  color: var(--clr-background-primary);
+}
+
+.binaural-hero .hero-tagline {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-light);
+  opacity: 0.9;
+  color: var(--clr-background-primary);
+}
+
+/* Abstract section styling - centered layout */
+.abstract-content {
+  max-width: 700px;
+  margin: 0 auto var(--space-l) auto;
+  text-align: center;
+}
+
+.abstract-content p {
+  text-align: justify;
+  line-height: 1.8;
+  margin-bottom: var(--space-m);
+  font-size: 1.1rem;
+}
+
+.abstract-presentations {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.abstract-presentations h4 {
+  margin-bottom: var(--space-m);
+  font-weight: var(--font-weight-medium);
+}
+
+.abstract-presentations ul {
+  list-style: none;
+  padding: 0;
+}
+
+.abstract-presentations li {
+  margin-bottom: var(--space-s);
+  line-height: 1.6;
+}
+
+.abstract-presentations a {
+  color: var(--clr-accent-primary);
+  text-decoration: none;
+  font-weight: var(--font-weight-regular);
+}
+
+.abstract-presentations a:hover {
+  color: var(--clr-accent-secondary);
+  text-decoration: underline;
+}
+
+/* Introduction section styling - matching hero section background */
+.section.binaural-intro-bg {
+  background-color: var(--clr-accent-primary) !important; /* Same as hero section - override general section rule */
+  color: var(--clr-background-primary); /* White text for contrast */
+}
+
+.binaural-intro-bg h2,
+.binaural-intro-bg p {
+  color: var(--clr-background-primary); /* Ensure all text is white */
+}
+
+/* Section background alternating pattern - matching main site */
+/* Ensure all sections have proper background and z-index for parallax effect */
+.section {
+  position: relative;
+  z-index: 2;
+  background-color: var(--clr-background-secondary);
+}
+
+/* Primary background (white) sections */
+#stereo,
+#externalized,
+#future-work {
+  background-color: var(--clr-background-primary);
+}
+
+/* Secondary background (gray) sections use default from main site .section rule */
+/* #abstract, #introduction, #binaural, #comparisons will use var(--clr-background-secondary) */
+
+.intro-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-l);
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.head-model-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.trajectory-video {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius);
+}
+
+/* Grid layouts for content sections */
+.stereo-grid,
+.binaural-grid,
+.externalized-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-l);
+  margin-bottom: var(--space-l);
+}
+
+.stereo-visual,
+.binaural-visual,
+.externalized-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stereo-explanation,
+.binaural-explanation,
+.externalized-explanation {
+  display: flex;
+  flex-direction: column;
+}
+
+.stereo-explanation h4,
+.binaural-explanation h4,
+.externalized-explanation h4 {
+  margin-bottom: var(--space-m);
+}
+
+.stereo-explanation ul,
+.binaural-explanation ul,
+.externalized-explanation ul {
+  list-style-type: disc;
+  margin-left: 1.5em;
+}
+
+.stereo-explanation li,
+.binaural-explanation li,
+.externalized-explanation li {
+  margin-bottom: var(--space-s);
+  line-height: 1.6;
+}
+
+/* Video styling */
+.stereo-animation,
+.binaural-animation,
+.externalized-animation,
+.trajectory-video,
+.hrtf-spectrum {
+  max-width: 100%;
+  height: auto;
+}
+
+.hrtf-spectrum {
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px var(--clr-shadow-color);
+}
+
+.hrtf-spectrum-container {
+  margin: var(--space-m) 0;
+}
+
+/* Audio demo section styling */
+.audio-demo-section {
+  background-color: var(--clr-background-secondary);
+  padding: var(--space-l);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--clr-border-primary);
+  margin-top: var(--space-l);
+}
+
+#binaural .audio-demo-section {
+  background-color: var(--clr-background-primary);
+}
+
+.audio-demo-section h4 {
+  margin-bottom: var(--space-m);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Custom audio player styling */
+.custom-audio-player {
+  background-color: var(--clr-background-secondary);
+  border: 1px solid var(--clr-border-primary);
+  border-radius: var(--border-radius);
+  padding: 6px;
+  margin: 4px 0;
+}
+
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.play-pause-btn {
+  background-color: var(--clr-accent-primary);
+  color: var(--clr-background-primary);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-standard);
+}
+
+.play-pause-btn:hover {
+  background-color: var(--clr-accent-secondary);
+}
+
+.audio-progress-container {
+  flex: 1;
+  background-color: var(--clr-background-primary);
+  border-radius: 6px;
+  height: 5px;
+  overflow: hidden;
+}
+
+.audio-progress-bar {
+  width: 100%;
+  height: 100%;
+  background-color: var(--clr-border-primary);
+  border-radius: 6px;
+  position: relative;
+  cursor: pointer;
+}
+
+.audio-progress-fill {
+  height: 100%;
+  background-color: var(--clr-accent-primary);
+  border-radius: 6px;
+  width: 0%;
+  transition: width 0.1s ease;
+}
+
+.audio-time-display {
+  font-size: 0.75rem;
+  color: var(--clr-text-secondary);
+  white-space: nowrap;
+}
+
+/* Demo instructions styling */
+.demo-instructions {
+  list-style-type: disc;
+  margin-left: 1.5em;
+  margin-top: var(--space-m);
+  color: var(--clr-text-primary);
+}
+
+.demo-instructions li {
+  margin-bottom: var(--space-s);
+  line-height: 1.6;
+}
+
+/* Comparisons section styling */
+.comparisons-intro {
+  margin-bottom: var(--space-l);
+}
+
+.comparisons-intro h4 {
+  margin-bottom: var(--space-m);
+  font-weight: var(--font-weight-medium);
+}
+
+.comparisons-intro ul {
+  list-style-type: disc;
+  margin-left: 1.5em;
+}
+
+.comparisons-intro li {
+  margin-bottom: var(--space-s);
+  line-height: 1.6;
+}
+
+/* Simple Grid Layout for Comparisons - Clean & Maintainable */
+.comparison-container {
+  max-width: 1000px;
+  margin: var(--space-m) auto;
+  padding: var(--space-s);
+  
+  /* Desktop: 3x5 CSS Grid */
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: repeat(5, auto);
+  gap: 8px var(--space-s);
+  grid-template-areas:
+    "angle-minus-30  angle-0     angle-plus-30"
+    "angle-minus-45  empty-1     angle-plus-45"
+    "angle-minus-90  rotating    angle-plus-90"
+    "angle-minus-135 empty-2     angle-plus-135"
+    "angle-minus-150 angle-180   angle-plus-150";
+}
+
+/* Individual grid panel styling */
+.comparison-panel {
+  background-color: var(--clr-background-primary);
+  border: 1px solid var(--clr-border-primary);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px var(--clr-shadow-color);
+  padding: var(--space-s);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Special styling for the rotating panel in center */
+.comparison-panel.rotating {
+  grid-area: rotating;
+  border: 2px solid var(--clr-border-primary);
+  box-shadow: 0 4px 12px var(--clr-shadow-color);
+}
+
+/* Grid area assignments for each panel */
+.comparison-panel[data-angle="rotating"] { grid-area: rotating; }
+.comparison-panel[data-angle="0"] { grid-area: angle-0; }
+.comparison-panel[data-angle="30"] { grid-area: angle-plus-30; }
+.comparison-panel[data-angle="45"] { grid-area: angle-plus-45; }
+.comparison-panel[data-angle="90"] { grid-area: angle-plus-90; }
+.comparison-panel[data-angle="135"] { grid-area: angle-plus-135; }
+.comparison-panel[data-angle="150"] { grid-area: angle-plus-150; }
+.comparison-panel[data-angle="180"] { grid-area: angle-180; }
+.comparison-panel[data-angle="210"] { grid-area: angle-minus-150; }
+.comparison-panel[data-angle="225"] { grid-area: angle-minus-135; }
+.comparison-panel[data-angle="270"] { grid-area: angle-minus-90; }
+.comparison-panel[data-angle="315"] { grid-area: angle-minus-45; }
+.comparison-panel[data-angle="330"] { grid-area: angle-minus-30; }
+
+/* Panel content styling */
+.comparison-panel h4,
+.comparison-panel h5 {
+  text-align: center;
+  margin-bottom: 6px;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.1;
+}
+
+.comparison-panel h4 {
+  font-size: 1.1rem;
+}
+
+.comparison-panel h5 {
+  font-size: 1rem;
+}
+
+/* Audio players container within each panel */
+.comparison-audio-players {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.comparison-player {
+  margin-bottom: 3px;
+}
+
+.comparison-player:last-child {
+  margin-bottom: 0;
+}
+
+.comparison-player h6 {
+  font-size: 0.85rem;
+  margin-bottom: 4px;
+  text-align: center;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.1;
+  color: var(--clr-text-primary);
+}
+
+/* Large screen: 5x3 grid layout for wide displays */
+@media (min-width: 1201px) {
+  .comparison-container {
+    max-width: 1300px;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, auto);
+    gap: 8px 12px;
+    grid-template-areas:
+      "angle-minus-45  angle-minus-30  angle-0        angle-plus-30   angle-plus-45"
+      "angle-minus-90  empty-1         rotating       empty-2         angle-plus-90"  
+      "angle-minus-135 angle-minus-150 angle-180      angle-plus-150  angle-plus-135";
+  }
+}
+
+/* Medium screen: 3x5 grid layout - uses default styles defined above */
+
+/* Mobile responsive: Switch to single column layout */
+@media (max-width: 768px) {
+  .comparison-container {
+    margin: var(--space-s) auto;
+    padding: var(--space-xs);
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(13, auto);
+    gap: 6px;
+    grid-template-areas:
+      "rotating"
+      "angle-0"
+      "angle-plus-30"
+      "angle-plus-45"
+      "angle-plus-90"
+      "angle-plus-135"
+      "angle-plus-150"
+      "angle-180"
+      "angle-minus-150"
+      "angle-minus-135"
+      "angle-minus-90"
+      "angle-minus-45"
+      "angle-minus-30";
+  }
+  
+  .comparison-panel {
+    padding: 10px;
+  }
+  
+  .play-pause-btn {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .audio-progress-container {
+    height: 4px;
+  }
+  
+
+}
+
+
+/* Future work section styling */
+.future-work-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.future-work-content ul {
+  list-style-type: disc;
+  margin-left: 1.5em;
+  text-align: left;
+  margin-bottom: var(--space-l);
+}
+
+.future-work-content li {
+  margin-bottom: var(--space-m);
+  line-height: 1.6;
+}
+
+.acknowledgments {
+  background-color: var(--clr-background-secondary);
+  padding: var(--space-l);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--clr-border-primary);
+  margin-top: var(--space-l);
+}
+
+.acknowledgments p {
+  margin-bottom: var(--space-s);
+  font-style: italic;
+}
+
+/* Footer styling */
+.back-to-main {
+  color: var(--clr-accent-primary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+}
+
+.back-to-main:hover {
+  color: var(--clr-accent-secondary);
+  text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .binaural-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .binaural-hero .hero-tagline {
+    font-size: 1.2rem;
+  }
+  
+  .intro-content,
+  .stereo-grid,
+  .binaural-grid,
+  .externalized-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-m);
+  }
+  
+  .abstract-content,
+  .abstract-presentations {
+    padding: 0 var(--space-s);
+  }
+  
+  /* Keep audio controls in horizontal layout for better usability */
+  .audio-controls {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .binaural-hero h1 {
+    font-size: 1.8rem;
+  }
+  
+  .abstract-content p {
+    font-size: 1rem;
+  }
+}
+
+/* Desktop-specific adjustments */
+@media (min-width: 1024px) {
+  .abstract-content {
+    max-width: 700px;
+  }
+  
+  .trajectory-video,
+  .stereo-animation,
+  .binaural-animation,
+  .externalized-animation {
+    max-width: 350px;
+  }
+  
+  .hrtf-spectrum {
+    max-width: 450px;
+  }
+}
+
+/* Animation support */
+@media (prefers-reduced-motion: reduce) {
+  .trajectory-video,
+  .stereo-animation,
+  .binaural-animation,
+  .externalized-animation,
+  .hrtf-spectrum {
+    animation: none;
+  }
+  
+  /* Disable orbital animation for users who prefer reduced motion */
+  .orbital-animation {
+    display: none;
+  }
+}
+
+/* Mobile responsive adjustments for orbital animation */
+@media (max-width: 768px) {
+  .orbital-container {
+    width: 600px;
+    height: 600px;
+    max-width: 120vw;
+    max-height: 120vh;
+  }
+  
+  /* Scale down sound waves for mobile */
+  .sound-wave:nth-child(1) {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .sound-wave:nth-child(2) {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .sound-wave:nth-child(3) {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .sound-wave:nth-child(4) {
+    width: 260px;
+    height: 260px;
+  }
+  
+  .sound-wave:nth-child(5) {
+    width: 320px;
+    height: 320px;
+  }
+  
+  .sound-wave:nth-child(6) {
+    width: 380px;
+    height: 380px;
+  }
+  
+  .sound-wave:nth-child(7) {
+    width: 440px;
+    height: 440px;
+  }
+  
+  .sound-wave:nth-child(8) {
+    width: 500px;
+    height: 500px;
+  }
+  
+  .sound-wave:nth-child(9) {
+    width: 560px;
+    height: 560px;
+  }
+  
+  /* Scale down spatial audio network for mobile */
+  .sound-source {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .orbital-container {
+    width: 400px;
+    height: 400px;
+  }
+  
+  /* Further reduce animation complexity on very small screens */
+  .orbital-animation {
+    opacity: 0.4;
+  }
+}
+
+/* High contrast support */
+@media (prefers-contrast: high) {
+  .custom-audio-player {
+    border-width: 2px;
+  }
+}
+
+ 

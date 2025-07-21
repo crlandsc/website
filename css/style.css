@@ -1,0 +1,1673 @@
+/* Base Variables */
+:root {
+  /* Signal Flow Palette - Light Mode (Default) */
+  --clr-background-primary: #FFFFFF;
+  --clr-background-secondary: #F0F2F5;
+  --clr-text-primary: #212529;
+  --clr-text-secondary: #6C757D;
+  --clr-text-headings: #1A1F23;
+  --clr-accent-primary: #4A90E2;
+  --clr-accent-secondary: #357ABD;
+  --clr-border-primary: #DEE2E6;
+  --clr-shadow-color: rgba(0, 0, 0, 0.075);
+  /* Non-color variables from original theme - kept */
+  --space-xs: .5rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2.5rem;
+  --space-xl: 4rem;
+
+  --transition-standard: 0.3s ease;
+  --shadow-standard: 0 4px 6px var(--clr-shadow-color); /* Updated to use new shadow variable */
+  --border-radius: 8px;
+
+  --font-primary: 'Brandon Grotesque', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --font-weight-light: 300;
+  --font-weight-regular: 400; 
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+}
+
+html[data-theme="dark"] {
+  /* Signal Flow Palette - Dark Mode */
+  --clr-background-primary: #121212;
+  --clr-background-secondary: #1E1E1E;
+  --clr-text-primary: #E0E0E0;
+  --clr-text-secondary: #A0A0A0;
+  --clr-text-headings: #F5F5F5;
+  --clr-accent-primary: #5E9BEF;
+  --clr-accent-secondary: #7BAAF0;
+  --clr-border-primary: #333333;
+  --clr-shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Reset & Base Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 70px; /* Account for sticky header */
+  background-color: var(--clr-background-primary);
+  color: var(--clr-text-primary);
+  transition: background-color var(--transition-standard), color var(--transition-standard);
+}
+
+body {
+  font-family: var(--font-primary);
+  line-height: 1.6;
+  /* color is inherited from html */
+  /* background-color is inherited from html */
+  font-weight: var(--font-weight-light); /* Default text weight is light */
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--clr-accent-primary);
+  text-decoration: none;
+  transition: color var(--transition-standard);
+}
+
+a:hover, a:focus {
+  color: var(--clr-accent-secondary);
+  text-decoration: underline;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Base Typography */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  margin-bottom: var(--space-s);
+  color: var(--clr-text-headings);
+}
+
+/* Primary headings */
+h1, h2 {
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+}
+
+/* Secondary headings */
+h3, h4, h5, h6 {
+  font-weight: var(--font-weight-regular);
+}
+
+/* Specific heading sizes */
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: var(--space-l);
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-m);
+  text-align: center;
+}
+
+/* Override centering for company names in experience section */
+.company-name {
+  text-align: left;
+  margin-bottom: var(--space-s); /* Reduced from default h3 margin */
+}
+
+/* Style degree names to match company names */
+.degree-name {
+  text-align: left;
+  margin-bottom: var(--space-xs); /* Small gap between degree and institution */
+}
+
+/* Style for inline position dates */
+.position-date {
+  font-weight: var(--font-weight-light);
+  color: var(--clr-text-secondary);
+  font-size: 0.9em;
+}
+
+/* Add spacing around the bullet separator */
+.bullet-separator {
+  margin: 0 0.25em;
+  color: var(--clr-text-secondary);
+}
+
+/* Style for education dates and GPA to match experience section */
+.education-date,
+.education-gpa {
+  font-weight: var(--font-weight-light);
+  color: var(--clr-text-secondary);
+  font-size: 0.9em;
+}
+
+#about h3 {
+  margin-bottom: var(--space-xl);
+}
+
+p {
+  margin-bottom: var(--space-s);
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-s);
+}
+
+/* Section Styles */
+.section {
+  padding: var(--space-xl) 0;
+  padding-top: calc(var(--space-xl) + 5px); /* Minimal additional padding */
+  margin-top: 0; /* Remove negative margin */
+  border-top: 5px solid transparent; /* Add invisible border for spacing */
+  position: relative; /* Ensure proper stacking context */
+  opacity: 1; /* Always show backgrounds */
+  background-color: var(--clr-background-secondary); /* Default section background */
+  transition: background-color var(--transition-standard);
+}
+
+/* Make specific sections use primary background if they should be plain */
+#experience,
+#education,
+#interests {
+  background-color: var(--clr-background-primary);
+}
+
+/* For pre-loading sections when hash is in URL */
+body.hash-navigation .section {
+  opacity: 0;
+  transition: opacity 0.1s ease-out;
+}
+
+body.hash-navigation .section.bg-visible {
+  opacity: 1;
+}
+
+/* Inner content wrapper for fade-in effect */
+.section > .container {
+  opacity: 1; /* Changed from 0 to 1 to allow individual elements to control their own animations */
+  transform: none; /* Removed transform from container */
+  transition: none; /* Removed transition from container */
+}
+
+.section.visible > .container {
+  opacity: 1;
+  transform: none;
+}
+
+/* NEW: Individual element animations */
+.fade-in-element {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+/* Staggered animation timing for different element types */
+h2.fade-in-element {
+  transition-delay: 0s;
+}
+
+h3.fade-in-element {
+  transition-delay: 0.1s;
+}
+
+.about-grid.fade-in-element,
+.experience-item.fade-in-element,
+.project-card.fade-in-element,
+.education-row.fade-in-element,
+.skills-column.fade-in-element,
+#contact-form.fade-in-element,
+.research.fade-in-element {
+  transition-delay: 0.2s;
+}
+
+/* Children of timeline items should stagger */
+.experience-item:nth-child(2).fade-in-element {
+  transition-delay: 0.25s;
+}
+
+.experience-item:nth-child(3).fade-in-element {
+  transition-delay: 0.3s;
+}
+
+.experience-item:nth-child(4).fade-in-element {
+  transition-delay: 0.35s;
+}
+
+.experience-item:nth-child(5).fade-in-element {
+  transition-delay: 0.4s;
+}
+
+/* Children of project cards should stagger */
+.project-card:nth-child(2).fade-in-element {
+  transition-delay: 0.25s;
+}
+
+.project-card:nth-child(3).fade-in-element {
+  transition-delay: 0.3s;
+}
+
+/* Reset all delays when element becomes visible */
+.fade-in-element.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Section ID targets have a pseudo element to provide scroll target padding */
+.section::before {
+  content: '';
+  display: block;
+  height: 70px; /* Same as header height */
+  margin-top: -70px; /* Negative margin of the same value */
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Section Colors & Text Color Overrides where needed */
+/* #about, #projects, #education, #skills, #contact previously had specific bg colors.
+   They will now use --clr-background-secondary by default from .section or can be overridden if a unique bg is still desired.
+   Text color within these sections needs to ensure contrast against their backgrounds.
+   If a section has a darker background (even in light mode), its text might need to be light.
+*/
+
+/* Example for a section that might retain a distinct background and need text color adjustment */
+/* #projects {
+  background-color: var(--clr-accent-primary); 
+  color: var(--clr-background-primary); 
+} 
+#projects h2, #projects h3, #projects h4 a, #projects p, #projects .meta {
+  color: var(--clr-background-primary);
+}
+*/
+
+/* Defaulting all section text to match page text color for now */
+/* If specific sections get darker backgrounds later, this will need adjustment */
+.section h1,
+.section h2,
+.section h3,
+.section h4,
+.section h5,
+.section h6 {
+  color: var(--clr-text-headings);
+}
+
+.section p, .section div, .section li {
+  /* Standard text within sections */
+  /* color: var(--clr-text-primary); */ /* This would be inherited, but good to be explicit if needed */
+}
+
+/* Header & Navigation */
+header {
+  position: sticky;
+  top: 0;
+  background-color: var(--clr-background-secondary); /* Updated: Use secondary background */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 1000;
+  box-shadow: var(--shadow-standard);
+  transition: background-color var(--transition-standard);
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 70px;
+  padding-left: var(--space-xs);
+  padding-right: var(--space-xs);
+}
+
+.logo {
+  font-weight: var(--font-weight-light);
+  font-size: 1.1rem;
+  color: var(--clr-text-headings); /* Updated: Text on lighter header background */
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.logo:hover {
+  color: var(--clr-accent-primary); /* Accent for hover */
+  text-decoration: none;
+}
+
+.desktop-nav {
+  display: none;
+  white-space: nowrap;
+  align-items: center;
+}
+
+.desktop-nav li {
+  display: inline-block;
+  margin-left: 2px;
+  display: flex;
+  align-items: center;
+}
+
+.desktop-nav a {
+  color: var(--clr-text-primary); /* Updated: Text on lighter header background */
+  font-weight: var(--font-weight-light);
+  padding: var(--space-xs) 4px;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+  line-height: 1;
+}
+
+.desktop-nav a:hover {
+  color: var(--clr-accent-primary);
+  text-decoration: none;
+}
+
+/* Only show focus styles when using keyboard navigation */
+.desktop-nav a:focus-visible {
+  color: var(--clr-accent-primary);
+  text-decoration: none;
+  outline: 2px solid var(--clr-accent-primary);
+  outline-offset: 2px;
+}
+
+/* Remove default focus styles but keep accent color for clicked state */
+.desktop-nav a:focus:not(:focus-visible) {
+  outline: none;
+  color: var(--clr-accent-primary);
+}
+
+.desktop-nav a[target="_blank"]:hover {
+  color: var(--clr-accent-secondary); /* Using secondary accent for external link differentiation */
+}
+
+/* Apply the same focus behavior to the logo link */
+.logo:focus-visible {
+  color: var(--clr-accent-primary);
+  outline: 2px solid var(--clr-accent-primary);
+  outline-offset: 2px;
+}
+
+.logo:focus:not(:focus-visible) {
+  outline: none;
+  color: var(--clr-accent-primary);
+}
+
+/* Remove the arrow indicators */
+.desktop-nav a[target="_blank"]::after {
+  content: "";
+}
+
+/* Mobile Navigation */
+.mobile-nav {
+  position: relative;
+}
+
+.mobile-nav summary {
+  list-style: none;
+  cursor: pointer;
+  width: 30px;
+  height: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mobile-nav summary::-webkit-details-marker {
+  display: none;
+}
+
+.mobile-nav summary span {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: var(--clr-text-headings); /* Updated: Hamburger icon lines on lighter header */
+  transition: transform 0.3s ease;
+}
+
+.mobile-nav[open] summary span:nth-child(1) {
+  transform: translateY(10px) rotate(45deg);
+}
+
+.mobile-nav[open] summary span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-nav[open] summary span:nth-child(3) {
+  transform: translateY(-10px) rotate(-45deg);
+}
+
+.mobile-nav ul {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: var(--clr-background-secondary); /* Updated: Match header background */
+  box-shadow: var(--shadow-standard);
+  border-radius: var(--border-radius);
+  width: 200px;
+  padding: var(--space-s);
+  margin-top: var(--space-xs);
+}
+
+.mobile-nav li {
+  margin-bottom: var(--space-xs);
+}
+
+.mobile-nav a {
+  display: block;
+  padding: var(--space-xs);
+  color: var(--clr-text-primary); /* Updated: Text on lighter menu background */
+  transition: color 0.2s ease;
+}
+
+.mobile-nav a:hover {
+  color: var(--clr-accent-primary);
+}
+
+/* Mobile nav focus styles */
+.mobile-nav a:focus-visible {
+  color: var(--clr-accent-primary);
+  outline: 2px solid var(--clr-accent-primary);
+  outline-offset: 2px;
+}
+
+.mobile-nav a:focus:not(:focus-visible) {
+  outline: none;
+  color: var(--clr-accent-primary);
+}
+
+.mobile-nav a[target="_blank"]:hover {
+  color: var(--clr-accent-secondary);
+}
+
+.mobile-nav a[target="_blank"]::after {
+  content: "";
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr-background-primary);
+  text-align: center;
+  /* overflow: hidden; */
+  /* z-index: 1; */
+  margin-top: 0; /* Reset margin that applies to other sections */
+  padding-top: 0; /* Reset padding that applies to other sections */
+}
+
+.hero::before {
+  display: none; /* Remove the pseudo-element used for scroll anchoring in other sections */
+}
+
+.hero-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /* Cover viewport height for parallax background */
+  z-index: -1;
+  will-change: transform; /* Optimize for animations */
+}
+
+.hero-bg img, .hero-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateZ(0); /* Hardware acceleration */
+}
+
+/* Hero Canvas Animation */
+#hero-code-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.hero-content {
+  position: relative;
+  top: -40px; /* Move hero text slightly above center */
+  max-width: 800px;
+  padding: var(--space-m);
+  animation: fadeUp 0.6s ease-out forwards;
+  text-shadow: 0px 2px 6px rgba(0, 0, 0, 0.25); /* Stronger shadow for better contrast on light background */
+}
+
+.hero h1 {
+  color: var(--clr-text-headings); /* Updated: White text for hero on image */
+  font-size: 4rem;
+  margin-bottom: var(--space-s);
+  font-weight: var(--font-weight-regular);
+}
+
+.hero p {
+  color: var(--clr-text-primary); /* Added: Explicit color for hero paragraph */
+  font-size: 1.5rem;
+  margin-bottom: var(--space-s);
+}
+
+.hero .hero-tagline {
+  margin-bottom: var(--space-s);
+}
+
+/* About Section */
+.about-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.about-image {
+  display: flex;
+  justify-content: center;
+}
+
+.about-image img {
+  border-radius: 12px;
+  width: 350px;
+  height: auto;
+  object-fit: cover;
+  border: 5px solid var(--clr-background-primary); /* Border around image */
+  box-shadow: 0 8px 15px var(--clr-shadow-color);
+}
+
+.about-content {
+  text-align: left;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-content p {
+  margin-bottom: var(--space-m);
+  text-align: justify;
+  line-height: 1.8;
+}
+
+.about-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Timeline Container - New design with all content on the right */
+.timeline-container {
+  position: relative;
+  margin: 40px auto;
+  max-width: 800px;
+  --timeline-line-offset: 50px;
+  --timeline-content-padding-start: 70px;
+}
+
+/* Vertical connecting line */
+.timeline-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--timeline-line-offset);
+  width: 1px;
+  background-color: var(--clr-border-primary); /* Timeline line color */
+  transform: translateX(-50%);
+}
+
+/* Experience Item */
+.experience-item {
+  position: relative;
+  margin-bottom: 40px;
+  padding-bottom: 0;
+}
+
+.experience-item:last-child {
+  margin-bottom: 0;
+}
+
+.experience-content {
+  padding-left: var(--timeline-content-padding-start);
+  position: relative;
+}
+
+.experience-content h4 {
+  margin-bottom: 8px;
+  color: var(--clr-text-headings); /* Experience title color */
+  font-weight: var(--font-weight-medium);
+  font-size: 1.2rem;
+  text-align: left;
+  position: relative;
+}
+
+/* All styles related to the timeline dot have been removed. */
+
+.experience-date {
+  margin-bottom: 12px;
+}
+
+.experience-date span {
+  display: inline-block;
+  font-weight: var(--font-weight-light);
+  color: var(--clr-text-secondary); /* Date color */
+  font-size: 0.9rem;
+}
+
+.experience-content p {
+  color: var(--clr-text-primary); /* Experience description text */
+  line-height: 1.6;
+}
+
+@media (max-width: 767px) {
+  .timeline-container {
+    --timeline-line-offset: 35px;
+    --timeline-content-padding-start: 55px;
+  }
+  /* Vertical line will automatically use the updated custom properties */
+}
+
+/* Old timeline selectors removed as they are no longer applicable. */
+
+/* Projects Section */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-m);
+}
+
+/* Media queries for projects grid */
+@media (min-width: 768px) {
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.project-card {
+  background-color: var(--clr-background-primary); /* Card background */
+  border-radius: var(--border-radius);
+  padding: var(--space-m);
+  box-shadow: var(--shadow-standard);
+  border: 1px solid var(--clr-border-primary);
+  cursor: pointer;
+  /* Override fade-in-element transition for instant hover response */
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease !important;
+}
+
+.project-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 20px var(--clr-shadow-color); /* Enhanced shadow on hover */
+  background-color: var(--clr-background-primary); /* Keep card background same on hover */
+  border-color: var(--clr-accent-primary);
+}
+
+.project-card h4 {
+  border-bottom: 2px solid var(--clr-border-primary);
+  padding-bottom: var(--space-xs);
+  margin-bottom: var(--space-s);
+  text-align: left;
+  position: relative;
+}
+
+.project-card h4 a {
+  color: var(--clr-text-headings);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+/* Animated underline for the border separator line */
+.project-card h4::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; /* Position to cover the border line */
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--clr-accent-primary);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.project-card:hover h4::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.project-card:hover h4 a {
+  color: var(--clr-accent-primary); /* Turn text blue on card hover */
+}
+
+.project-demo {
+  margin: var(--space-s) 0;
+}
+
+.project-demo a {
+  display: inline-block;
+  background-color: var(--clr-accent-primary);
+  color: var(--clr-background-primary); /* Text on accent button */
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.project-demo a:hover {
+  background-color: var(--clr-accent-secondary);
+  color: var(--clr-background-primary);
+  text-decoration: none;
+}
+
+.project-card .meta {
+  display: flex;
+  gap: var(--space-s);
+  margin-top: var(--space-s);
+  color: var(--clr-text-secondary); /* Meta text color */
+  font-size: 0.875rem;
+}
+
+.project-card .meta li {
+  display: flex;
+  align-items: center;
+}
+
+/* Education Section */
+.education-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+  margin-bottom: var(--space-l);
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.education-row {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  position: relative;
+}
+
+.education-row::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background-color: var(--clr-border-primary); /* Education timeline color */
+  transform: translateX(-50%);
+}
+
+.education-left {
+  flex: 1;
+  text-align: right;
+  padding-right: var(--space-m);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  font-size: 1.15rem;
+  color: var(--clr-text-primary); /* Text color for education section */
+}
+
+.education-left > div {
+  text-align: right;
+}
+
+.education-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  text-align: left;
+  padding-left: var(--space-m);
+}
+
+.education-right h3,
+.education-right h4 {
+  line-height: 1.4;
+}
+
+.education-right h4 {
+  margin-bottom: 0.25em;
+}
+
+@media (max-width: 700px) {
+  .education-grid {
+    gap: 0;
+  }
+
+  .education-row {
+    flex-direction: column;
+    gap: var(--space-xs);
+    align-items: center;
+    padding-bottom: var(--space-s);
+    margin-bottom: var(--space-xs);
+    border-bottom: 1px solid var(--clr-border-primary); /* Horizontal line separating each complete education entry */
+  }
+
+  .education-row:last-child {
+    border-bottom: none; /* Remove border from the last education entry */
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .education-row::after {
+    content: none; /* Remove the vertical line */
+  }
+
+  /* Reorder: degree/institution first (larger text) */
+  .education-right {
+    flex: 0 0 auto;
+    width: 100%;
+    text-align: center;
+    padding-left: 0;
+    border-top: none;
+    padding-top: var(--space-s);
+    margin-top: var(--space-xs);
+    align-items: center;
+    order: 1; /* Show first */
+  }
+
+  .education-right h3 {
+    font-size: 1.2rem;
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* Date range and GPA second (smaller text) */
+  .education-left {
+    flex: 0 0 auto;
+    width: 100%;
+    font-size: 0.95rem;
+    color: var(--clr-text-secondary);
+    text-align: center;
+    padding-right: 0;
+    align-items: center;
+    order: 2; /* Show second */
+  }
+
+  .education-left > div {
+    text-align: center;
+  }
+}
+
+/* Skills Section */
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-l);
+}
+
+.skills-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-width: 0;
+}
+
+.skills-column h3 {
+  margin-bottom: var(--space-s);
+  text-align: center;
+}
+
+.skill-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: var(--space-s);
+}
+
+.skill-icon svg {
+  color: var(--clr-accent-primary);
+  width: 48px;
+  height: 48px;
+  transition: color var(--transition-standard);
+}
+
+.skill-tags {
+  width: 100%;
+  column-gap: var(--space-m);
+  text-align: left;
+}
+
+.skill-tags.two-columns {
+  columns: 2;
+}
+
+.skill-tags.three-columns {
+  columns: 3;
+}
+
+.skill-tag {
+  display: list-item; /* Treat as a list item to ensure new line and bullet */
+  list-style-type: disc; /* Ensure bullet is visible */
+  color: var(--clr-text-primary);
+  font-size: 0.95rem;
+  margin-bottom: 0.5em;
+  margin-left: 1.5em; /* Indentation for the bullet */
+  break-inside: avoid; /* Prevent items from breaking across columns */
+}
+
+/* Custom bullet style is not needed as list-style-type handles it */
+.skill-tag::before {
+  content: none;
+}
+
+/* Media query for tablet and desktop */
+@media (min-width: 768px) {
+  .skills-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Adjust degree name font size for larger screens */
+  .degree-name {
+    font-size: 1.4rem; 
+  }
+
+  /* Adjust minor degree info font size for larger screens */
+  .minor-degree-info {
+    font-size: 1.2rem; 
+  }
+}
+
+@media (max-width: 700px) {
+  /* Adjust minor degree info font size for small screens */
+  .minor-degree-info {
+    font-size: 1.2rem; /* Between h3 (1.2rem) and h4 (1rem) */
+  }
+}
+
+
+
+/* Contact Section */
+#contact-form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#contact-form label {
+  display: block;
+  margin-bottom: var(--space-s);
+}
+
+#contact-form input,
+#contact-form textarea {
+  display: block;
+  width: 100%;
+  padding: var(--space-s);
+  margin-bottom: var(--space-m);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--clr-border-primary);
+  background-color: var(--clr-background-primary);
+  color: var(--clr-text-primary);
+}
+
+#contact-form button {
+  background-color: var(--clr-accent-primary);
+  color: var(--clr-background-primary); /* Text on accent button */
+  border: none;
+  padding: var(--space-s) var(--space-m);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color var(--transition-standard);
+}
+
+#contact-form button:hover {
+  background-color: var(--clr-accent-secondary);
+}
+
+/* Back to Top Button */
+.to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: var(--clr-accent-primary);
+  color: var(--clr-background-primary); /* Icon color on accent button */
+  border-radius: 50%;
+  border: none;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, background-color 0.3s ease;
+  z-index: 999;
+}
+
+.to-top.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.to-top:hover {
+  background-color: var(--clr-accent-secondary);
+}
+
+.to-top:focus {
+  outline: 2px solid var(--clr-accent-secondary);
+}
+
+/* Footer */
+footer {
+  background-color: var(--clr-background-secondary); /* Updated: Dark footer background */
+  padding: var(--space-l) 0;
+  text-align: center;
+  color: var(--clr-text-primary); /* Updated: Light text on dark footer */
+}
+
+footer .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.social {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  margin-bottom: var(--space-m);
+  overflow-x: auto; /* Allow scrolling if content overflows */
+  scrollbar-width: none; /* Firefox: hide scrollbar */
+}
+
+/* Chrome, Safari, Opera: hide scrollbar */
+.social::-webkit-scrollbar {
+  display: none;
+}
+
+.social a {
+  color: var(--clr-text-primary);
+  padding: var(--space-xs);
+  transition: color var(--transition-standard);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social a:hover {
+  color: var(--clr-accent-primary);
+}
+
+.social-icon {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  transition: fill var(--transition-standard);
+}
+
+/* Increase spacing and size on larger screens */
+@media (min-width: 768px) {
+  .social-icon {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Optional: Add a subtle hover effect */
+.social a:hover .social-icon {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Media Queries */
+@media (min-width: 768px) {
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .mobile-nav {
+    display: none;
+  }
+
+  /* More compact navigation on medium screens */
+  .desktop-nav a {
+    padding: var(--space-xs) 3px;
+    font-size: 0.85rem;
+  }
+  
+  .logo {
+  font-size: 1rem;
+  }
+
+  .about-grid {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    position: relative;
+  }
+  
+  .about-image {
+    flex: 0 0 auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .about-content {
+    flex: 1;
+    margin-left: 320px;
+    padding-left: 0;
+  }
+
+  /* Timeline styles are now handled by the new timeline-container design */
+
+  .skills-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+
+}
+
+@media (min-width: 1024px) {
+  /* Slightly larger spacing on larger screens */
+  .desktop-nav a {
+    padding: var(--space-xs) 4px;
+    font-size: 0.9rem;
+  }
+  
+  .logo {
+    font-size: 1.1rem;
+  }
+  
+  h1 {
+    font-size: 3.5rem; /* Increased base h1 size */
+  }
+
+  .hero h1 {
+    font-size: 4.5rem;
+  }
+
+  .hero p {
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  /* More comfortable spacing on extra large screens */
+  .desktop-nav a {
+    padding: var(--space-xs) 6px;
+    font-size: 0.95rem;
+  }
+  
+  .logo {
+    font-size: 1.2rem;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .section {
+    transform: none;
+    opacity: 1;
+  }
+
+  .project-card:hover {
+    transform: none;
+  }
+}
+
+
+
+.research {
+  margin-top: var(--space-xl); /* Increased spacing for the Research section */
+  text-align: center;
+}
+
+.research a {
+  color: var(--clr-accent-primary);
+  text-decoration: underline;
+  transition: color var(--transition-standard);
+}
+
+.research a:hover, .research a:focus {
+  color: var(--clr-accent-secondary);
+  text-decoration: underline;
+}
+
+#research-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+/* Adjust specific headings to maintain proper spacing in content blocks */
+.project-card h4, .skills-column h3 {
+  margin-bottom: var(--space-s);
+}
+
+/* Section-specific spacing adjustments */
+.section h2 + h3 {
+  margin-top: calc(-1 * var(--space-m));
+  margin-bottom: var(--space-l);
+  font-size: 1rem; /* Make it smaller */
+  color: var(--clr-text-secondary); /* Date color */
+  font-weight: var(--font-weight-light); /* Make it thinner */
+}
+
+@media (max-width: 767px) {
+  .about-image img {
+    width: 250px;
+    max-width: 100%;
+    margin-bottom: var(--space-m);
+  }
+  
+  .about-content {
+    padding: 0 var(--space-s);
+  }
+}
+
+/* Interactive Demo */
+.interactive-demo-container {
+  margin-top: var(--space-xl);
+  padding: var(--space-m);
+  background: var(--clr-background-secondary);
+  border-radius: var(--border-radius);
+}
+
+.interactive-demo-container h3 {
+  margin-bottom: var(--space-m);
+  text-align: center;
+    color: var(--clr-text-headings);
+  }
+
+.interactive-demo-container h3 a {
+  color: var(--clr-text-headings);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.interactive-demo-container h3 a:hover {
+  color: var(--clr-accent-primary);
+}
+
+.interactive-demo-container h3 a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+    background-color: var(--clr-accent-primary);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.interactive-demo-container h3 a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.interactive-demo {
+  width: 100%;
+  min-height: 600px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius);
+}
+
+.interactive-demo gradio-app {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  border: none;
+}
+
+/* Fallback for browsers that don't support web components */
+.interactive-demo iframe {
+  width: 100%;
+  height: 600px;
+  border: none;
+  border-radius: var(--border-radius);
+}
+
+/* Media queries for smaller screens */
+@media (max-width: 768px) {
+  .interactive-demo {
+    min-height: 500px;
+  }
+  
+  .interactive-demo gradio-app,
+  .interactive-demo iframe {
+    min-height: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .interactive-demo {
+    min-height: 400px;
+  }
+  
+  .interactive-demo gradio-app,
+  .interactive-demo iframe {
+    min-height: 400px;
+  }
+}
+
+/* === Timeline Markers for Professional Experience === */
+
+/* This assumes your .timeline-container has position: relative and padding-left (e.g., 30px)
+   and its ::before pseudo-element (or similar) creates the vertical timeline bar
+   (e.g., at left: 15px within that padding).
+   If your setup is different, the 'left' value for the circle will need adjustment. */
+
+.experience-item {
+  position: relative; /* Ensures ::before is positioned relative to this item */
+}
+
+.experience-item::before {
+  content: '';
+  position: absolute;
+  width: 16px;  /* Total diameter of the marker (including border). The background-colored area is 10px. */
+  height: 16px; /* Total diameter of the marker (including border). The background-colored area is 10px. */
+  background-color: var(--clr-accent-primary); /* Color of the circle marker. */
+  border: 3px solid var(--clr-background-primary);  /* Border color matches the section's background for 'punch-out' effect */
+  border-radius: 50%;    /* Makes it a circle */
+  box-sizing: border-box; /* Includes border in the element's total width and height */
+
+  /* Vertical alignment:
+     'top: 0.7em' attempts to align the circle near the vertical center of the first line of text (e.g., your <h4> title).
+     You may need to fine-tune this value (e.g., to 0.6em, 10px, etc.) for perfect alignment with your font and line heights. */
+  top: 0.2em; /* Adjusted slightly for a potentially larger marker */
+
+  /* Horizontal positioning:
+     This centers the 16px diameter circle marker on the timeline.
+     The timeline's position is defined by var(--timeline-line-offset) in .timeline-container.
+     The circle's radius is 8px (16px total diameter / 2).
+     So, left = var(--timeline-line-offset) - 8px.
+     This works responsively as --timeline-line-offset changes for smaller screens.
+  */
+  left: calc(var(--timeline-line-offset) - 8px);
+  z-index: 1;  /* Places the circle marker above the timeline line. */
+}
+
+/* Theme Toggle Button */
+.theme-toggle-item {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+#theme-toggle {
+  background: none;
+  border: none;
+  color: var(--clr-text-headings); /* Updated: Icon color to match new nav links color */
+  cursor: pointer;
+  padding: var(--space-xs) 6px; /* Similar padding to nav links */
+  margin-left: 2px; /* Consistent with other nav items */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius);
+  transition: color 0.2s ease, background-color 0.2s ease;
+  line-height: 1;
+}
+
+#theme-toggle:hover {
+  color: var(--clr-accent-primary); /* Matches nav link hover */
+}
+
+#theme-toggle:focus-visible {
+  color: var(--clr-accent-primary);
+    outline: 2px solid var(--clr-accent-primary);
+  outline-offset: 2px;
+}
+
+#theme-toggle:focus:not(:focus-visible) {
+  outline: none;
+  color: var(--clr-accent-primary);
+}
+
+.theme-icon {
+  width: 18px; /* Explicit size, matches HTML */
+  height: 18px; /* Explicit size, matches HTML */
+}
+
+/* Publications social icons */
+.publications-social {
+  display: flex;
+  justify-content: flex-start;
+  gap: 3.5rem;
+  margin: 1rem 0;
+}
+
+.publications-social .social-icon {
+  width: 96px;
+  height: 96px;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.publications-social a.large-icon-link {
+  display: flex;
+    flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.publications-social a.large-icon-link:hover .social-icon {
+  transform: scale(1.1);
+  color: var(--clr-accent-primary);
+}
+
+.publications-social a.large-icon-link span {
+  font-size: 0.9rem;
+}
+
+/* Video Link in Research Section */
+.video-link-container {
+  margin: 3rem 0;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--space-s);
+}
+
+.video-link {
+  display: block;
+  position: relative;
+    width: 100%;
+  max-width: 800px;
+  background-color: var(--clr-background-secondary);
+  border-radius: var(--border-radius);
+  padding: 0;
+  box-shadow: var(--shadow-standard);
+  border: 1px solid var(--clr-border-primary);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease !important;
+  text-decoration: none;
+}
+
+.video-link:hover, .video-link.touch-active {
+  transform: scale(1.02);
+  box-shadow: 0 10px 20px var(--clr-shadow-color);
+  border-color: var(--clr-accent-primary);
+  text-decoration: none;
+}
+
+.clickable-video {
+    width: 100%;
+  height: auto;
+  display: block;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  transition: transform 0.3s ease;
+}
+
+.video-caption {
+  margin: 0 0 1rem 0;
+  padding-top: var(--space-s);
+  padding-left: var(--space-s);
+  padding-right: var(--space-s);
+  color: var(--clr-text-headings);
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: var(--font-weight-medium);
+  padding-bottom: 0.75rem;
+  transition: color 0.3s ease;
+  text-decoration: none;
+  border-bottom: 2px solid var(--clr-border-primary);
+  position: relative;
+}
+
+/* Add animated underline effect to video caption like project cards */
+.video-caption::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; /* Position to cover the border line */
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--clr-accent-primary);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
+}
+
+.video-link:hover .video-caption, 
+.video-link.touch-active .video-caption {
+  color: var(--clr-accent-primary);
+}
+
+.video-link:hover .video-caption::after,
+.video-link.touch-active .video-caption::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* For mobile devices */
+@media (max-width: 768px) {
+  .video-link {
+    max-width: 100%;
+  }
+  
+  .video-caption {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* Video loading indicator */
+.video-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  z-index: 5;
+  border-radius: var(--border-radius);
+}
+
+.video-loading span {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+}
+
+/* Interests Carousel */
+.carousel-container {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  margin: var(--space-l) 0;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  gap: var(--space-s);
+  animation: none; /* JavaScript will handle animation */
+  will-change: transform; /* Optimize for animations */
+}
+
+.carousel-track img,
+.carousel-track video {
+  height: 300px;
+  width: auto;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-standard);
+  flex-shrink: 0;
+}
+
+.carousel-track video {
+  background: var(--clr-background-secondary);
+}
+
+
+
+@media (max-width: 768px) {
+  .carousel-container {
+    height: 250px;
+  }
+  
+  .carousel-track img,
+  .carousel-track video {
+    height: 250px;
+  }
+}
+
+/* Reduced motion support for carousel */
+@media (prefers-reduced-motion: reduce) {
+  .carousel-track {
+    animation: none !important;
+  }
+}
