@@ -23,10 +23,10 @@ header .container.binaural-header-container .desktop-nav {
   white-space: nowrap;
 }
 
-/* Center mobile navigation */
+/* Right-align mobile navigation */
 header .container.binaural-header-container .mobile-nav {
   position: relative;
-  margin: 0 auto;
+  margin-left: auto;
 }
 
 /* Responsive nav visibility with higher specificity */
@@ -41,6 +41,10 @@ header .container.binaural-header-container .mobile-nav {
 }
 
 @media (max-width: 767px) {
+  header .container.binaural-header-container {
+    justify-content: flex-end !important; /* Allow mobile nav to align right */
+  }
+  
   header .container.binaural-header-container .desktop-nav {
     display: none !important;
   }
