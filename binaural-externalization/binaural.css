@@ -1744,41 +1744,89 @@ header .container.binaural-header-container .mobile-nav {
 
 /* iOS/Mobile video background fix for transparent videos */
 @media (max-width: 768px) {
-  /* Fix transparent video backgrounds on mobile by matching section backgrounds */
+  /* Fix transparent video backgrounds by setting container and video backgrounds */
+  #introduction .head-model-container {
+    background-color: var(--clr-accent-primary);
+    border-radius: var(--border-radius);
+  }
+  
   #introduction .trajectory-video {
     background-color: var(--clr-accent-primary);
+    background-image: linear-gradient(var(--clr-accent-primary), var(--clr-accent-primary));
+  }
+  
+  #stereo .head-model-container {
+    background-color: var(--clr-background-primary);
+    border-radius: var(--border-radius);
   }
   
   #stereo .stereo-animation {
     background-color: var(--clr-background-primary);
+    background-image: linear-gradient(var(--clr-background-primary), var(--clr-background-primary));
+  }
+  
+  #binaural .head-model-container {
+    background-color: var(--clr-background-secondary);
+    border-radius: var(--border-radius);
   }
   
   #binaural .binaural-animation {
     background-color: var(--clr-background-secondary);
+    background-image: linear-gradient(var(--clr-background-secondary), var(--clr-background-secondary));
+  }
+  
+  #externalized .head-model-container {
+    background-color: var(--clr-background-primary);
+    border-radius: var(--border-radius);
   }
   
   #externalized .externalized-animation {
     background-color: var(--clr-background-primary);
+    background-image: linear-gradient(var(--clr-background-primary), var(--clr-background-primary));
   }
 }
 
 /* Additional iOS-specific fix using -webkit-playsinline support detection */
 @supports (-webkit-overflow-scrolling: touch) {
   /* iOS Safari specific video background fixes */
+  #introduction .head-model-container {
+    background-color: var(--clr-accent-primary);
+    border-radius: var(--border-radius);
+  }
+  
   #introduction .trajectory-video {
     background-color: var(--clr-accent-primary);
+    background-image: linear-gradient(var(--clr-accent-primary), var(--clr-accent-primary));
+  }
+  
+  #stereo .head-model-container {
+    background-color: var(--clr-background-primary);
+    border-radius: var(--border-radius);
   }
   
   #stereo .stereo-animation {
     background-color: var(--clr-background-primary);
+    background-image: linear-gradient(var(--clr-background-primary), var(--clr-background-primary));
+  }
+  
+  #binaural .head-model-container {
+    background-color: var(--clr-background-secondary);
+    border-radius: var(--border-radius);
   }
   
   #binaural .binaural-animation {
     background-color: var(--clr-background-secondary);
+    background-image: linear-gradient(var(--clr-background-secondary), var(--clr-background-secondary));
+  }
+  
+  #externalized .head-model-container {
+    background-color: var(--clr-background-primary);
+    border-radius: var(--border-radius);
   }
   
   #externalized .externalized-animation {
     background-color: var(--clr-background-primary);
+    background-image: linear-gradient(var(--clr-background-primary), var(--clr-background-primary));
   }
 }
 

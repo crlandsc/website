@@ -1600,17 +1600,27 @@ footer .container {
 
 /* iOS/Mobile video background fix for transparent videos */
 @media (max-width: 768px) {
-  /* Fix transparent video backgrounds on mobile by matching the card background */
+  /* Fix transparent video backgrounds by setting container background */
+  #education .video-link {
+    background-color: var(--clr-background-secondary) !important;
+  }
+  
   #education .clickable-video {
     background-color: var(--clr-background-secondary);
+    background-image: linear-gradient(var(--clr-background-secondary), var(--clr-background-secondary));
   }
 }
 
 /* Additional iOS-specific fix using -webkit-playsinline support detection */
 @supports (-webkit-overflow-scrolling: touch) {
-  /* iOS Safari specific video background fix */
+  /* iOS Safari specific video background fixes */
+  #education .video-link {
+    background-color: var(--clr-background-secondary) !important;
+  }
+  
   #education .clickable-video {
     background-color: var(--clr-background-secondary);
+    background-image: linear-gradient(var(--clr-background-secondary), var(--clr-background-secondary));
   }
 }
 
