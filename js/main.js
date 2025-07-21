@@ -87,41 +87,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Check for user's stored preference first
-  const storedTheme = localStorage.getItem('theme');
-  
   // Get system preference using media query
   const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)');
   
-  // Determine which theme to apply
-  if (storedTheme) {
-    // User has a stored preference, use that
-    applyTheme(storedTheme);
-  } else {
-    // No stored preference, use system preference
-    applyTheme(systemPrefersDark.matches ? 'dark' : 'light');
-  }
+  // Always start with current system preference (no persistence)
+  applyTheme(systemPrefersDark.matches ? 'dark' : 'light');
 
-  // Add theme toggle button click handler
+  // Add theme toggle button click handler for temporary override
   if (themeToggleButton) {
     themeToggleButton.addEventListener('click', () => {
       // Get current theme
       const currentTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-      // Set new theme to the opposite
+      // Set new theme to the opposite (temporary override)
       const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      // Store the user's preference
-      localStorage.setItem('theme', newTheme);
-      // Apply the new theme
+      // Apply the new theme (no localStorage storage)
       applyTheme(newTheme);
     });
   }
 
-  // Listen for system preference changes
+  // Always listen for system preference changes and apply them immediately
   systemPrefersDark.addEventListener('change', (e) => {
-    // Only apply system preference if no manual preference is stored
-    if (!localStorage.getItem('theme')) {
-      applyTheme(e.matches ? 'dark' : 'light');
-    }
+    // Always follow system changes (override any manual selection)
+    applyTheme(e.matches ? 'dark' : 'light');
   });
 
   // Ensure fade-in elements are correctly handled on load/theme change
