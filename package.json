@@ -1,0 +1,12 @@
+{
+  "name": "christopher-landschoot-website",
+  "version": "1.0.0",
+  "description": "Personal website for Christopher Landschoot",
+  "scripts": {
+    "dev": "npx http-server . -p 3000 -c-1 --proxy http://localhost:3000?",
+    "dev-simple": "npx serve . -p 3000",
+    "dev-express": "node server.js"
+  },
+  "devDependencies": {},
+  "private": true
+} 
