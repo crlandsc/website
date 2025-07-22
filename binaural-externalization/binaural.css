@@ -1329,10 +1329,10 @@ header .container.binaural-header-container .mobile-nav {
 .hrtf-spectrum {
   max-width: 100%;
   height: auto;
+  border-radius: var(--border-radius);
 }
 
 .hrtf-spectrum {
-  border-radius: var(--border-radius);
   box-shadow: 0 4px 8px var(--clr-shadow-color);
 }
 
