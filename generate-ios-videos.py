@@ -3,6 +3,7 @@
 iOS Video Background Generator
 Generates videos with solid backgrounds for iOS compatibility
 by replacing transparent areas with specified colors.
+Now creates MP4 fallbacks instead of MOV for better compression.
 
 Requirements:
 - FFmpeg installed and in PATH
@@ -188,30 +189,31 @@ def generate_video_with_background(input_path, output_path, bg_color, descriptio
             print(f"   Alpha error: {e2.stderr[-200:]}")
             return False
 
-def create_mov_version(webm_path):
-    """Create MOV version from WebM for mobile compatibility"""
-    mov_path = webm_path.with_suffix('.mov')
+def create_mp4_version(webm_path):
+    """Create MP4 version from WebM for legacy browser compatibility"""
+    mp4_path = webm_path.with_suffix('.mp4')
     
     cmd = [
         "ffmpeg",
         "-i", str(webm_path),
-        "-c:v", "libx264",                              # H.264 codec for MOV
+        "-c:v", "libx264",                              # H.264 codec for MP4
         "-preset", "medium",                            # Encoding speed/quality
-        "-crf", "23",                                   # High quality
-        "-pix_fmt", "yuv420p",                         # Compatibility
-        "-an",                                          # Remove audio
+        "-crf", "25",                                   # Good quality with smaller size
+        "-pix_fmt", "yuv420p",                         # Universal compatibility
+        "-an",                                          # Remove audio (since originals have none)
+        "-movflags", "+faststart",                      # Web optimization
         "-y",                                           # Overwrite
-        str(mov_path)
+        str(mp4_path)
     ]
     
-    print(f"📱 Creating MOV version: {mov_path.name}")
+    print(f"📱 Creating MP4 version: {mp4_path.name}")
     
     try:
         subprocess.run(cmd, capture_output=True, check=True)
-        print(f"✓ MOV created: {mov_path}")
+        print(f"✓ MP4 created: {mp4_path}")
         return True
     except subprocess.CalledProcessError as e:
-        print(f"❌ Failed to create MOV version: {e}")
+        print(f"❌ Failed to create MP4 version: {e}")
         return False
 
 def main():
@@ -255,9 +257,9 @@ def main():
             if generate_video_with_background(input_path, output_path, bg_color, description):
                 successful += 1
                 
-                # Also create MOV version
+                # Also create MP4 version
                 if output_path.suffix == '.webm':
-                    create_mov_version(output_path)
+                    create_mp4_version(output_path)
     
     # Summary
     print("\n" + "=" * 50)
@@ -270,7 +272,8 @@ def main():
         print("\n📝 Next steps:")
         print("   1. Test the videos in your browser")
         print("   2. Deploy the new video files")
-        print("   3. The JavaScript will automatically use them on iOS")
+        print("   3. WebM is now the primary format for all modern browsers")
+        print("   4. MP4 fallbacks are available if needed for legacy support")
     else:
         print(f"⚠️  {total_videos - successful} videos failed to generate")
         print("   Check the error messages above")
