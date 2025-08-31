@@ -10,6 +10,7 @@
   --clr-accent-secondary: #357ABD;
   --clr-border-primary: #DEE2E6;
   --clr-shadow-color: rgba(0, 0, 0, 0.075);
+  --clr-amber: #d4a574;
   /* Non-color variables from original theme - kept */
   --space-xs: .5rem;
   --space-s: 1rem;
@@ -40,6 +41,7 @@ html[data-theme="dark"] {
   --clr-accent-secondary: #7BAAF0;
   --clr-border-primary: #333333;
   --clr-shadow-color: rgba(0, 0, 0, 0.3);
+  --clr-amber: #d4a574;
 }
 
 /* Reset & Base Styles */
@@ -306,10 +308,7 @@ h3.fade-in-element {
   color: var(--clr-text-headings);
 }
 
-.section p, .section div, .section li {
-  /* Standard text within sections */
-  /* color: var(--clr-text-primary); */ /* This would be inherited, but good to be explicit if needed */
-}
+
 
 /* Header & Navigation */
 header {
@@ -493,6 +492,17 @@ header .container {
 
 .mobile-nav a[target="_blank"]::after {
   content: "";
+}
+
+/* Amber hover for specific header links (Music, Portfolio, Resume) */
+.desktop-nav a[href^="https://after-august.com"]:hover,
+.mobile-nav a[href^="https://after-august.com"]:hover,
+.desktop-nav a[href^="https://github.com/crlandsc"]:hover,
+.mobile-nav a[href^="https://github.com/crlandsc"]:hover,
+.desktop-nav a[href$="Resume.pdf"]:hover,
+.mobile-nav a[href$="Resume.pdf"]:hover {
+  color: var(--clr-amber);
+  text-decoration: none;
 }
 
 /* Hero Section */
