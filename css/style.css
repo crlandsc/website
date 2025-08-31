@@ -472,11 +472,13 @@ header .container {
 
 .mobile-nav a:hover {
   color: var(--clr-accent-primary);
+  text-decoration: none; /* Match desktop: no underline on hover */
 }
 
 /* Mobile nav focus styles */
 .mobile-nav a:focus-visible {
   color: var(--clr-accent-primary);
+  text-decoration: none; /* Match desktop */
   outline: 2px solid var(--clr-accent-primary);
   outline-offset: 2px;
 }
@@ -488,6 +490,7 @@ header .container {
 
 .mobile-nav a[target="_blank"]:hover {
   color: var(--clr-accent-secondary);
+  text-decoration: none; /* Match desktop */
 }
 
 .mobile-nav a[target="_blank"]::after {
@@ -497,10 +500,16 @@ header .container {
 /* Amber hover for specific header links (Music, Portfolio, Resume) */
 .desktop-nav a[href^="https://after-august.com"]:hover,
 .mobile-nav a[href^="https://after-august.com"]:hover,
+.desktop-nav a[href^="https://after-august.com"]:focus-visible,
+.mobile-nav a[href^="https://after-august.com"]:focus-visible,
 .desktop-nav a[href^="https://github.com/crlandsc"]:hover,
 .mobile-nav a[href^="https://github.com/crlandsc"]:hover,
+.desktop-nav a[href^="https://github.com/crlandsc"]:focus-visible,
+.mobile-nav a[href^="https://github.com/crlandsc"]:focus-visible,
 .desktop-nav a[href$="Resume.pdf"]:hover,
-.mobile-nav a[href$="Resume.pdf"]:hover {
+.mobile-nav a[href$="Resume.pdf"]:hover,
+.desktop-nav a[href$="Resume.pdf"]:focus-visible,
+.mobile-nav a[href$="Resume.pdf"]:focus-visible {
   color: var(--clr-amber);
   text-decoration: none;
 }
