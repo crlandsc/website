@@ -1,8 +1,18 @@
-# iOS Transparent Video Fix
+# Video Optimization for Modern Web
 
-This system automatically generates iOS-compatible videos with solid backgrounds to fix the transparent video issue on iOS devices.
+This system provides video optimization tools, though as of 2025, **WebM is now universally supported** on all major browsers including iOS Safari 17.4+.
 
-## Quick Start
+## Current Status (2025)
+
+**WebM Support:** ✅ Universal (Chrome, Firefox, Safari, Edge)  
+**File Size Benefits:** WebM files are typically 100-200x smaller than MOV equivalents  
+**Recommendation:** Use WebM-only for modern websites
+
+## Legacy Support Tools
+
+If you need to support very old iOS versions (pre-17.4), this system can generate MP4 fallbacks with solid backgrounds.
+
+### Quick Start
 
 1. **Install FFmpeg** (if not already installed):
    ```bash
@@ -12,23 +22,21 @@ This system automatically generates iOS-compatible videos with solid backgrounds
    # Or download from: https://ffmpeg.org/download.html
    ```
 
-2. **Generate the videos**:
+2. **Generate fallback videos** (optional):
    ```bash
    python3 generate-ios-videos.py
    ```
 
-3. **Deploy to your website** - The JavaScript will automatically detect iOS and use the new videos!
-
 ## What It Does
 
 ### The Python Script (`generate-ios-videos.py`)
-- Detects your transparent video files
+- Detects your transparent WebM files  
 - Generates versions with solid color backgrounds for each section:
   - **Blue** (#4A90E2): Introduction sections
   - **White** (#FFFFFF): Stereo/Externalized sections  
   - **Gray** (#F0F2F5): Binaural sections and main site
-- Creates both WebM and MOV versions for compatibility
-- Preserves video quality and timing
+- Creates both **WebM and MP4** versions for compatibility
+- Preserves video quality and timing with better compression than the old MOV approach
 
 ### The JavaScript (`js/ios-video-fallback.js`)
 - Automatically detects iOS devices (iPhone, iPad, iPod)
