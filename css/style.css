@@ -1697,6 +1697,56 @@ footer .container {
   background: var(--clr-background-secondary);
 }
 
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  font-size: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--transition-standard), transform var(--transition-standard);
+  z-index: 2;
+}
+
+.carousel-arrow--left {
+  left: var(--space-s);
+}
+
+.carousel-arrow--right {
+  right: var(--space-s);
+}
+
+.carousel-arrow:hover,
+.carousel-arrow:focus-visible {
+  background: rgba(0, 0, 0, 0.65);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.carousel-arrow:focus-visible {
+  outline: 2px solid var(--clr-accent-primary);
+  outline-offset: 2px;
+}
+
+.carousel-arrow:focus:not(:focus-visible) {
+  outline: none;
+}
+
+@media (max-width: 700px) {
+  .carousel-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 1.4rem;
+  }
+}
+
 
 
 @media (max-width: 768px) {

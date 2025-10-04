@@ -1128,55 +1128,315 @@ function setupInterestsCarousel() {
   const carouselTrack = document.getElementById('carousel-track');
   if (!carouselTrack) return;
 
-  // Calculate animation speed based on 20-second transit time
-  const viewportWidth = window.innerWidth;
-  const speed = viewportWidth / 20000; // pixels per millisecond
+  const carouselContainer = carouselTrack.parentElement;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
+  let originalWidth = 0;
+  let originalItemCount = 0;
+  let averageItemWidth = 0;
   let currentPosition = 0;
-  let lastTimestamp = 0;
-  
-  // Get the width of the original content (first half of duplicated content)
-  const originalItems = carouselTrack.children;
-  const originalCount = originalItems.length / 2; // Since we duplicate everything
-  
-  function calculateOriginalWidth() {
-    let width = 0;
-    for (let i = 0; i < originalCount; i++) {
-      width += originalItems[i].offsetWidth + 16; // +16 for gap
-    }
-    return width;
-  }
+  let velocity = 0;
+  let desiredVelocity = 0;
+  let baseAutoVelocity = 0;
+  let lastFrameTime = 0;
+  let animationFrameId = null;
 
-  function animate(timestamp) {
-    if (!lastTimestamp) lastTimestamp = timestamp;
-    const deltaTime = timestamp - lastTimestamp;
-    lastTimestamp = timestamp;
+  // Pointer tracking
+  let pointerId = null;
+  let pointerLastX = 0;
+  let pointerLastTime = 0;
+  let isPointerActive = false;
+  let resumePending = false;
+  let arrowScrollRemaining = 0;
+  let lastWheelTime = 0;
+  let activePointerType = null;
 
-    // Move left by speed * time elapsed
-    currentPosition -= speed * deltaTime;
+  const computeBaseVelocity = () => (prefersReducedMotion.matches ? 0 : -window.innerWidth / 20000);
+  const minVelocityThreshold = 0.02;
 
-    // Reset position when we've scrolled through the original content
-    const originalWidth = calculateOriginalWidth();
-    if (Math.abs(currentPosition) >= originalWidth) {
-      currentPosition = 0;
-    }
-
+  const applyTransform = () => {
     carouselTrack.style.transform = `translateX(${currentPosition}px)`;
-    requestAnimationFrame(animate);
-  }
+  };
 
-  // Wait for images to load before starting animation
-  Promise.all(Array.from(carouselTrack.querySelectorAll('img')).map(img => {
-    return new Promise(resolve => {
-      if (img.complete) resolve();
-      else img.onload = resolve;
+  const wrapPosition = () => {
+    if (!originalWidth) return;
+    while (currentPosition <= -originalWidth) {
+      currentPosition += originalWidth;
+    }
+    while (currentPosition > 0) {
+      currentPosition -= originalWidth;
+    }
+  };
+
+  const stopAutoScroll = () => {
+    desiredVelocity = 0;
+    baseAutoVelocity = computeBaseVelocity();
+  };
+
+  const scheduleAutoResume = () => {
+    if (prefersReducedMotion.matches) return;
+    resumePending = true;
+  };
+
+  const applyArrowImpulse = (direction) => {
+    if (prefersReducedMotion.matches) return;
+    stopAutoScroll();
+    resumePending = true;
+    velocity = 0;
+    const distance = averageItemWidth || carouselContainer.clientWidth * 0.6;
+    arrowScrollRemaining += direction * distance;
+    if (!animationFrameId) {
+      animationFrameId = requestAnimationFrame(animate);
+    }
+  };
+
+  const createArrowButton = (direction) => {
+    if (!carouselContainer || carouselContainer.querySelector(`.carousel-arrow--${direction}`)) {
+      return null;
+    }
+
+    const button = document.createElement('button');
+    const isLeft = direction === 'left';
+    button.type = 'button';
+    button.className = `carousel-arrow carousel-arrow--${direction}`;
+    button.setAttribute('aria-label', isLeft ? 'Scroll interests backward' : 'Scroll interests forward');
+    button.innerHTML = isLeft ? '&#8249;' : '&#8250;';
+
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      applyArrowImpulse(isLeft ? 1 : -1);
     });
-  })).then(() => {
-    requestAnimationFrame(animate);
-  });
 
-  // Recalculate on window resize
+    button.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        event.stopPropagation();
+        applyArrowImpulse(isLeft ? 1 : -1);
+      }
+    });
+
+    carouselContainer.appendChild(button);
+    return button;
+  };
+
+  const onPointerDown = (event) => {
+    if (!carouselContainer || isPointerActive || event.button > 1) return;
+    if (event.target && event.target.closest('.carousel-arrow')) {
+      return;
+    }
+    carouselContainer.setPointerCapture(event.pointerId);
+    pointerId = event.pointerId;
+    pointerLastX = event.clientX;
+    pointerLastTime = event.timeStamp;
+    activePointerType = event.pointerType;
+    isPointerActive = true;
+    stopAutoScroll();
+    velocity = 0;
+    resumePending = false;
+    event.preventDefault();
+  };
+
+  const onPointerMove = (event) => {
+    if (!isPointerActive || event.pointerId !== pointerId) return;
+
+    const deltaX = event.clientX - pointerLastX;
+    const now = event.timeStamp;
+    const deltaTime = Math.max(now - pointerLastTime, 1);
+
+    const useNaturalDirection = activePointerType === 'touch';
+    const appliedDelta = useNaturalDirection ? deltaX : -deltaX;
+    const isMouse = activePointerType === 'mouse';
+    const effectiveDelta = isMouse ? deltaX : appliedDelta;
+
+    currentPosition += effectiveDelta;
+    wrapPosition();
+    applyTransform();
+
+    velocity = effectiveDelta / deltaTime;
+
+    pointerLastX = event.clientX;
+    pointerLastTime = now;
+
+    event.preventDefault();
+  };
+
+  const onPointerUp = (event) => {
+    if (!isPointerActive || event.pointerId !== pointerId) return;
+
+    carouselContainer.releasePointerCapture(pointerId);
+    pointerId = null;
+    isPointerActive = false;
+    pointerLastX = 0;
+    pointerLastTime = 0;
+    activePointerType = null;
+    scheduleAutoResume();
+  };
+
+  const onWheel = (event) => {
+    if (!carouselContainer) return;
+
+    // Ignore pure vertical scrolls; allow diagonal gestures to influence carousel.
+    const hasHorizontalComponent = Math.abs(event.deltaX) >= Math.abs(event.deltaY) * 0.3;
+    if (!hasHorizontalComponent && event.deltaMode === 0) {
+      return;
+    }
+
+    stopAutoScroll();
+    resumePending = true;
+
+    let deltaXRaw = event.deltaX;
+    if (event.deltaMode === 1) {
+      deltaXRaw *= 16; // lines -> pixels approximation
+    } else if (event.deltaMode === 2) {
+      deltaXRaw *= carouselContainer.clientWidth;
+    }
+
+    const deltaX = (event.deltaMode === 0 ? -deltaXRaw : deltaXRaw);
+
+    currentPosition += deltaX;
+    wrapPosition();
+    applyTransform();
+
+    const now = event.timeStamp;
+    const deltaTime = Math.max(now - lastWheelTime, 1);
+    velocity = deltaX / deltaTime;
+    lastWheelTime = now;
+
+    event.preventDefault();
+  };
+
+  const attachInteractionHandlers = () => {
+    if (!carouselContainer) return;
+    carouselContainer.style.touchAction = 'pan-y';
+    carouselContainer.addEventListener('pointerdown', onPointerDown);
+    carouselContainer.addEventListener('pointermove', onPointerMove);
+    carouselContainer.addEventListener('pointerup', onPointerUp);
+    carouselContainer.addEventListener('pointercancel', onPointerUp);
+    carouselContainer.addEventListener('pointerleave', (event) => {
+      if (isPointerActive && event.pointerId === pointerId) {
+        onPointerUp(event);
+      }
+    });
+    carouselContainer.addEventListener('wheel', onWheel, { passive: false });
+  };
+
+  const removeAnimation = () => {
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+  };
+
+  const animate = (timestamp) => {
+    animationFrameId = requestAnimationFrame(animate);
+
+    if (!lastFrameTime) {
+      lastFrameTime = timestamp;
+      return;
+    }
+
+    const deltaTime = timestamp - lastFrameTime;
+    lastFrameTime = timestamp;
+
+    if (isPointerActive) {
+      return;
+    }
+
+    if (Math.abs(arrowScrollRemaining) > 0.5) {
+      const duration = 220; // ms to traverse one item when average width is known
+      const effectiveDuration = averageItemWidth > 0 ? duration : 300;
+      const maxStep = (averageItemWidth > 0 ? averageItemWidth : carouselContainer.clientWidth) * (deltaTime / effectiveDuration);
+      const step = Math.max(-maxStep, Math.min(maxStep, arrowScrollRemaining));
+      currentPosition += step;
+      arrowScrollRemaining -= step;
+      if (Math.abs(arrowScrollRemaining) <= 0.5) {
+        currentPosition += arrowScrollRemaining;
+        arrowScrollRemaining = 0;
+      }
+      wrapPosition();
+      applyTransform();
+      return;
+    }
+
+    if (resumePending) {
+      const friction = Math.exp(-deltaTime / 250);
+      velocity *= friction;
+      if (Math.abs(velocity) < minVelocityThreshold) {
+        resumePending = false;
+        desiredVelocity = baseAutoVelocity;
+      }
+    } else {
+      const easingFactor = Math.min(deltaTime / 180, 0.15);
+      velocity += (desiredVelocity - velocity) * easingFactor;
+    }
+
+    currentPosition += velocity * deltaTime;
+    wrapPosition();
+    applyTransform();
+  };
+
+  const updateMeasurements = () => {
+    originalWidth = carouselTrack.scrollWidth / 2;
+    originalItemCount = carouselTrack.children.length / 2;
+    if (originalItemCount > 0) {
+      averageItemWidth = originalWidth / originalItemCount;
+    } else {
+      const firstItem = carouselTrack.firstElementChild;
+      averageItemWidth = firstItem ? firstItem.getBoundingClientRect().width : 0;
+    }
+    wrapPosition();
+    applyTransform();
+  };
+
+  const startAnimation = () => {
+    removeAnimation();
+    lastFrameTime = 0;
+    baseAutoVelocity = computeBaseVelocity();
+    desiredVelocity = baseAutoVelocity;
+    animationFrameId = requestAnimationFrame(animate);
+  };
+
+  const initialize = () => {
+    updateMeasurements();
+    attachInteractionHandlers();
+    createArrowButton('left');
+    createArrowButton('right');
+
+    if (!prefersReducedMotion.matches) {
+      startAnimation();
+    } else {
+      applyTransform();
+    }
+  };
+
+  const assetPromises = Array.from(carouselTrack.querySelectorAll('img')).map((img) => new Promise((resolve) => {
+    if (img.complete) {
+      resolve();
+    } else {
+      img.addEventListener('load', resolve, { once: true });
+      img.addEventListener('error', resolve, { once: true });
+    }
+  }));
+
+  Promise.all(assetPromises).then(() => initialize());
+
   window.addEventListener('resize', debounce(() => {
-    // Speed will automatically adjust based on new viewport width
+    baseAutoVelocity = computeBaseVelocity();
+    if (!isPointerActive && !resumePending) {
+      desiredVelocity = baseAutoVelocity;
+    }
+    updateMeasurements();
   }, 250));
+
+  prefersReducedMotion.addEventListener('change', () => {
+    baseAutoVelocity = computeBaseVelocity();
+    desiredVelocity = baseAutoVelocity;
+    if (prefersReducedMotion.matches) {
+      removeAnimation();
+      velocity = 0;
+      applyTransform();
+    } else {
+      startAnimation();
+    }
+  });
 }
