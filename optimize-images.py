@@ -29,10 +29,11 @@ import re
 # Configuration
 CAROUSEL_INPUT_DIR = Path("assets/photos/carousel/new")
 CAROUSEL_OUTPUT_DIR = Path("assets/photos/carousel_optimized/new")
-PROFILE_INPUT = Path("assets/profile.png")
+PROFILE_INPUT = Path("assets/profile.jpg")
 PROFILE_OUTPUT_DIR = Path("assets")
 PROFILE_OUTPUT_NAME = "profile_optimized"
-PROFILE_OPTIMIZATION_ENABLED = False
+CAROUSEL_OPTIMIZATION_ENABLED = False
+PROFILE_OPTIMIZATION_ENABLED = True
 
 # Image optimization settings - Higher quality for better visual fidelity
 CAROUSEL_SETTINGS = {
@@ -78,23 +79,26 @@ def optimize_image(input_path, output_path, max_width, max_height, size_info, jp
             
             # Calculate new size maintaining aspect ratio
             img.thumbnail((max_width, max_height), Image.Resampling.LANCZOS)
-            
-            # Convert to RGB if necessary for JPEG
-            if img.mode in ('RGBA', 'LA', 'P'):
-                # Create white background for transparency
-                background = Image.new('RGB', img.size, (255, 255, 255))
-                if img.mode == 'P':
-                    img = img.convert('RGBA')
-                background.paste(img, mask=img.split()[-1] if img.mode in ('RGBA', 'LA') else None)
-                img = background
-            
-            # Ensure RGB mode for JPEG
-            if img.mode != 'RGB':
-                img = img.convert('RGB')
-            
+            img_for_webp = img.copy()
+
+            # Prepare JPEG version (flatten transparency onto white background)
+            img_for_jpeg = img
+            if img_for_jpeg.mode in ('RGBA', 'LA', 'P'):
+                background = Image.new('RGB', img_for_jpeg.size, (255, 255, 255))
+                if img_for_jpeg.mode == 'P':
+                    img_for_jpeg = img_for_jpeg.convert('RGBA')
+                background.paste(
+                    img_for_jpeg,
+                    mask=img_for_jpeg.split()[-1] if img_for_jpeg.mode in ('RGBA', 'LA') else None,
+                )
+                img_for_jpeg = background
+
+            if img_for_jpeg.mode != 'RGB':
+                img_for_jpeg = img_for_jpeg.convert('RGB')
+
             # Save optimized JPEG
             jpeg_path = output_path.with_suffix('.jpg')
-            img.save(jpeg_path, 'JPEG', quality=jpeg_quality, optimize=True)
+            img_for_jpeg.save(jpeg_path, 'JPEG', quality=jpeg_quality, optimize=True)
             
             # Get file sizes
             jpeg_size = jpeg_path.stat().st_size
@@ -105,7 +109,15 @@ def optimize_image(input_path, output_path, max_width, max_height, size_info, jp
             # Create WebP version
             try:
                 webp_path = output_path.with_suffix('.webp')
-                img.save(webp_path, 'WEBP', quality=webp_quality, optimize=True)
+                webp_image = img_for_webp
+                if webp_image.mode == 'P':
+                    webp_image = webp_image.convert('RGBA')
+                elif webp_image.mode == 'LA':
+                    webp_image = webp_image.convert('RGBA')
+                elif webp_image.mode not in ('RGB', 'RGBA'):
+                    webp_image = webp_image.convert('RGB')
+
+                webp_image.save(webp_path, 'WEBP', quality=webp_quality, optimize=True)
                 webp_size = webp_path.stat().st_size
                 webp_reduction = (1 - webp_size / original_size) * 100
                 print(f"  WebP: {input_path.name} {size_info} → {webp_size//1024}KB ({webp_reduction:.1f}% reduction)")
@@ -256,6 +268,11 @@ def parse_args():
         action="store_true",
         help="Skip optimizing the profile image",
     )
+    parser.add_argument(
+        "--skip-carousel",
+        action="store_true",
+        help="Skip optimizing the carousel images",
+    )
     return parser.parse_args()
 
 
@@ -274,13 +291,23 @@ def main():
         print("❌ Pillow library not found. Install with: pip install Pillow")
         sys.exit(1)
     
-    # Setup
-    setup_directories()
-    
-    # Optimize images
-    carousel_mapping = optimize_carousel_images()
-    profile_mapping = None
+    # Determine which optimizations to run
+    carousel_enabled = CAROUSEL_OPTIMIZATION_ENABLED and not args.skip_carousel
     profile_enabled = PROFILE_OPTIMIZATION_ENABLED and not args.skip_profile
+
+    # Setup (only if carousel optimization is enabled)
+    if carousel_enabled:
+        setup_directories()
+
+    # Optimize images
+    carousel_mapping = {}
+    profile_mapping = None
+
+    if carousel_enabled:
+        carousel_mapping = optimize_carousel_images()
+    else:
+        reason = "per --skip-carousel" if args.skip_carousel else "per CAROUSEL_OPTIMIZATION_ENABLED = False"
+        print(f"\n⏭️  Skipping carousel image optimization ({reason})")
 
     if profile_enabled:
         profile_mapping = optimize_profile_image()
@@ -296,7 +323,8 @@ def main():
     print("\n🎉 Optimization Complete!")
     print("=" * 60)
     print("📁 Optimized images saved to:")
-    print(f"   • Carousel: {CAROUSEL_OUTPUT_DIR}")
+    if carousel_mapping:
+        print(f"   • Carousel: {CAROUSEL_OUTPUT_DIR}")
     if profile_mapping:
         print(f"   • Profile: {profile_mapping['jpeg']}")
     print("\n💡 Benefits:")
