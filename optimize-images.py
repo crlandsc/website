@@ -20,17 +20,19 @@ Usage:
 
 import os
 import sys
+import argparse
 from pathlib import Path
 from PIL import Image, ImageOps
 import shutil
 import re
 
 # Configuration
-CAROUSEL_INPUT_DIR = Path("assets/photos/carousel")
-CAROUSEL_OUTPUT_DIR = Path("assets/photos/carousel_optimized")
+CAROUSEL_INPUT_DIR = Path("assets/photos/carousel/new")
+CAROUSEL_OUTPUT_DIR = Path("assets/photos/carousel_optimized/new")
 PROFILE_INPUT = Path("assets/profile.png")
 PROFILE_OUTPUT_DIR = Path("assets")
 PROFILE_OUTPUT_NAME = "profile_optimized"
+PROFILE_OPTIMIZATION_ENABLED = False
 
 # Image optimization settings - Higher quality for better visual fidelity
 CAROUSEL_SETTINGS = {
@@ -246,8 +248,21 @@ def update_html_references(carousel_mapping, profile_mapping):
         else:
             print(f"   ℹ️  No references found in {html_file}")
 
+def parse_args():
+    """Parse command-line arguments"""
+    parser = argparse.ArgumentParser(description="Optimize images for the portfolio website")
+    parser.add_argument(
+        "--skip-profile",
+        action="store_true",
+        help="Skip optimizing the profile image",
+    )
+    return parser.parse_args()
+
+
 def main():
     """Main optimization process"""
+    args = parse_args()
+
     print("🚀 Image Optimization for Web Performance")
     print("=" * 60)
     
@@ -264,7 +279,14 @@ def main():
     
     # Optimize images
     carousel_mapping = optimize_carousel_images()
-    profile_mapping = optimize_profile_image()
+    profile_mapping = None
+    profile_enabled = PROFILE_OPTIMIZATION_ENABLED and not args.skip_profile
+
+    if profile_enabled:
+        profile_mapping = optimize_profile_image()
+    else:
+        reason = "per --skip-profile" if args.skip_profile else "per PROFILE_OPTIMIZATION_ENABLED = False"
+        print(f"\n⏭️  Skipping profile image optimization ({reason})")
     
     # Update HTML references
     if carousel_mapping or profile_mapping:
