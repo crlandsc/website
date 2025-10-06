@@ -602,7 +602,8 @@ header .container {
 
 .about-image img {
   border-radius: 12px;
-  width: 350px;
+  width: 100%;
+  max-width: 350px;
   height: auto;
   object-fit: cover;
   border: 5px solid var(--clr-background-primary); /* Border around image */
@@ -611,7 +612,7 @@ header .container {
 
 .about-content {
   text-align: left;
-  max-width: 800px;
+  max-width: 350px;
   margin: 0 auto;
 }
 
@@ -1207,6 +1208,7 @@ footer .container {
     flex: 1;
     margin-left: 320px;
     padding-left: 0;
+    max-width: none;
   }
 
   /* Timeline styles are now handled by the new timeline-container design */
@@ -1313,14 +1315,44 @@ footer .container {
 }
 
 @media (max-width: 767px) {
+  #about h3 {
+    margin-bottom: 2.5rem;
+  }
+
+  #about .container {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+  }
+
+  .about-grid {
+    gap: 1.25rem;
+    max-width: none;
+    margin: 0;
+  }
+
+  .about-image {
+    display: block;
+    padding-block: 0.4rem;
+    padding-inline: 2rem;
+  }
+
   .about-image img {
-    width: 250px;
-    max-width: 100%;
-    margin-bottom: var(--space-m);
+    width: 100%;
+    max-width: none;
+    margin-bottom: 0.5rem;
+    border: 5px solid var(--clr-background-primary);
+    box-shadow: 0 8px 15px var(--clr-shadow-color);
   }
   
   .about-content {
-    padding: 0 var(--space-s);
+    max-width: none;
+    margin: 0;
+    padding: 0 2rem;
+  }
+
+  .about-content p {
+    margin-bottom: 0.6rem;
   }
 }
 
