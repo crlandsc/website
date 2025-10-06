@@ -1,5 +1,4 @@
 To Do:
-- Update profile image
 - Fix video backgrounds for mobile
     - Likely will have to go back into blender (or canva) and save out other versions of these videos.
     - Is there a better format to save these as? What is the smallest file size I can make them?
