@@ -16,6 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Handle initial hash navigation
   handleInitialHash();
+
+  if (window.AlphaVideoSupport && typeof window.AlphaVideoSupport.applySources === 'function') {
+    window.AlphaVideoSupport.applySources();
+  }
 });
 
 
@@ -348,6 +352,9 @@ function initializeComparisonGrid() {
   // Wait for DOM to be fully updated before initializing audio players
   setTimeout(() => {
     initializeAudioPlayers();
+    if (window.AlphaVideoSupport && typeof window.AlphaVideoSupport.applySources === 'function') {
+      window.AlphaVideoSupport.applySources(comparisonGrid);
+    }
   }, 50);
   
   // Re-initialize intersection observer for new elements with a small delay
