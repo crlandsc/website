@@ -1729,6 +1729,14 @@ footer .container {
   background: var(--clr-background-secondary);
 }
 
+.alpha-video {
+  background: transparent;
+}
+
+.alpha-video::-webkit-media-controls {
+  display: none !important;
+}
+
 .carousel-arrow {
   position: absolute;
   top: 50%;
