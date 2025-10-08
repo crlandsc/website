@@ -16,6 +16,89 @@
   }
 })();
 
+const AlphaVideoSupport = (() => {
+  if (typeof window !== 'undefined' && window.AlphaVideoSupport) {
+    return window.AlphaVideoSupport;
+  }
+
+  let cachedShouldUseMov;
+
+  const shouldUseMov = () => {
+    if (cachedShouldUseMov !== undefined) {
+      return cachedShouldUseMov;
+    }
+
+    if (typeof navigator === 'undefined') {
+      cachedShouldUseMov = false;
+      return cachedShouldUseMov;
+    }
+
+    const ua = navigator.userAgent || '';
+    const vendor = navigator.vendor || '';
+
+    const isIOS = /iP(?:hone|ad|od)/.test(ua);
+    const isWebKit = /WebKit/.test(ua);
+    const isChromeLike = /Chrome|CriOS|Chromium|Edg|OPR|FxiOS|EdgiOS/.test(ua);
+    const isSafari = /Safari/.test(ua) && !isChromeLike;
+    const isAppleVendor = /Apple/i.test(vendor);
+
+    cachedShouldUseMov = (isIOS && isWebKit) || (isAppleVendor && isSafari);
+    return cachedShouldUseMov;
+  };
+
+  const applySources = (root = document) => {
+    const useMov = shouldUseMov();
+    if (!root || typeof root.querySelectorAll !== 'function') {
+      return;
+    }
+
+    root.querySelectorAll('video.alpha-video').forEach(video => {
+      const movSrc = video.dataset.mov;
+      const webmSrc = video.dataset.webm;
+      const targetSrc = useMov ? movSrc || webmSrc : webmSrc || movSrc;
+
+      if (!targetSrc) {
+        return;
+      }
+
+      let sourceEl = video.querySelector('source.alpha-source');
+      if (!sourceEl) {
+        sourceEl = document.createElement('source');
+        sourceEl.className = 'alpha-source';
+        video.insertBefore(sourceEl, video.firstChild || null);
+      }
+
+      if (sourceEl.getAttribute('data-active-src') === targetSrc) {
+        return;
+      }
+
+      const mimeType = useMov ? 'video/mp4; codecs="hvc1"' : 'video/webm';
+      sourceEl.setAttribute('src', targetSrc);
+      sourceEl.setAttribute('type', mimeType);
+      sourceEl.setAttribute('data-active-src', targetSrc);
+
+      // Reload to ensure the new source is used
+      video.load();
+
+      if (video.autoplay) {
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => {});
+        }
+      }
+    });
+  };
+
+  const api = {
+    shouldUseMov,
+    applySources
+  };
+  if (typeof window !== 'undefined') {
+    window.AlphaVideoSupport = api;
+  }
+  return api;
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM loaded, using hardcoded content for now...');
   
@@ -29,6 +112,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   
+  // Apply alpha video source handling for platforms without WebM alpha support
+  AlphaVideoSupport.applySources();
+
   // Initialize GitHub stats directly without requiring content.json
   initGitHubStats();
 
