@@ -266,8 +266,10 @@
 
     <section id="projects" class="section">
       <div class="container">
-        <h2>Projects</h2>
-        <h3>Audio & Machine Learning Projects</h3>
+        <h2>Projects and Writing</h2>
+        <h3>Open-Source Audio & Machine Learning Projects and Writing</h3>
+
+        <h3 class="projects-subheading">Open-Source Projects</h3>
         <div class="projects-grid" id="projects-grid">
           <!-- Project cards will be populated from content.json -->
           <article class="project-card" data-repo="crlandsc/tiny-audio-diffusion">
@@ -314,6 +316,27 @@
             <script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/4.36.0/gradio.js"></script>
             <gradio-app src="https://crlandsc-tiny-audio-diffusion.hf.space"></gradio-app>
           </div>
+        </div>
+
+        <h3 class="projects-subheading">Writing</h3>
+        <p class="writing-intro">Read more on my <a href="https://medium.com/@crlandschoot" target="_blank" rel="noopener noreferrer">Medium home page</a>.</p>
+        <div class="projects-grid writing-grid">
+          <article class="project-card">
+            <h4><a href="https://medium.com/whitebalance/the-state-of-generative-music-0fcb2745baf9" target="_blank" rel="noopener noreferrer">The State of Generative Music</a></h4>
+            <p>An examination of the current tensions between AI companies and music creators over training data rights, offering a roadmap toward a more collaborative future built on transparency, consent, and fair compensation.</p>
+          </article>
+          <article class="project-card">
+            <h4><a href="https://medium.com/data-science/audio-diffusion-generative-musics-secret-sauce-f625d0aca800" target="_blank" rel="noopener noreferrer">Audio Diffusion: Generative Music’s Secret Sauce</a></h4>
+            <p>A deep dive into the principles powering modern generative music AI, demystifying how diffusion models create new sounds and exploring their potential as tools to enhance rather than replace human creativity.</p>
+          </article>
+          <article class="project-card">
+            <h4><a href="https://medium.com/data-science/tiny-audio-diffusion-ddc19e90af9b" target="_blank" rel="noopener noreferrer">Tiny Audio Diffusion: Waveform Diffusion That Doesn’t Require Cloud Computing</a></h4>
+            <p>Explains the design decisions behind a compact waveform diffusion model that fits consumer GPUs, covering training tricks, architecture choices, and practical generation workflows.</p>
+          </article>
+          <article class="project-card">
+            <h4><a href="https://rocknheavy.net/the-music-demixing-ai-revolution-9d1528c6ef7c" target="_blank" rel="noopener noreferrer">The Music "Demixing" AI Revolution</a></h4>
+            <p>A look at modern audio source-separation breakthroughs, tracing how open research, competitions, and real-world releases are reshaping what engineers and artists can do with individual stems.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -688,7 +711,13 @@
           card.addEventListener('click', function(e) {
             // Only trigger if the click wasn't on the link itself
             if (!e.target.closest('a')) {
-              link.click();
+              const target = link.getAttribute('target') || '_self';
+
+              if (target === '_blank') {
+                window.open(link.href, '_blank', 'noopener,noreferrer');
+              } else {
+                window.open(link.href, target);
+              }
             }
           });
         }

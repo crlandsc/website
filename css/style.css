@@ -802,6 +802,38 @@ header .container {
   align-items: center;
 }
 
+.projects-subheading {
+  margin-top: var(--space-l);
+  margin-bottom: var(--space-m);
+  text-align: center;
+  color: var(--clr-text-headings);
+  font-weight: var(--font-weight-medium);
+  font-size: clamp(1.25rem, 1.1rem + 0.4vw, 1.5rem);
+}
+
+.writing-intro {
+  margin-top: var(--space-s);
+  margin-bottom: var(--space-m);
+  text-align: center;
+  color: var(--clr-text-primary);
+}
+
+.writing-intro a {
+  color: var(--clr-accent-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.writing-intro a:hover,
+.writing-intro a:focus-visible {
+  color: var(--clr-accent-secondary);
+  text-decoration: underline;
+}
+
+.writing-grid {
+  margin-bottom: var(--space-xl);
+}
+
 /* Education Section */
 .education-grid {
   display: flex;
