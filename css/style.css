@@ -802,6 +802,39 @@ header .container {
   align-items: center;
 }
 
+.article-meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: calc(var(--space-xs) * -0.25);
+  margin-bottom: var(--space-s);
+  color: var(--clr-text-secondary);
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-regular);
+}
+
+.article-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.article-meta-icon {
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+  color: var(--clr-text-secondary);
+}
+
+.article-meta-text {
+  letter-spacing: 0.01em;
+}
+
+.article-meta-separator {
+  margin: 0 0.15rem;
+  color: var(--clr-text-secondary);
+}
+
 .projects-subheading {
   margin-top: var(--space-l);
   margin-bottom: var(--space-m);
