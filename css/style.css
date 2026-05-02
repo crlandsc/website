@@ -1245,33 +1245,36 @@ footer .container {
   font-size: 1rem;
   }
 
+  /* Float the photo upper-left so text wraps beside it for the first 550px,
+     then reclaims the full grid width below. Avoids the height-coupling
+     feedback loop between content height and image cropping. */
   .about-grid {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
+    display: block;
     position: relative;
   }
-  
-  .about-image {
-    flex: 0 0 auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 280px;
-    display: flex;
-    align-items: center;
+
+  .about-grid::after {
+    content: "";
+    display: block;
+    clear: both;
   }
-  
+
+  .about-image {
+    float: left;
+    width: 350px;
+    height: 550px;
+    margin: 0 var(--space-l) var(--space-m) 0;
+  }
+
   .about-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center top;
   }
-  
+
   .about-content {
-    flex: 1;
-    margin-left: 320px;
+    margin-left: 0;
     padding-left: 0;
     max-width: none;
   }
@@ -1405,6 +1408,10 @@ footer .container {
   .about-image img {
     width: 100%;
     max-width: none;
+    aspect-ratio: 350 / 550;
+    height: auto;
+    object-fit: cover;
+    object-position: center top;
     margin-bottom: 0.5rem;
     border: 5px solid var(--clr-background-primary);
     box-shadow: 0 8px 15px var(--clr-shadow-color);
