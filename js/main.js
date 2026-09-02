@@ -159,6 +159,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const darkIcon = document.querySelector('.theme-icon-dark');
   const htmlElement = document.documentElement; // Gets the <html> element
 
+  const syncGradioEmbedTheme = (theme) => {
+    const iframe = document.getElementById('tiny-audio-diffusion-embed');
+    if (!iframe) return;
+
+    const nextTheme = theme === 'dark' ? 'dark' : 'light';
+    const url = new URL(iframe.src);
+    if (url.searchParams.get('__theme') === nextTheme) return;
+    url.searchParams.set('__theme', nextTheme);
+    iframe.src = url.toString();
+  };
+
   const applyTheme = (theme) => {
     if (theme === 'dark') {
       htmlElement.setAttribute('data-theme', 'dark');
@@ -171,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (lightIcon) lightIcon.style.display = 'block';
       if (darkIcon) darkIcon.style.display = 'none';
     }
+    syncGradioEmbedTheme(theme);
   };
 
   // Get system preference using media query
