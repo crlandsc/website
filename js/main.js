@@ -159,6 +159,50 @@ document.addEventListener('DOMContentLoaded', () => {
   const darkIcon = document.querySelector('.theme-icon-dark');
   const htmlElement = document.documentElement; // Gets the <html> element
 
+  // Reset when the embed reloads (theme switches rebuild the iframe src).
+  let embedHasLiveHeight = false;
+
+  const initializeTinyAudioEmbedResizer = () => {
+    const iframe = document.getElementById('tiny-audio-diffusion-embed');
+    if (!iframe) return;
+
+    const iframeOrigin = 'https://crlandsc-tiny-audio-diffusion.hf.space';
+
+    const getFallbackHeight = () => {
+      const iframeWidth = iframe.clientWidth || window.innerWidth || 1200;
+      if (iframeWidth >= 1000) return 760; // desktop two-column layout
+      if (iframeWidth >= 700) return 860;  // tablet
+      return 980; // phone single-column layout
+    };
+
+    const applyHeight = (height) => {
+      const nextHeight = Number(height);
+      // Gradio posts a tiny height while the app is still on the Loading
+      // screen. Ignore those so we do not lock in 100px before hydration.
+      if (!Number.isFinite(nextHeight) || nextHeight < 400) return;
+      embedHasLiveHeight = true;
+      iframe.style.height = `${Math.ceil(nextHeight)}px`;
+    };
+
+    const applyFallbackHeight = () => {
+      if (embedHasLiveHeight) return;
+      iframe.style.height = `${getFallbackHeight()}px`;
+    };
+
+    // The Space measures its own Gradio container and posts the height here,
+    // because the embedded document cannot shrink itself once the iframe grows.
+    window.addEventListener('message', (event) => {
+      if (event.origin !== iframeOrigin) return;
+      const data = event.data;
+      if (!data || data.source !== 'tiny-audio-diffusion' || data.type !== 'resize') return;
+      applyHeight(data.height);
+    });
+
+    applyFallbackHeight();
+    iframe.addEventListener('load', applyFallbackHeight);
+    window.addEventListener('resize', applyFallbackHeight);
+  };
+
   const syncGradioEmbedTheme = (theme) => {
     const iframe = document.getElementById('tiny-audio-diffusion-embed');
     if (!iframe) return;
@@ -167,8 +211,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const url = new URL(iframe.src);
     if (url.searchParams.get('__theme') === nextTheme) return;
     url.searchParams.set('__theme', nextTheme);
+    embedHasLiveHeight = false;
     iframe.src = url.toString();
   };
+
+  initializeTinyAudioEmbedResizer();
 
   const applyTheme = (theme) => {
     if (theme === 'dark') {
